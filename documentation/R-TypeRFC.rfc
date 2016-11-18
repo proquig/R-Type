@@ -2,11 +2,11 @@
           .         .            .    .               .           .             
       .      .            .    .               .           .             .
     .      .__________        ___________                        .
-    	    \______   \       \__    ___/__.__.______   ____  
- .   	     |       _/  ______ |    | <   |  |\____ \_/ __ \ 		.     .    
-    	.    |    |   \ /_____/ |    |  \___  ||  |_> >  ___/   .
+      	    \______   \       \__    ___/__.__.______   ____  
+  .   	     |       _/  ______ |    | <   |  |\____ \_/ __ \ 		.     .    
+        .    |    |   \ /_____/ |    |  \___  ||  |_> >  ___/   .
     .        |____|_  /         |____|  / ____||   __/ \___  >
-    	            \/                  \/     |__|        \/        .       .
+      	            \/                  \/     |__|        \/        .       .
    .               .           .             .
       .               .           .               .        .             .
           .         .            .    .               .           .             
@@ -54,13 +54,105 @@
 |   RFC 1                                                        Novembre2016 |
  \___________________________________________________________________________/
 
+S̲t̲a̲t̲u̲s̲ ̲o̲f̲ ̲t̲h̲i̲s̲ ̲M̲e̲m̲o̲ ̲:̲
+
+  This document specifies the Spider standard protocol for the Epitech's
+  groups participating the Spider (keylogger on Windows) project at
+  Epitech (2016-2017). Please referer to M. Lambert (lamber_o) for any
+  question aout this document. The distribution of this document is
+  stictly reserved to Epitech's Members.
+
+C̲o̲p̲y̲r̲i̲g̲h̲t̲ ̲N̲o̲t̲i̲c̲e̲ ̲:̲
+
+  There is no currents Copyright for this project. This project is the
+  intellectual property of the Epitech's member who are developping
+  the software.
+
+A̲b̲s̲t̲r̲a̲c̲t̲ ̲:̲
+
+  The spider is a low level keylogger developped in c++. The project is 
+  designed in two parts at least. One is the Widows malware. It is
+  designed to infect the computer of the user, and to register all the
+  action performed with the keyboard/mouse. These informations are
+  locally stored on the hard drive of the infected computer. Once the
+  client reach the server with a socket/sll based connection it sends
+  the datas. The second part of the project is a dedicated server
+  built to recieve datas and send orders to the differts infected
+  computers through the world. The data has to be serealized and SSL
+  encrypted before being sent to the server. The orders sent from the
+  server must be SSL encrypted aswell to avoid any efficient sniffing.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  ___________________________________________________________________________
+ /                                                                           \
+|   Standards                                                        [Page 1] |
+|                                   ~R-Type~                                  |
+|   RFC 1                                                        Novembre2016 |
+ \___________________________________________________________________________/
+
 T̲a̲b̲l̲e̲ ̲o̲f̲ ̲c̲o̲n̲t̲e̲n̲t̲s̲ ̲:̲ ̲
 
-  1 - Introduction.....................................................2
-  1.1 Purpose..........................................................2
-  1.2 Requierements....................................................2
-  1.3 Terminology......................................................3
-  1.4 Overall Operation................................................7
+  1 - Introduction.....................................................
+  1.1 Purpose..........................................................
+  1.2 Requierements....................................................
+  1.3 Terminology......................................................
+  1.4 Overall Operation................................................
+  2 - TCP..............................................................
+  2.1 Introduction.....................................................
+  2.2 Purpose..........................................................
+  2.3 Overall Operation................................................
+  3 - UDP..............................................................
+  3.1 Introduction.....................................................
+  3.2 Purpose..........................................................
+  3.3 Overall Operation................................................
+  4 - Security.........................................................
+  4.1 Purpose..........................................................
+  4.2 Implementation...................................................
+  4 - Header
+  4.1 Purpose..........................................................
+  4.2 Organisation.....................................................
+  4.3 Signification....................................................
+  4.4 Status...........................................................
+  5 - Data
+  4.1 Purpose..........................................................
+  4.2 Date format......................................................
+  4.3 Data format......................................................
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
