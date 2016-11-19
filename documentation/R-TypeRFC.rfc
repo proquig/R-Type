@@ -776,43 +776,116 @@ T̲a̲b̲l̲e̲ ̲o̲f̲ ̲c̲o̲n̲t̲e̲n̲t̲s̲ ̲:̲ ̲
 
   ___________________________________________________________________________
  /                                                                           \
-|   Standards                                                       [Page 12] |
+|   Standards                                                       [Page 14] |
+|                                   ~R-Type~                                  |
+|   RFC 1                                                        Novembre2016 |
+ \___________________________________________________________________________/
+
+// TITLE
+
+  The game client send a packet in order to join a game
+
+  The header for game client protocol is defined like this:
+
+  +======+===============================+===============================+
+  | Byte |       1       |       2       |       3       |       4       |
+  |------|---------------|---------------|---------------|---------------|
+  | Bit  |   0  ...  7   |   8  ...  15  |  16  ...  23  |  24  ...  31  |
+  |------|---------------|---------------|---------------|---------------|
+  |      |     Magic     |    Game ID    |   Packet ID   |    OpCode     |
+  |------|---------------+---------------+---------------+---------------|
+  |      |                             Size                              |
+  |------|---------------------------------------------------------------|
+  |      |                             Timer                             |
+  |------|---------------------------------------------------------------|
+  |      |                             Data                              |
+  +======+===============================+===============================+
+
+  ALL the data in the packet MUST be filled.
+
+  The "Magic" is a unique id, permitting a small verifiction that the client
+  correctly send a packet to the server, so they have the same communication
+  protocol.
+
+  The "Game ID" is the ID of the game that the client whants to join.
+  This id MUST be unique.
+
+  The "Packet ID" defines the Packet ID.
+
+  The "OpCode" defines specify the form of data OR the packet's feature.
+
+  The "Data" defines the size of the packet, the size is variable.
+
+
+
+
+
+  ___________________________________________________________________________
+ /                                                                           \
+|   Standards                                                       [Page 15] |
+|                                   ~R-Type~                                  |
+|   RFC 1                                                        Novembre2016 |
+ \___________________________________________________________________________/
+
+//TITLE
+
+  The game client send many packets when he's trying do an action
+  on the map, this action is done by the player when he press a / some
+  key(s).
+  
+  The input data from client is defined like this:
+
+  +======+===============================+===============================+
+  | Byte |       1       |       2       |       3       |       4       |
+  |------|---------------|---------------|---------------|---------------|
+  | Bit  |   0  ...  7   |   8  ...  15  |  16  ...  23  |  24  ...  31  |
+  |------|---------------+---------------|---------------+---------------|
+  |      |        Input snapshot         |    Previous snapshots (1)     |
+  |------|-------------------------------+-------------------------------|
+  |      |                    Previous Snapshots (2)                     |
+  +======+===============================+===============================+
+
+
+  The "Input snapshot" defines the current state of the client, defined by the
+  key(s) he pressed.
+
+
+  The "Previous snapshot  (1)" defines the previous states of the client if
+  it has not been validated by the server. 
+
+  The "Previous snapshot  (2)" defines the previous states of the client if
+  it has not been validated by the server, with a maximum of 10. 
+
+
+
+
+  ___________________________________________________________________________
+ /                                                                           \
+|   Standards                                                       [Page 16] |
 |                                   ~R-Type~                                  |
 |   RFC 1                                                        Novembre2016 |
  \___________________________________________________________________________/
   ___________________________________________________________________________
  /                                                                           \
-|   Standards                                                       [Page 12] |
+|   Standards                                                       [Page 17] |
 |                                   ~R-Type~                                  |
 |   RFC 1                                                        Novembre2016 |
  \___________________________________________________________________________/
   ___________________________________________________________________________
  /                                                                           \
-|   Standards                                                       [Page 12] |
+|   Standards                                                       [Page 18] |
 |                                   ~R-Type~                                  |
 |   RFC 1                                                        Novembre2016 |
  \___________________________________________________________________________/
   ___________________________________________________________________________
  /                                                                           \
-|   Standards                                                       [Page 12] |
+|   Standards                                                       [Page 19] |
 |                                   ~R-Type~                                  |
 |   RFC 1                                                        Novembre2016 |
  \___________________________________________________________________________/
   ___________________________________________________________________________
  /                                                                           \
-|   Standards                                                       [Page 12] |
-|                                   ~R-Type~                                  |
-|   RFC 1                                                        Novembre2016 |
- \___________________________________________________________________________/
-  ___________________________________________________________________________
- /                                                                           \
-|   Standards                                                       [Page 12] |
-|                                   ~R-Type~                                  |
-|   RFC 1                                                        Novembre2016 |
- \___________________________________________________________________________/
-  ___________________________________________________________________________
- /                                                                           \
-|   Standards                                                       [Page 12] |
+|   Standards                                                       [Page 20] |
 |                                   ~R-Type~                                  |
 |   RFC 1                                                        Novembre2016 |
  \___________________________________________________________________________/
