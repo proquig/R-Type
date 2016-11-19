@@ -184,7 +184,7 @@ T̲a̲b̲l̲e̲ ̲o̲f̲ ̲c̲o̲n̲t̲e̲n̲t̲s̲ ̲:̲ ̲
   A̲b̲s̲t̲r̲a̲c̲t̲
 
     In many standards track documents several words are used to signify the
-    requirements in the specification.  These words are often capitalized.
+    requirements in the specification. These words are often capitalized.
     This document defines these words as they should be interpreted in this
     documentation. Authors who follow these guidelines should incorporate this
     phrase near the beginning of their document:
@@ -224,8 +224,8 @@ T̲a̲b̲l̲e̲ ̲o̲f̲ ̲c̲o̲n̲t̲e̲n̲t̲s̲ ̲:̲ ̲
 |   RFC 1                                                       November 2016 |
  \___________________________________________________________________________/
 
-  "M̲A̲Y̲" :    This word, or the adjective "O̲P̲T̲I̲O̲N̲A̲L̲", mean that an item is
-  truly optional.  One vendor may choose to include the item because a
+  "M̲A̲Y̲" :  This word, or the adjective "O̲P̲T̲I̲O̲N̲A̲L̲", mean that an item is
+  truly optional. One vendor may choose to include the item because a
   particular marketplace requires it or because the vendor feels that it
   enhances the product while another vendor may omit the same item. An
   implementation which does not include a particular option M̲U̲S̲T̲ be prepared
@@ -282,7 +282,7 @@ T̲a̲b̲l̲e̲ ̲o̲f̲ ̲c̲o̲n̲t̲e̲n̲t̲s̲ ̲:̲ ̲
  \___________________________________________________________________________/
   
   R̲e̲s̲p̲o̲n̲s̲e̲
-    An Socket response message, as defined in section 3.  
+    An Socket response message, as defined in section 3.
     
   R̲e̲s̲o̲u̲r̲c̲e̲
     A dll/library object or service that can be identified by a name and a
@@ -308,10 +308,10 @@ T̲a̲b̲l̲e̲ ̲o̲f̲ ̲c̲o̲n̲t̲e̲n̲t̲s̲ ̲:̲ ̲
   V̲a̲r̲i̲a̲n̲t̲
     A resource may have one, or more than one, representation(s) associated
     with it at any given instant. Each of these representations is termed a
-    `varriant'.  Use of the term `variant' does not necessarily imply that
+    `varriant'. Use of the term `variant' does not necessarily imply that
     the resource is subject to content negotiation.
 
-  C̲l̲i̲e̲n̲t̲  
+  C̲l̲i̲e̲n̲t̲
     A program that establishes connections for the purpose of sending
     requests.
 
@@ -353,13 +353,13 @@ T̲a̲b̲l̲e̲ ̲o̲f̲ ̲c̲o̲n̲t̲e̲n̲t̲s̲ ̲:̲ ̲
     service to the user agent, such as group annotation services, media type
     transformation, protocol reduction, or anonymity filtering. Except where
     either transparent or non-transparent behavior is explicitlystated, the
-    proxy requirements apply to both types of proxies.    
+    proxy requirements apply to both types of proxies.
 
   G̲a̲t̲e̲w̲a̲y̲
     A server which acts as an intermediary for some other server. Unlike a 
     proxy, a gateway receives requests as if it were the origin server for
     the requested resource; the requesting client may not be aware that it is
-    communicating with a gateway.    
+    communicating with a gateway.
 
   T̲u̲n̲n̲e̲l̲
     An intermediary program which is acting as a blind relay between two
@@ -561,7 +561,7 @@ T̲a̲b̲l̲e̲ ̲o̲f̲ ̲c̲o̲n̲t̲e̲n̲t̲s̲ ̲:̲ ̲
  \___________________________________________________________________________/
 
     The TCP is intended to provide a reliable process-to-process communication
-    service in a multinetwork environment.  The TCP is intended to be a
+    service in a multinetwork environment. The TCP is intended to be a
     host-to-host protocol in common use in multiple networks.
 
   2̲.̲2̲ ̲-̲ ̲P̲u̲r̲p̲o̲s̲e̲ ̲:̲
@@ -570,13 +570,13 @@ T̲a̲b̲l̲e̲ ̲o̲f̲ ̲c̲o̲n̲t̲e̲n̲t̲s̲ ̲:̲ ̲
     are in turn interconnected via gateways. It is assumed here that the
     networks may be either local networks or large networks, but in any case
     are based on packet switching technology. The active agents that produce
-    and consume messages are processes.  Various levels of protocols in the
+    and consume messages are processes. Various levels of protocols in the
     networks, the gateways, and the hosts support an interprocess
     communication system that provides two-way data flow on logical
     connections between process ports.
 
     The term packet is used generically here to mean the data of one
-    transaction between a host and its network.  The format of data blocks
+    transaction between a host and its network. The format of data blocks
     exchanged within the a network will generally not be of concern to us.
 
     Hosts are computers attached to a network, and from the communication
@@ -625,15 +625,15 @@ T̲a̲b̲l̲e̲ ̲o̲f̲ ̲c̲o̲n̲t̲e̲n̲t̲s̲ ̲:̲ ̲
 
     The TCP is able to transfer a continuous stream of octets in each
     direction between its users by packaging some number of octets into
-    segments for transmission through the internet system.  In general,
+    segments for transmission through the internet system. In general,
     the TCPs decide when to block and forward data at their own
     convenience.
 
     Sometimes users need to be sure that all the data they have
-    submitted to the TCP has been transmitted.  For this purpose a push
-    function is defined.  To assure that data submitted to a TCP is
+    submitted to the TCP has been transmitted. For this purpose a push
+    function is defined. To assure that data submitted to a TCP is
     actually transmitted the sending user indicates that it should be
-    pushed through to the receiving user.  A push causes the TCPs to
+    pushed through to the receiving user. A push causes the TCPs to
     promptly forward and deliver data up to that point to the receiver.
     The exact push point might not be visible to the receiving user and
     the push function does not supply a record boundary marker.
@@ -641,27 +641,27 @@ T̲a̲b̲l̲e̲ ̲o̲f̲ ̲c̲o̲n̲t̲e̲n̲t̲s̲ ̲:̲ ̲
     Reliability:
 
     The TCP must recover from data that is damaged, lost, duplicated, or
-    delivered out of order by the internet communication system.  This
+    delivered out of order by the internet communication system. This
     is achieved by assigning a sequence number to each octet
     transmitted, and requiring a positive acknowledgment (ACK) from the
-    receiving TCP.  If the ACK is not received within a timeout
-    interval, the data is retransmitted.  At the receiver, the sequence
+    receiving TCP. If the ACK is not received within a timeout
+    interval, the data is retransmitted. At the receiver, the sequence
     numbers are used to correctly order segments that may be received
-    out of order and to eliminate duplicates.  Damage is handled by
+    out of order and to eliminate duplicates. Damage is handled by
     adding a checksum to each segment transmitted, checking it at the
     receiver, and discarding damaged segments.
 
     As long as the TCPs continue to function properly and the internet
     system does not become completely partitioned, no transmission
-    errors will affect the correct delivery of data.  TCP recovers from
+    errors will affect the correct delivery of data. TCP recovers from
     internet communication system errors.
 
     Flow Control:
 
     TCP provides a means for the receiver to govern the amount of data
-    sent by the sender.  This is achieved by returning a "window" with
+    sent by the sender. This is achieved by returning a "window" with
     every ACK indicating a range of acceptable sequence numbers beyond
-    the last segment successfully received.  The window indicates an
+    the last segment successfully received. The window indicates an
     allowed number of octets that the sender may transmit before
     receiving further permission.
 
@@ -680,14 +680,14 @@ T̲a̲b̲l̲e̲ ̲o̲f̲ ̲c̲o̲n̲t̲e̲n̲t̲s̲ ̲:̲ ̲
 
     The reliability and flow control mechanisms described above require
     that TCPs initialize and maintain certain status information for
-    each data stream.  The combination of this information, including
+    each data stream. The combination of this information, including
     sockets, sequence numbers, and window sizes, is called a connection.
     Each connection is uniquely specified by a pair of sockets
     identifying its two sides.
 
     When two processes wish to communicate, their TCP's must first
     establish a connection (initialize the status information on each
-    side).  When their communication is complete, the connection is
+    side). When their communication is complete, the connection is
     terminated or closed to free the resources for other uses.
 
     Since connections must be established between unreliable hosts and
@@ -748,7 +748,7 @@ T̲a̲b̲l̲e̲ ̲o̲f̲ ̲c̲o̲n̲t̲e̲n̲t̲s̲ ̲:̲ ̲
     TCP.
 
     This simple model of the operation glosses over many details. One
-    important feature is the type of service.  This provides information to
+    important feature is the type of service. This provides information to
     the gateway (or internet module) to guide it in selecting the service
     parameters to be used in traversing the next network.
     Included in the type of service information is the precedence of the
@@ -760,35 +760,29 @@ T̲a̲b̲l̲e̲ ̲o̲f̲ ̲c̲o̲n̲t̲e̲n̲t̲s̲ ̲:̲ ̲
 
     3̲.̲1̲ ̲-̲ ̲I̲n̲t̲r̲o̲d̲u̲c̲t̲i̲o̲n̲
 
-      This User Datagram  Protocol  (UDP)  is  defined  to  make  available  a
-      datagram   mode  of  packet-switched   computer   communication  in  the
-      environment  of  an  interconnected  set  of  computer  networks.   This
-      protocol  assumes  that  the  Internet  Protocol  (IP) is  used  as  the
-      underlying protocol.
+      This User Datagram Protocol (UDP) is defined to make available a datagram
+      mode of packet-switched computer communication in the environment of an
+      interconnected set of computer networks. This protocol assumes that the
+      Internet Protocol (IP) is used as the underlying protocol.
 
-      This protocol  provides  a procedure  for application  programs  to send
-      messages  to other programs  with a minimum  of protocol mechanism.  The
-      protocol  is transaction oriented, and delivery and duplicate protection
-      are not guaranteed.  Applications requiring ordered reliable delivery of
+      This protocol provides a procedure for application programs to send
+      messages to other programs with a minimum of protocol mechanism. The
+      protocol is transaction oriented, and delivery and duplicate protection
+      are not guaranteed. Applications requiring ordered reliable delivery of
       streams of data should use the Transmission Control Protocol (TCP).
 
 
-    3̲.̲2̲ ̲-̲ ̲F̲o̲r̲m̲a̲t̲
 
 
-                  0      7 8     15 16    23 24    31
-                 +--------+--------+--------+--------+
-                 |     Source      |   Destination   |
-                 |      Port       |      Port       |
-                 +--------+--------+--------+--------+
-                 |                 |                 |
-                 |     Length      |    Checksum     |
-                 +--------+--------+--------+--------+
-                 |
-                 |          data octets ...
-                 +---------------- ...
 
-                      User Datagram Header Format
+
+
+
+
+
+
+
+
 
 
   ___________________________________________________________________________
@@ -798,56 +792,54 @@ T̲a̲b̲l̲e̲ ̲o̲f̲ ̲c̲o̲n̲t̲e̲n̲t̲s̲ ̲:̲ ̲
 |   RFC 1                                                       November 2016 |
  \___________________________________________________________________________/
 
+    3̲.̲2̲ ̲-̲ ̲F̲o̲r̲m̲a̲t̲
+
+      0      7 8     15 16    23 24    31
+      +--------+--------+--------+--------+
+      |     Source      |   Destination   |
+      |      Port       |      Port       |
+      +--------+--------+--------+--------+
+      |                 |                 |
+      |     Length      |    Checksum     |
+      +--------+--------+--------+--------+
+      |
+      |          data octets ...
+      +---------------- ...
+
+      User Datagram Header Format
+
     3̲.̲3̲ ̲-̲ ̲F̲i̲e̲l̲d̲s̲
 
       Source Port is an optional field, when meaningful, it indicates the port
-      of the sending  process,  and may be assumed  to be the port  to which a
-      reply should  be addressed  in the absence of any other information.  If
+      of the sending process, and may be assumed to be the port to which a
+      reply should be addressed in the absence of any other information. If
       not used, a value of zero is inserted.
 
-      Destination  Port has a meaning  within  the  context  of  a  particular
+      Destination Port has a meaning within the context of a particular
       internet destination address.
 
-      Length  is the length  in octets  of this user datagram  including  this
-      header  and the data.   (This  means  the minimum value of the length is
+      Length is the length in octets of this user datagram including this
+      header and the data. (This means the minimum value of the length is
       eight.)
 
       Checksum is the 16-bit one's complement of the one's complement sum of a
       pseudo header of information from the IP header, the UDP header, and the
-      data,  padded  with zero octets  at the end (if  necessary)  to  make  a
+      data, padded with zero octets at the end (if necessary) to make a
       multiple of two octets.
 
-      The pseudo  header  conceptually prefixed to the UDP header contains the
-      source  address,  the destination  address,  the protocol,  and the  UDP
-      length.   This information gives protection against misrouted datagrams.
+      The pseudo header conceptually prefixed to the UDP header contains the
+      source address, the destination address, the protocol, and the UDP
+      length. This information gives protection against misrouted datagrams.
       This checksum procedure is the same as is used in TCP.
 
-                        0      7 8     15 16    23 24    31
-                       +--------+--------+--------+--------+
-                       |          source address           |
-                       +--------+--------+--------+--------+
-                       |        destination address        |
-                       +--------+--------+--------+--------+
-                       |  zero  |protocol|   UDP length    |
-                       +--------+--------+--------+--------+
-
-      If the computed  checksum  is zero,  it is transmitted  as all ones (the
-      equivalent  in one's complement  arithmetic).   An all zero  transmitted
-      checksum  value means that the transmitter  generated  no checksum  (for
-      debugging or for higher level protocols that don't care).
-
-
-    3̲.̲4̲ ̲-̲ ̲U̲s̲e̲r̲ ̲I̲n̲t̲e̲r̲f̲a̲c̲e̲
-
-      A user interface should allow
-
-        the creation of new receive ports,
-
-        receive  operations  on the receive  ports that return the data octets
-        and an indication of source port and source address,
-
-        and an operation  that allows  a datagram  to be sent,  specifying the
-        data, source and destination ports and addresses to be sent.
+        0      7 8     15 16    23 24    31
+        +--------+--------+--------+--------+
+        |          source address           |
+        +--------+--------+--------+--------+
+        |        destination address        |
+        +--------+--------+--------+--------+
+        |  zero  |protocol|   UDP length    |
+        +--------+--------+--------+--------+
 
 
   ___________________________________________________________________________
@@ -857,63 +849,32 @@ T̲a̲b̲l̲e̲ ̲o̲f̲ ̲c̲o̲n̲t̲e̲n̲t̲s̲ ̲:̲ ̲
 |   RFC 1                                                       November 2016 |
  \___________________________________________________________________________/
 
+      If the computed checksum is zero, it is transmitted as all ones (the
+      equivalent in one's complement arithmetic). An all zero transmitted
+      checksum value means that the transmitter generated no checksum (for
+      debugging or for higher level protocols that don't care).
+
+    3̲.̲4̲ ̲-̲ ̲U̲s̲e̲r̲ ̲I̲n̲t̲e̲r̲f̲a̲c̲e̲
+
+      A user interface should allow the creation of new receive ports, receive
+      operations on the receive ports that return the data octets and an
+      indication of source port and source address, and an operationthat allows
+      a datagram to be sent, specifying the data, source and destination ports
+      and addresses to be sent.
+
     3̲.̲5̲ ̲-̲ ̲I̲P̲ ̲I̲n̲t̲e̲r̲f̲a̲c̲e̲
 
-      The UDP module  must be able to determine  the  source  and  destination
-      internet addresses and the protocol field from the internet header.  One
-      possible  UDP/IP  interface  would return  the whole  internet  datagram
+      The UDP module must be able to determine the source and destination
+      internet addresses and the protocol field from the internet header. One
+      possible UDP/IP interface would return the whole internet datagram
       including all of the internet header in response to a receive operation.
-      Such an interface  would  also allow  the UDP to pass  a  full  internet
-      datagram  complete  with header  to the IP to send.  The IP would verify
+      Such an interface would also allow the UDP to pass a full internet
+      datagram complete with header to the IP to send. The IP would verify
       certain fields for consistency and compute the internet header checksum.
 
+  //TITLE
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  ___________________________________________________________________________
- /                                                                           \
-|   Standards                                                       [Page 16] |
-|                                   ~R-Type~                                  |
-|   RFC 1                                                       November 2016 |
- \___________________________________________________________________________/
-
-// TITLE
-
-  The client (player) and the server share the same game header protocol
+    The client (player) and the server share the same game header protocol
 
   The header for game client protocol is defined like this:
 
@@ -932,7 +893,7 @@ T̲a̲b̲l̲e̲ ̲o̲f̲ ̲c̲o̲n̲t̲e̲n̲t̲s̲ ̲:̲ ̲
   +======+===============================================================+
 
 
-  ALL the data in the packet MUST be filled.
+  All the data in the packet MUST be filled.
 
 
   The "Magic" is a unique id, permitting a small verifiction that the client
@@ -947,7 +908,6 @@ T̲a̲b̲l̲e̲ ̲o̲f̲ ̲c̲o̲n̲t̲e̲n̲t̲s̲ ̲:̲ ̲
   The "OpCode" specify the form of data OR the packet's feature.
 
   The "Data" defines the size of the packet, the size is variable.
-
 
 
 
