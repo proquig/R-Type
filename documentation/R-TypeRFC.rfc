@@ -56,11 +56,11 @@
 
 S̲t̲a̲t̲u̲s̲ ̲o̲f̲ ̲t̲h̲i̲s̲ ̲M̲e̲m̲o̲ ̲:̲
 
-  This document specifies the Spider standard protocol for the Epitech's
-  groups participating the Spider (keylogger on Windows) project at
-  Epitech (2016-2017). Please referer to M. Lambert (lamber_o) for any
-  question aout this document. The distribution of this document is
-  stictly reserved to Epitech's Members.
+  This document specifies the R-Type standard protocol for the Epitech's
+  groups participating the R-Type project at Epitech (2016-2017).
+  Please referer to M. Lambert (lamber_o) of Gillaume Proquin (proqui_m) for
+  any question aout this document. The distribution of this document is stictly
+  reserved to Epitech's Members.
 
 C̲o̲p̲y̲r̲i̲g̲h̲t̲ ̲N̲o̲t̲i̲c̲e̲ ̲:̲
 
@@ -70,19 +70,20 @@ C̲o̲p̲y̲r̲i̲g̲h̲t̲ ̲N̲o̲t̲i̲c̲e̲ ̲:̲
 
 A̲b̲s̲t̲r̲a̲c̲t̲ ̲:̲
 
-  The spider is a low level keylogger developped in c++. The project is 
-  designed in two parts at least. One is the Widows malware. It is
-  designed to infect the computer of the user, and to register all the
-  action performed with the keyboard/mouse. These informations are
-  locally stored on the hard drive of the infected computer. Once the
-  client reach the server with a socket/sll based connection it sends
-  the datas. The second part of the project is a dedicated server
-  built to recieve datas and send orders to the differts infected
-  computers through the world. The data has to be serealized and SSL
-  encrypted before being sent to the server. The orders sent from the
-  server must be SSL encrypted aswell to avoid any efficient sniffing.
-
-
+  R-Type (アール・タイプ Āru Taipu) is a side scrolling shoot-em-up arcade game
+  produced by Irem in 1987. The player controls a space fighter named the R-9
+  to defend humanity against a mysterious powerful alien life-form known as the
+  "Bydo".
+  The Epitech R-Type is a simple clone of the game. It is designed on C++ and
+  can handle a multiplayer gameplay. The goal of this project is to do a clone
+  of this well known arcade game. However, this clone will not be limited
+  to the technical requierements of the year 1987.
+  Such as the most of the multiplayer video-game aviable on the market, the
+  project will be devided on twoo part. The first one is the Server which
+  handle all the game sessions. The second part of the project is the client,
+  which is designed to handle the actions beetween the server and the player
+  in front of his computer.
+  The software is organized so that there is no performance concerns.
 
 
 
@@ -105,7 +106,7 @@ A̲b̲s̲t̲r̲a̲c̲t̲ ̲:̲
 
   ___________________________________________________________________________
  /                                                                           \
-|   Standards                                                        [Page 1] |
+|   Standards                                                        [Page 2] |
 |                                   ~R-Type~                                  |
 |   RFC 1                                                        Novembre2016 |
  \___________________________________________________________________________/
@@ -158,68 +159,640 @@ T̲a̲b̲l̲e̲ ̲o̲f̲ ̲c̲o̲n̲t̲e̲n̲t̲s̲ ̲:̲ ̲
 
 
 
+
+
   ___________________________________________________________________________
  /                                                                           \
-|   Standards                                                        [Page 1] |
+|   Standards                                                        [Page 3] |
+|                                   ~R-Type~                                  |
+|   RFC 1                                                        Novembre2016 |
+ \___________________________________________________________________________/
+
+1̲ ̲-̲ ̲I̲n̲t̲r̲o̲d̲u̲c̲t̲i̲o̲n̲
+
+1̲.̲1̲ ̲P̲u̲r̲p̲o̲s̲e̲
+
+  In the third year of Epitech, some students take the Advanced/c++ module to
+  have more knowledge of the c++ language. In order to archieve this goal a
+  video-game project is proposed to the registered students. The "R-Type" is
+  the name of the project. This video-game must be designed to able the
+  communication different servers around the world. The communication protocol
+  is here to guide any developpers who need/want to develop or modify, on
+  their own a server or a client for the R-Type.
+
+1̲.̲2̲ ̲R̲e̲q̲u̲i̲e̲r̲e̲m̲e̲n̲t̲s̲
+
+  A̲b̲s̲t̲r̲a̲c̲t̲
+
+    In many standards track documents several words are used to signify the
+    requirements in the specification.  These words are often capitalized.
+    This document defines these words as they should be interpreted in this
+    documentation. Authors who follow these guidelines should incorporate this
+    phrase near the beginning of their document:
+
+  The key words "M̲U̲S̲T̲", "M̲U̲S̲T̲ ̲N̲O̲T̲", "R̲E̲Q̲U̲I̲R̲E̲D̲", "S̲H̲A̲L̲L̲", "S̲H̲A̲L̲L̲ ̲N̲O̲T̲", "S̲H̲O̲U̲L̲D̲",
+  "S̲H̲O̲U̲L̲D̲ ̲N̲O̲T̲", "R̲E̲C̲O̲M̲M̲E̲N̲D̲E̲D̲",  "M̲A̲Y̲", and "O̲P̲T̲I̲O̲N̲A̲L̲" in this document are to
+  be interpreted as described just below.
+
+  Note that the force of these words is modified by the requirement level of
+  the document in which they are used.
+
+  "M̲U̲S̲T̲" :  This word, or the terms "R̲E̲Q̲U̲I̲R̲E̲D̲" or "S̲H̲A̲L̲L̲", mean that the
+  definition is an absolute requirement of the specification.
+
+  "M̲U̲S̲T̲ ̲N̲O̲T̲" :  This phrase, or the phrase "S̲H̲A̲L̲L̲ ̲N̲O̲T̲", mean that the definition
+  is an absolute prohibition of the specification.
+
+  "S̲H̲O̲U̲L̲D̲" :  This word, or the adjective "R̲E̲C̲O̲M̲M̲E̲N̲D̲E̲D̲", mean that there may
+  exist valid reasons in particular circumstances to ignore a particular item,
+  but the full implications must be understood and carefully weighed before
+  choosing a different course.
+
+  "S̲H̲O̲U̲L̲D̲ ̲N̲O̲T̲" :  This phrase, or the phrase "N̲O̲T̲ ̲R̲E̲C̲O̲M̲M̲E̲N̲D̲E̲D̲" mean that
+  there may exist valid reasons in particular circumstances when the particular
+  behavior is acceptable or even useful, but the full implications should be
+  understood and the case carefully weighed before implementing any behavior
+  described with this label.
+
+
+
+
+
+  ___________________________________________________________________________
+ /                                                                           \
+|   Standards                                                        [Page 4] |
+|                                   ~R-Type~                                  |
+|   RFC 1                                                        Novembre2016 |
+ \___________________________________________________________________________/
+
+  "M̲A̲Y̲" :    This word, or the adjective "O̲P̲T̲I̲O̲N̲A̲L̲", mean that an item is
+  truly optional.  One vendor may choose to include the item because a
+  particular marketplace requires it or because the vendor feels that it
+  enhances the product while another vendor may omit the same item. An
+  implementation which does not include a particular option M̲U̲S̲T̲ be prepared
+  to interoperate with another implementation which does include the option,
+  though perhaps with reduced functionality. In the same vein an
+  implementation which does include a particular option M̲U̲S̲T̲ be prepared to
+  interoperate with another implementation which does not include the option
+  (except, of course, for the feature the option provides.)
+  
+  G̲u̲i̲d̲a̲n̲c̲e̲ ̲i̲n̲ ̲t̲h̲e̲ ̲u̲s̲e̲ ̲o̲f̲ ̲t̲h̲e̲s̲e̲ ̲I̲m̲p̲e̲r̲a̲t̲i̲v̲e̲s̲
+
+    Imperatives of the type defined in this memo must be used with care and
+    sparingly. In particular, they M̲U̲S̲T̲ only be used where it is actually
+    required for interoperation or to limit behavior which has potential for
+    causing harm (limiting retransmisssions) For example, they must not be
+    used to try to impose a particular method on implementors where the method
+    is not required for interoperability.
+
+  S̲e̲c̲u̲r̲i̲t̲y̲ ̲C̲o̲n̲s̲i̲d̲e̲r̲a̲t̲i̲o̲n̲s̲
+
+    These terms are frequently used to specify behavior with security
+    implications. The effects on security of not implementing a M̲U̲S̲T̲ or
+    S̲H̲O̲U̲L̲D̲, or doing something the specification says M̲U̲S̲T̲ NOT or S̲H̲O̲U̲L̲D̲ N̲O̲T̲
+    be done may be very subtle. Document authors should take the time to
+    elaborate the security implications of not following recommendations or
+    requirements as most implementors will not have had the benefit of the
+    experience and discussion that produced the specification.
+
+1̲.̲3̲ ̲T̲e̲r̲m̲i̲n̲o̲l̲o̲g̲y̲
+
+  This specification uses a number of terms to refer to the roles played by
+  participants in, and objects of, the Socket communication.
+
+  C̲o̲n̲n̲e̲c̲t̲i̲o̲n̲
+    A transport layer virtual circuit established between two programs for
+    the purpose of communication.
+
+  M̲e̲s̲s̲a̲g̲e̲
+    The basic unit of Socket communication, consisting of a structured
+    sequence of octets matching the syntax defined in section 3 and
+    transmitted via the connection.
+
+  R̲e̲q̲u̲e̲s̲t̲
+    An Socket request message, as defined in section 3.
+
+
+
+
+  ___________________________________________________________________________
+ /                                                                           \
+|   Standards                                                        [Page 5] |
+|                                   ~R-Type~                                  |
+|   RFC 1                                                        Novembre2016 |
+ \___________________________________________________________________________/
+  
+  R̲e̲s̲p̲o̲n̲s̲e̲
+    An Socket response message, as defined in section 3.  
+    
+  R̲e̲s̲o̲u̲r̲c̲e̲
+    A dll/library object or service that can be identified by a name and a
+    path, as defined in section 1.4. Resources may be available in multiple
+    representations (multiple functions, developpement languages, size, and
+    utilities) or vary in other ways.
+
+  E̲n̲t̲i̲t̲y̲
+    The information transferred as the payload of a request or response. An
+    entity consists of metainformation in the form of entity-header fields
+    and content in the form of an entity-body, as described in section 3.
+
+  R̲e̲p̲r̲e̲s̲e̲n̲t̲a̲t̲i̲o̲n̲
+    An entity included with a response that is subject to content
+    negotiation, as described in section 4. There may exist multiple
+    representations associated with a particular response status. 
+
+  C̲o̲n̲t̲e̲n̲t̲ ̲n̲e̲g̲o̲t̲i̲a̲t̲i̲o̲n̲
+    The mechanism for selecting the appropriate representation when
+    servicing a request, as described in section 12. The representation of
+    entities in any response can be negotiated (including error responses).
+
+  V̲a̲r̲i̲a̲n̲t̲
+    A resource may have one, or more than one, representation(s) associated
+    with it at any given instant. Each of these representations is termed a
+    `varriant'.  Use of the term `variant' does not necessarily imply that
+    the resource is subject to content negotiation.
+
+  C̲l̲i̲e̲n̲t̲  
+    A program that establishes connections for the purpose of sending
+    requests.
+
+  U̲s̲e̲r̲ ̲a̲g̲e̲n̲t̲
+    The client which initiates a request. These are often browsers,
+    editors, spiders (web-traversing robots), or other end user tools.
+
+  S̲e̲r̲v̲e̲r̲
+    An application program that accepts connections in order to service
+    requests by sending back responses. Any given program may be capable of
+    being both a client and a server; our use of these terms refers only to
+    the role being performed by the program for a particular connection,
+    rather than to the program's capabilities in general. Likewise, any
+    server may act as an origin server, proxy, gateway, or tunnel,
+    switching behavior based on the nature of each request.
+
+
+
+
+  ___________________________________________________________________________
+ /                                                                           \
+|   Standards                                                        [Page 6] |
+|                                   ~R-Type~                                  |
+|   RFC 1                                                        Novembre2016 |
+ \___________________________________________________________________________/
+
+  O̲r̲i̲g̲i̲n̲ ̲s̲e̲r̲v̲e̲r̲
+    The server on which a given resource resides or is to be created.
+
+  P̲r̲o̲x̲y̲
+    An intermediary program which acts as both a server and a client for the
+    purpose of making requests on behalf of other clients. Requests are
+    serviced internally or by passing them on, with possible translation, to
+    other servers. A proxy M̲U̲S̲T̲ implement both the client and server
+    requirements of this specification. A "transparent proxy" is a proxy that
+    does not modify the request or response beyond what is required for proxy
+    authentication and identification. A "non-transparent proxy" is a proxy
+    that modifies the request or response in order to provide some added
+    service to the user agent, such as group annotation services, media type
+    transformation, protocol reduction, or anonymity filtering. Except where
+    either transparent or non-transparent behavior is explicitlystated, the
+    proxy requirements apply to both types of proxies.    
+
+  G̲a̲t̲e̲w̲a̲y̲
+    A server which acts as an intermediary for some other server. Unlike a 
+    proxy, a gateway receives requests as if it were the origin server for
+    the requested resource; the requesting client may not be aware that it is
+    communicating with a gateway.    
+
+  T̲u̲n̲n̲e̲l̲
+    An intermediary program which is acting as a blind relay between two
+    connections. Once active, a tunnel is not considered a party to the Socket
+    communication, though the tunnel may have been initiated by an Socket
+    request. The tunnel ceases to exist when both ends of the relayed
+    connections are closed.
+
+  C̲a̲c̲h̲e̲
+    A program's local store of response messages and the subsystem that 
+    controls its message storage, retrieval, and deletion. A cache stores
+    cacheable responses in order to reduce the response time and network
+    bandwidth consumption on future, equivalent requests. Any client or
+    server may include a cache, though a cache cannot be used by a server
+    that is acting as a tunnel.
+
+  C̲a̲c̲h̲e̲a̲b̲l̲e̲
+    A response is cacheable if a cache is allowed to store a copy of the
+    response message for use in answering subsequent requests. The rules for
+    determining the cacheability of Socket responses are defined in section 4.
+    Even if a resource is cacheable, there may be additional constraints on
+    whether a cache can use the cached copy for a particular request.
+
+
+
+
+ 
+
+  ___________________________________________________________________________
+ /                                                                           \
+|   Standards                                                        [Page 7] |
+|                                   ~R-Type~                                  |
+|   RFC 1                                                        Novembre2016 |
+ \___________________________________________________________________________/
+
+  F̲i̲r̲s̲t̲-̲h̲a̲n̲d̲
+    A response is first-hand if it comes directly and without unnecessary
+    delay from the origin server, perhaps via one or more proxies. A response
+    is also first-hand if its validity has just been checked directly with
+    the origin server.
+
+  E̲x̲p̲l̲i̲c̲i̲t̲ ̲e̲x̲p̲i̲r̲a̲t̲i̲o̲n̲ ̲t̲i̲m̲e̲
+    The time at which the origin server intends that an entity should no
+    longer be returned by a cache without further validation.
+
+  H̲e̲u̲r̲i̲s̲t̲i̲c̲ ̲e̲x̲p̲i̲r̲a̲t̲i̲o̲n̲ ̲t̲i̲m̲e̲
+    An expiration time assigned by a cache when no explicit expiration time
+    is available.
+
+  A̲g̲e̲
+    The age of a response is the time since it was sent by, or successfully
+    validated with, the origin server.
+
+  F̲r̲e̲s̲h̲n̲e̲s̲s̲ ̲l̲i̲f̲e̲t̲i̲m̲e̲
+    The length of time between the generation of a response and its expiration
+    time.
+
+  F̲r̲e̲s̲h̲
+    A response is fresh if its age has not yet exceeded its freshness
+    lifetime.
+
+  S̲t̲a̲l̲e̲
+    A response is stale if its age has passed its freshness
+    lifetime.
+
+  S̲e̲m̲a̲n̲t̲i̲c̲a̲l̲l̲y̲ ̲t̲r̲a̲n̲s̲p̲a̲r̲e̲n̲t̲
+    A cache behaves in a "semantically transparent" manner,
+    with respect to a particular response, when its use affects
+    neither the requesting client nor the origin server, except
+    to improve performance. When a cache is semantically
+    transparent, the client receives exactly the same response
+    (except for the validator element) that it would have received
+    had its request been handled directly by the origin server.
+
+  V̲a̲l̲i̲d̲a̲t̲o̲r̲
+          A protocol element (an entity tag or a Last-Modified
+    time) that is used to find out whether a cache entry is an
+    equivalent copy of an entity.
+
+  U̲p̲s̲t̲r̲e̲a̲m̲/̲D̲o̲w̲n̲s̲t̲r̲e̲a̲m̲
+    Upstream and downstream describe the flow of a message: all
+    messages flow from upstream to downstream.
+
+
+
+  ___________________________________________________________________________
+ /                                                                           \
+|   Standards                                                        [Page 8] |
+|                                   ~R-Type~                                  |
+|   RFC 1                                                        Novembre2016 |
+ \___________________________________________________________________________/
+
+  I̲n̲b̲o̲u̲n̲d̲/̲O̲u̲t̲b̲o̲u̲n̲d̲
+    Inbound and outbound refer to the request and response paths
+    for messages: "inbound" means "traveling toward the origin
+    server", and "outbound" means "traveling toward the user
+    agent"
+
+1̲.̲4̲ ̲O̲v̲e̲r̲a̲l̲l̲ ̲O̲p̲e̲r̲a̲t̲i̲o̲n̲
+
+  The R-Type protocol is a request/response protocol. A client sends
+  a request to the server in the form of a request method, followed by
+  a MIME-like message containing request modifiers, client information,
+  and possible body content over a connection with a server. The server
+  responds with a status line, including the message's protocol version
+  and a success or error code, followed by a MIME-like message
+  containing server information, entity metainformation, and possible
+  entity-body content.
+
+  Most Socket communication is initiated by a user agent and consists of
+    a request to be applied to a resource on some origin server. In the
+    simplest case, this may be accomplished via a single connection (v)
+  between the user agent (UA) and the origin server (O).
+
+
+  request chain → 
+    UA -------------------v------------------- O
+                   ← response chain
+
+  A more complicated situation occurs when one or more intermediaries
+  are present in the request/response chain. There are three common
+  forms of intermediary: proxy, gateway, and tunnel. A proxy is a
+  forwarding agent, receiving requests for a IP in its absolute form,
+  rewriting all or part of the message, and forwarding the reformatted
+  request toward the server identified by the URI. A gateway is a
+  receiving agent, acting as a layer above some other server(s) and, if
+  necessary, translating the requests to the underlying server's
+  protocol. A tunnel acts as a relay point between two connections
+  without changing the messages; tunnels are used when the
+  communication needs to pass through an intermediary (such as a
+  firewall) even when the intermediary cannot understand the contents
+  of the messages.
+
+
+  request chain → 
+    UA -----v----- A -----v----- B -----v----- C -----v----- O
+                   ← response chain
+
+
+  ___________________________________________________________________________
+ /                                                                           \
+|   Standards                                                        [Page 9] |
+|                                   ~R-Type~                                  |
+|   RFC 1                                                        Novembre2016 |
+ \___________________________________________________________________________/
+
+  The figure above shows three intermediaries (A, B, and C) between the
+  user agent and origin server. A request or response message that
+  travels the whole chain will pass through four separate connections.
+  This distinction is important because some Socket communication
+  options may apply only to the connection with the nearest, non-tunnel
+  neighbor, only to the end-points of the chain, or to all connections
+  along the chain. Although the diagram is linear, each participant may
+  be engaged in multiple, simultaneous communications. For example, B
+  may be receiving requests from many clients other than A, and/or
+  forwarding requests to servers other than C, at the same time that it
+  is handling A's request.
+
+  Any party to the communication which is not acting as a tunnel may
+  employ an internal cache for handling requests. The effect of a cache
+  is that the request/response chain is shortened if one of the
+  participants along the chain has a cached response applicable to that
+  request. The following illustrates the resulting chain if B has a
+  cached copy of an earlier response from O (via C) for a request which
+  has not been cached by UA or A.
+
+  request chain → 
+    UA -----v----- A -----v----- B - - - - - - C - - - - - - O
+                   ← response chain
+
+  Not all responses are usefully cacheable, and some requests may
+  contain modifiers which place special requirements on cache behavior.
+  Socket requirements for cache behavior and cacheable responses are
+  defined in section TOFIX.
+
+  Socket communication usually takes place over TCP/IP connections but
+  can also use UDP connections. There is no prefered ports for Socket
+  so any port can be used. This does not preclude Socket from being
+  implemented on top of any other protocol on the Internet, or on other
+  networks. Socket only presumes a reliable transport; any protocol
+  that provides such guarantees can be used; the mapping of the Socket
+  request and response structures onto the transport data units of the
+  protocol in question is outside the scope of this specification.
+
+2̲ ̲-̲ ̲T̲C̲P̲
+
+  2̲.̲1̲ ̲-̲ ̲I̲n̲t̲r̲o̲d̲u̲c̲t̲i̲o̲n̲
+
+    The Transmission Control Protocol (TCP) is intended for use as a highly reliable host-to-host protocol between hosts in packet-switched computer communication networks, and in interconnected systems of such networks.
+
+
+  ___________________________________________________________________________
+ /                                                                           \
+|   Standards                                                       [Page 10] |
+|                                   ~R-Type~                                  |
+|   RFC 1                                                        Novembre2016 |
+ \___________________________________________________________________________/
+
+    The TCP is intended to provide a reliable process-to-process communication
+    service in a multinetwork environment.  The TCP is intended to be a
+    host-to-host protocol in common use in multiple networks.
+
+  2̲.̲2̲ ̲-̲ ̲P̲u̲r̲p̲o̲s̲e̲ ̲:̲
+
+    The internetwork environment consists of hosts connected to networks which
+    are in turn interconnected via gateways. It is assumed here that the
+    networks may be either local networks or large networks, but in any case
+    are based on packet switching technology. The active agents that produce
+    and consume messages are processes.  Various levels of protocols in the
+    networks, the gateways, and the hosts support an interprocess
+    communication system that provides two-way data flow on logical
+    connections between process ports.
+
+    The term packet is used generically here to mean the data of one
+    transaction between a host and its network.  The format of data blocks
+    exchanged within the a network will generally not be of concern to us.
+
+    Hosts are computers attached to a network, and from the communication
+    network's point of view, are the sources and destinations of packets.
+    Processes are viewed as the active elements in host computers (in
+    accordance with the fairly common definition of a process as a program
+    in execution). Even terminals and files or other I/O devices are viewed
+    as communicating with each other through the use of processes. Thus, all communication is viewed as inter-process communication.
+
+    Since a process may need to distinguish among several communication
+    streams between itself and another process (or processes), we imagine
+    that each process may have a number of ports through which it communicates
+    with the ports of other processes.
+    
+    TCP is a really reliable way to communicate beetween twoo computer/server.
+    For the quality TCP will be used in the R-Type project.
+
+  2̲.̲3̲ ̲-̲ ̲O̲v̲e̲r̲a̲l̲l̲ ̲O̲p̲e̲r̲a̲t̲i̲o̲n̲ ̲:̲
+
+    As noted above, the primary purpose of the TCP is to provide reliable,
+    securable logical circuit or connection service between pairs of processes.
+    To provide this service on top of a less reliable internet communication
+    system requires facilities in the following areas:
+
+    Basic Data Transfer
+    Reliability
+    Flow Control
+    Connections
+    Precedence and Security
+
+
+
+
+  ___________________________________________________________________________
+ /                                                                           \
+|   Standards                                                       [Page 11] |
+|                                   ~R-Type~                                  |
+|   RFC 1                                                        Novembre2016 |
+ \___________________________________________________________________________/
+
+    The basic operation of the TCP in each of these areas is described in the
+    following paragraphs.
+
+    Basic Data Transfer:
+
+    The TCP is able to transfer a continuous stream of octets in each
+    direction between its users by packaging some number of octets into
+    segments for transmission through the internet system.  In general,
+    the TCPs decide when to block and forward data at their own
+    convenience.
+
+    Sometimes users need to be sure that all the data they have
+    submitted to the TCP has been transmitted.  For this purpose a push
+    function is defined.  To assure that data submitted to a TCP is
+    actually transmitted the sending user indicates that it should be
+    pushed through to the receiving user.  A push causes the TCPs to
+    promptly forward and deliver data up to that point to the receiver.
+    The exact push point might not be visible to the receiving user and
+    the push function does not supply a record boundary marker.
+
+    Reliability:
+
+    The TCP must recover from data that is damaged, lost, duplicated, or
+    delivered out of order by the internet communication system.  This
+    is achieved by assigning a sequence number to each octet
+    transmitted, and requiring a positive acknowledgment (ACK) from the
+    receiving TCP.  If the ACK is not received within a timeout
+    interval, the data is retransmitted.  At the receiver, the sequence
+    numbers are used to correctly order segments that may be received
+    out of order and to eliminate duplicates.  Damage is handled by
+    adding a checksum to each segment transmitted, checking it at the
+    receiver, and discarding damaged segments.
+
+    As long as the TCPs continue to function properly and the internet
+    system does not become completely partitioned, no transmission
+    errors will affect the correct delivery of data.  TCP recovers from
+    internet communication system errors.
+
+    Flow Control:
+
+    TCP provides a means for the receiver to govern the amount of data
+    sent by the sender.  This is achieved by returning a "window" with
+    every ACK indicating a range of acceptable sequence numbers beyond
+    the last segment successfully received.  The window indicates an
+    allowed number of octets that the sender may transmit before
+    receiving further permission.
+
+
+
+
+
+  ___________________________________________________________________________
+ /                                                                           \
+|   Standards                                                       [Page 12] |
+|                                   ~R-Type~                                  |
+|   RFC 1                                                        Novembre2016 |
+ \___________________________________________________________________________/
+
+    Connections:
+
+    The reliability and flow control mechanisms described above require
+    that TCPs initialize and maintain certain status information for
+    each data stream.  The combination of this information, including
+    sockets, sequence numbers, and window sizes, is called a connection.
+    Each connection is uniquely specified by a pair of sockets
+    identifying its two sides.
+
+    When two processes wish to communicate, their TCP's must first
+    establish a connection (initialize the status information on each
+    side).  When their communication is complete, the connection is
+    terminated or closed to free the resources for other uses.
+
+    Since connections must be established between unreliable hosts and
+    over the unreliable internet communication system, a handshake
+    mechanism with clock-based sequence numbers is used to avoid
+    erroneous initialization of connections.
+
+    Precedence and Security:
+
+    The users of TCP may indicate the security and precedence of their
+    communication. Provision is made for default values to be used when
+    these features are not needed.
+
+    Processes transmit data by calling on the TCP and passing buffers of
+    data as arguments. The TCP packages the data from these buffers into
+    segments and calls on the internet module to transmit each segment to
+    the destination TCP. The receiving TCP places the data from a segment
+    into the receiving user's buffer and notifies the receiving user.  The
+    TCPs include control information in the segments which they use to ensure
+    reliable ordered data transmission.
+
+    The model of internet communication is that there is an internet protocol
+    module associated with each TCP which provides an interface to the local
+    network. This internet module packages TCP segments inside internet
+    datagrams and routes these datagrams to a destination internet module or
+    intermediate gateway. To transmit the datagram through the local network,
+    it is embedded in a local network packet.
+
+    The packet switches may perform further packaging, fragmentation, or other
+    operations to achieve the delivery of the local packet to the destination
+    internet module.
+
+    At a gateway between networks, the internet datagram is "unwrapped" from
+    its local packet and examined to determine through which network the
+    internet datagram should travel next. The internet datagram is then
+    "wrapped" in a local packet suitable to the next network and routed to
+    the next gateway, or to the final destination.
+
+    A gateway is permitted to break up an internet datagram into smaller
+    internet datagram fragments if this is necessary for transmission
+    through the next network. To do this, the gateway produces a set of
+    internet datagrams; each carrying a fragment. Fragments may be further
+    broken into smaller fragments at subsequent gateways. The internet
+    datagram fragment format is designed so that the destination internet
+    module can reassemble fragments into internet datagrams.
+
+  ___________________________________________________________________________
+ /                                                                           \
+|   Standards                                                       [Page 13] |
+|                                   ~R-Type~                                  |
+|   RFC 1                                                        Novembre2016 |
+ \___________________________________________________________________________/
+
+    A destination internet module unwraps the segment from the datagram (after
+    reassembling the datagram, if necessary) and passes it to the destination
+    TCP.
+
+    This simple model of the operation glosses over many details. One
+    important feature is the type of service.  This provides information to
+    the gateway (or internet module) to guide it in selecting the service
+    parameters to be used in traversing the next network.
+    Included in the type of service information is the precedence of the
+    datagram. Datagrams may also carry security information to permit host
+    and gateways that operate in multilevel secure environments to properly
+    segregate datagrams for security considerations.
+
+  3̲ ̲-̲ ̲U̲D̲P̲ ̲:̲
+
+  ___________________________________________________________________________
+ /                                                                           \
+|   Standards                                                       [Page 12] |
 |                                   ~R-Type~                                  |
 |   RFC 1                                                        Novembre2016 |
  \___________________________________________________________________________/
   ___________________________________________________________________________
  /                                                                           \
-|   Standards                                                        [Page 1] |
+|   Standards                                                       [Page 12] |
 |                                   ~R-Type~                                  |
 |   RFC 1                                                        Novembre2016 |
  \___________________________________________________________________________/
   ___________________________________________________________________________
  /                                                                           \
-|   Standards                                                        [Page 1] |
+|   Standards                                                       [Page 12] |
 |                                   ~R-Type~                                  |
 |   RFC 1                                                        Novembre2016 |
  \___________________________________________________________________________/
   ___________________________________________________________________________
  /                                                                           \
-|   Standards                                                        [Page 1] |
+|   Standards                                                       [Page 12] |
 |                                   ~R-Type~                                  |
 |   RFC 1                                                        Novembre2016 |
  \___________________________________________________________________________/
   ___________________________________________________________________________
  /                                                                           \
-|   Standards                                                        [Page 1] |
+|   Standards                                                       [Page 12] |
 |                                   ~R-Type~                                  |
 |   RFC 1                                                        Novembre2016 |
  \___________________________________________________________________________/
   ___________________________________________________________________________
  /                                                                           \
-|   Standards                                                        [Page 1] |
+|   Standards                                                       [Page 12] |
 |                                   ~R-Type~                                  |
 |   RFC 1                                                        Novembre2016 |
  \___________________________________________________________________________/
   ___________________________________________________________________________
  /                                                                           \
-|   Standards                                                        [Page 1] |
+|   Standards                                                       [Page 12] |
 |                                   ~R-Type~                                  |
 |   RFC 1                                                        Novembre2016 |
  \___________________________________________________________________________/
-  ___________________________________________________________________________
- /                                                                           \
-|   Standards                                                        [Page 1] |
-|                                   ~R-Type~                                  |
-|   RFC 1                                                        Novembre2016 |
- \___________________________________________________________________________/
-  ___________________________________________________________________________
- /                                                                           \
-|   Standards                                                        [Page 1] |
-|                                   ~R-Type~                                  |
-|   RFC 1                                                        Novembre2016 |
- \___________________________________________________________________________/
-
-
-
-
-
-
-
-
-
-
-
