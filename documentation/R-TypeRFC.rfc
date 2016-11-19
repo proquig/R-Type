@@ -549,7 +549,9 @@ T̲a̲b̲l̲e̲ ̲o̲f̲ ̲c̲o̲n̲t̲e̲n̲t̲s̲ ̲:̲ ̲
 
   2̲.̲1̲ ̲-̲ ̲I̲n̲t̲r̲o̲d̲u̲c̲t̲i̲o̲n̲
 
-    The Transmission Control Protocol (TCP) is intended for use as a highly reliable host-to-host protocol between hosts in packet-switched computer communication networks, and in interconnected systems of such networks.
+    The Transmission Control Protocol (TCP) is intended for use as a highly
+    reliable host-to-host protocol between hosts in packet-switched computer 
+    communication networks, and in interconnected systems of such networks.
 
 
   ___________________________________________________________________________
@@ -583,7 +585,8 @@ T̲a̲b̲l̲e̲ ̲o̲f̲ ̲c̲o̲n̲t̲e̲n̲t̲s̲ ̲:̲ ̲
     Processes are viewed as the active elements in host computers (in
     accordance with the fairly common definition of a process as a program
     in execution). Even terminals and files or other I/O devices are viewed
-    as communicating with each other through the use of processes. Thus, all communication is viewed as inter-process communication.
+    as communicating with each other through the use of processes. Thus,
+    all communication is viewed as inter-process communication.
 
     Since a process may need to distinguish among several communication
     streams between itself and another process (or processes), we imagine
@@ -724,6 +727,13 @@ T̲a̲b̲l̲e̲ ̲o̲f̲ ̲c̲o̲n̲t̲e̲n̲t̲s̲ ̲:̲ ̲
     "wrapped" in a local packet suitable to the next network and routed to
     the next gateway, or to the final destination.
 
+  ___________________________________________________________________________
+ /                                                                           \
+|   Standards                                                       [Page 13] |
+|                                   ~R-Type~                                  |
+|   RFC 1                                                        Novembre2016 |
+ \___________________________________________________________________________/
+
     A gateway is permitted to break up an internet datagram into smaller
     internet datagram fragments if this is necessary for transmission
     through the next network. To do this, the gateway produces a set of
@@ -731,13 +741,6 @@ T̲a̲b̲l̲e̲ ̲o̲f̲ ̲c̲o̲n̲t̲e̲n̲t̲s̲ ̲:̲ ̲
     broken into smaller fragments at subsequent gateways. The internet
     datagram fragment format is designed so that the destination internet
     module can reassemble fragments into internet datagrams.
-
-  ___________________________________________________________________________
- /                                                                           \
-|   Standards                                                       [Page 13] |
-|                                   ~R-Type~                                  |
-|   RFC 1                                                        Novembre2016 |
- \___________________________________________________________________________/
 
     A destination internet module unwraps the segment from the datagram (after
     reassembling the datagram, if necessary) and passes it to the destination
@@ -753,6 +756,23 @@ T̲a̲b̲l̲e̲ ̲o̲f̲ ̲c̲o̲n̲t̲e̲n̲t̲s̲ ̲:̲ ̲
     segregate datagrams for security considerations.
 
   3̲ ̲-̲ ̲U̲D̲P̲ ̲:̲
+
+    2̲.̲1̲ ̲-̲ ̲I̲n̲t̲r̲o̲d̲u̲c̲t̲i̲o̲n̲
+
+    This User Datagram Protocol (UDP) is defined to make available a datagram
+    mode of packet-switched computer communication in the environment of an
+    interconnected set of computer networks. This protocol assumes that the
+    Internet  Protocol  (IP) is used as the underlying protocol.
+
+    This protocol provides a procedure for application programs to send
+    messages to other programs with a minimum of protocol mechanism. The
+    protocol is transaction oriented, and delivery and duplicate protection
+    are not guaranteed. Applications requiring ordered reliable delivery of
+    streams of data should use the Transmission Control Protocol (TCP.)
+
+    2̲.̲2̲ ̲-̲ ̲P̲u̲r̲p̲o̲s̲e̲ ̲:̲
+
+
 
   ___________________________________________________________________________
  /                                                                           \
