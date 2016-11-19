@@ -51,21 +51,21 @@
  /                                                                           \
 |   Standards                                                        [Page 1] |
 |                                   ~R-Type~                                  |
-|   RFC 1                                                        Novembre2016 |
+|   RFC 1                                                       November 2016 |
  \___________________________________________________________________________/
 
 S̲t̲a̲t̲u̲s̲ ̲o̲f̲ ̲t̲h̲i̲s̲ ̲M̲e̲m̲o̲ ̲:̲
 
   This document specifies the R-Type standard protocol for the Epitech's
   groups participating the R-Type project at Epitech (2016-2017).
-  Please referer to M. Lambert (lamber_o) of Gillaume Proquin (proqui_m) for
+  Please referer to M. Lambert (lamber_o) of Guillaume Proquin (proqui_g) for
   any question aout this document. The distribution of this document is stictly
   reserved to Epitech's Members.
 
 C̲o̲p̲y̲r̲i̲g̲h̲t̲ ̲N̲o̲t̲i̲c̲e̲ ̲:̲
 
   There is no currents Copyright for this project. This project is the
-  intellectual property of the Epitech's member who are developping
+  intellectual property of the Epitech's members who are developping
   the software.
 
 A̲b̲s̲t̲r̲a̲c̲t̲ ̲:̲
@@ -74,14 +74,14 @@ A̲b̲s̲t̲r̲a̲c̲t̲ ̲:̲
   produced by Irem in 1987. The player controls a space fighter named the R-9
   to defend humanity against a mysterious powerful alien life-form known as the
   "Bydo".
-  The Epitech R-Type is a simple clone of the game. It is designed on C++ and
+  The Epitech R-Type is a simple clone of the game. It is designed in C++ and
   can handle a multiplayer gameplay. The goal of this project is to do a clone
   of this well known arcade game. However, this clone will not be limited
   to the technical requierements of the year 1987.
-  Such as the most of the multiplayer video-game aviable on the market, the
-  project will be devided on twoo part. The first one is the Server which
+  Such as the most of the multiplayer video-game available on the market, the
+  project will be devided in two part. The first one is the Server which
   handle all the game sessions. The second part of the project is the client,
-  which is designed to handle the actions beetween the server and the player
+  which is designed to handle the actions between the server and the player
   in front of his computer.
   The software is organized so that there is no performance concerns.
 
@@ -108,7 +108,7 @@ A̲b̲s̲t̲r̲a̲c̲t̲ ̲:̲
  /                                                                           \
 |   Standards                                                        [Page 2] |
 |                                   ~R-Type~                                  |
-|   RFC 1                                                        Novembre2016 |
+|   RFC 1                                                       November 2016 |
  \___________________________________________________________________________/
 
 T̲a̲b̲l̲e̲ ̲o̲f̲ ̲c̲o̲n̲t̲e̲n̲t̲s̲ ̲:̲ ̲
@@ -124,11 +124,10 @@ T̲a̲b̲l̲e̲ ̲o̲f̲ ̲c̲o̲n̲t̲e̲n̲t̲s̲ ̲:̲ ̲
   2.3 Overall Operation................................................
   3 - UDP..............................................................
   3.1 Introduction.....................................................
-  3.2 Purpose..........................................................
-  3.3 Overall Operation................................................
-  4 - Security.........................................................
-  4.1 Purpose..........................................................
-  4.2 Implementation...................................................
+  3.2 Format...........................................................
+  3.3 Fields...........................................................
+  3.4 User Interface...................................................
+  3.5 IP Interface.....................................................
   4 - Header
   4.1 Purpose..........................................................
   4.2 Organisation.....................................................
@@ -165,7 +164,7 @@ T̲a̲b̲l̲e̲ ̲o̲f̲ ̲c̲o̲n̲t̲e̲n̲t̲s̲ ̲:̲ ̲
  /                                                                           \
 |   Standards                                                        [Page 3] |
 |                                   ~R-Type~                                  |
-|   RFC 1                                                        Novembre2016 |
+|   RFC 1                                                       November 2016 |
  \___________________________________________________________________________/
 
 1̲ ̲-̲ ̲I̲n̲t̲r̲o̲d̲u̲c̲t̲i̲o̲n̲
@@ -222,7 +221,7 @@ T̲a̲b̲l̲e̲ ̲o̲f̲ ̲c̲o̲n̲t̲e̲n̲t̲s̲ ̲:̲ ̲
  /                                                                           \
 |   Standards                                                        [Page 4] |
 |                                   ~R-Type~                                  |
-|   RFC 1                                                        Novembre2016 |
+|   RFC 1                                                       November 2016 |
  \___________________________________________________________________________/
 
   "M̲A̲Y̲" :    This word, or the adjective "O̲P̲T̲I̲O̲N̲A̲L̲", mean that an item is
@@ -279,7 +278,7 @@ T̲a̲b̲l̲e̲ ̲o̲f̲ ̲c̲o̲n̲t̲e̲n̲t̲s̲ ̲:̲ ̲
  /                                                                           \
 |   Standards                                                        [Page 5] |
 |                                   ~R-Type~                                  |
-|   RFC 1                                                        Novembre2016 |
+|   RFC 1                                                       November 2016 |
  \___________________________________________________________________________/
   
   R̲e̲s̲p̲o̲n̲s̲e̲
@@ -336,7 +335,7 @@ T̲a̲b̲l̲e̲ ̲o̲f̲ ̲c̲o̲n̲t̲e̲n̲t̲s̲ ̲:̲ ̲
  /                                                                           \
 |   Standards                                                        [Page 6] |
 |                                   ~R-Type~                                  |
-|   RFC 1                                                        Novembre2016 |
+|   RFC 1                                                       November 2016 |
  \___________________________________________________________________________/
 
   O̲r̲i̲g̲i̲n̲ ̲s̲e̲r̲v̲e̲r̲
@@ -393,7 +392,7 @@ T̲a̲b̲l̲e̲ ̲o̲f̲ ̲c̲o̲n̲t̲e̲n̲t̲s̲ ̲:̲ ̲
  /                                                                           \
 |   Standards                                                        [Page 7] |
 |                                   ~R-Type~                                  |
-|   RFC 1                                                        Novembre2016 |
+|   RFC 1                                                       November 2016 |
  \___________________________________________________________________________/
 
   F̲i̲r̲s̲t̲-̲h̲a̲n̲d̲
@@ -450,7 +449,7 @@ T̲a̲b̲l̲e̲ ̲o̲f̲ ̲c̲o̲n̲t̲e̲n̲t̲s̲ ̲:̲ ̲
  /                                                                           \
 |   Standards                                                        [Page 8] |
 |                                   ~R-Type~                                  |
-|   RFC 1                                                        Novembre2016 |
+|   RFC 1                                                       November 2016 |
  \___________________________________________________________________________/
 
   I̲n̲b̲o̲u̲n̲d̲/̲O̲u̲t̲b̲o̲u̲n̲d̲
@@ -504,7 +503,7 @@ T̲a̲b̲l̲e̲ ̲o̲f̲ ̲c̲o̲n̲t̲e̲n̲t̲s̲ ̲:̲ ̲
  /                                                                           \
 |   Standards                                                        [Page 9] |
 |                                   ~R-Type~                                  |
-|   RFC 1                                                        Novembre2016 |
+|   RFC 1                                                       November 2016 |
  \___________________________________________________________________________/
 
   The figure above shows three intermediaries (A, B, and C) between the
@@ -558,7 +557,7 @@ T̲a̲b̲l̲e̲ ̲o̲f̲ ̲c̲o̲n̲t̲e̲n̲t̲s̲ ̲:̲ ̲
  /                                                                           \
 |   Standards                                                       [Page 10] |
 |                                   ~R-Type~                                  |
-|   RFC 1                                                        Novembre2016 |
+|   RFC 1                                                       November 2016 |
  \___________________________________________________________________________/
 
     The TCP is intended to provide a reliable process-to-process communication
@@ -608,7 +607,7 @@ T̲a̲b̲l̲e̲ ̲o̲f̲ ̲c̲o̲n̲t̲e̲n̲t̲s̲ ̲:̲ ̲
     Flow Control
     Connections
     Precedence and Security
-
+    Model of Operation
 
 
 
@@ -616,7 +615,7 @@ T̲a̲b̲l̲e̲ ̲o̲f̲ ̲c̲o̲n̲t̲e̲n̲t̲s̲ ̲:̲ ̲
  /                                                                           \
 |   Standards                                                       [Page 11] |
 |                                   ~R-Type~                                  |
-|   RFC 1                                                        Novembre2016 |
+|   RFC 1                                                       November 2016 |
  \___________________________________________________________________________/
 
     The basic operation of the TCP in each of these areas is described in the
@@ -674,7 +673,7 @@ T̲a̲b̲l̲e̲ ̲o̲f̲ ̲c̲o̲n̲t̲e̲n̲t̲s̲ ̲:̲ ̲
  /                                                                           \
 |   Standards                                                       [Page 12] |
 |                                   ~R-Type~                                  |
-|   RFC 1                                                        Novembre2016 |
+|   RFC 1                                                       November 2016 |
  \___________________________________________________________________________/
 
     Connections:
@@ -701,6 +700,8 @@ T̲a̲b̲l̲e̲ ̲o̲f̲ ̲c̲o̲n̲t̲e̲n̲t̲s̲ ̲:̲ ̲
     The users of TCP may indicate the security and precedence of their
     communication. Provision is made for default values to be used when
     these features are not needed.
+
+    Model of Operation:
 
     Processes transmit data by calling on the TCP and passing buffers of
     data as arguments. The TCP packages the data from these buffers into
@@ -757,104 +758,148 @@ T̲a̲b̲l̲e̲ ̲o̲f̲ ̲c̲o̲n̲t̲e̲n̲t̲s̲ ̲:̲ ̲
 
   3̲ ̲-̲ ̲U̲D̲P̲ ̲:̲
 
-    2̲.̲1̲ ̲-̲ ̲I̲n̲t̲r̲o̲d̲u̲c̲t̲i̲o̲n̲
+    3̲.̲1̲ ̲-̲ ̲I̲n̲t̲r̲o̲d̲u̲c̲t̲i̲o̲n̲
 
-    This User Datagram Protocol (UDP) is defined to make available a datagram
-    mode of packet-switched computer communication in the environment of an
-    interconnected set of computer networks. This protocol assumes that the
-    Internet  Protocol  (IP) is used as the underlying protocol.
+      This User Datagram  Protocol  (UDP)  is  defined  to  make  available  a
+      datagram   mode  of  packet-switched   computer   communication  in  the
+      environment  of  an  interconnected  set  of  computer  networks.   This
+      protocol  assumes  that  the  Internet  Protocol  (IP) is  used  as  the
+      underlying protocol.
 
-    This protocol provides a procedure for application programs to send
-    messages to other programs with a minimum of protocol mechanism. The
-    protocol is transaction oriented, and delivery and duplicate protection
-    are not guaranteed. Applications requiring ordered reliable delivery of
-    streams of data should use the Transmission Control Protocol (TCP.)
+      This protocol  provides  a procedure  for application  programs  to send
+      messages  to other programs  with a minimum  of protocol mechanism.  The
+      protocol  is transaction oriented, and delivery and duplicate protection
+      are not guaranteed.  Applications requiring ordered reliable delivery of
+      streams of data should use the Transmission Control Protocol (TCP).
 
-    2̲.̲2̲ ̲-̲ ̲P̲u̲r̲p̲o̲s̲e̲ ̲:̲
 
+    3̲.̲2̲ ̲-̲ ̲F̲o̲r̲m̲a̲t̲
+
+
+                  0      7 8     15 16    23 24    31
+                 +--------+--------+--------+--------+
+                 |     Source      |   Destination   |
+                 |      Port       |      Port       |
+                 +--------+--------+--------+--------+
+                 |                 |                 |
+                 |     Length      |    Checksum     |
+                 +--------+--------+--------+--------+
+                 |
+                 |          data octets ...
+                 +---------------- ...
+
+                      User Datagram Header Format
 
 
   ___________________________________________________________________________
  /                                                                           \
 |   Standards                                                       [Page 14] |
 |                                   ~R-Type~                                  |
-|   RFC 1                                                        Novembre2016 |
+|   RFC 1                                                       November 2016 |
  \___________________________________________________________________________/
 
-// TITLE
+    3̲.̲3̲ ̲-̲ ̲F̲i̲e̲l̲d̲s̲
 
-  The game client send a packet in order to join a game
+      Source Port is an optional field, when meaningful, it indicates the port
+      of the sending  process,  and may be assumed  to be the port  to which a
+      reply should  be addressed  in the absence of any other information.  If
+      not used, a value of zero is inserted.
 
-  The header for game client protocol is defined like this:
+      Destination  Port has a meaning  within  the  context  of  a  particular
+      internet destination address.
 
-  +======+===============================+===============================+
-  | Byte |       1       |       2       |       3       |       4       |
-  |------|---------------|---------------|---------------|---------------|
-  | Bit  |   0  ...  7   |   8  ...  15  |  16  ...  23  |  24  ...  31  |
-  |------|---------------|---------------|---------------|---------------|
-  |      |     Magic     |    Game ID    |   Packet ID   |    OpCode     |
-  |------|---------------+---------------+---------------+---------------|
-  |      |                             Size                              |
-  |------|---------------------------------------------------------------|
-  |      |                             Timer                             |
-  |------|---------------------------------------------------------------|
-  |      |                             Data                              |
-  +======+===============================+===============================+
+      Length  is the length  in octets  of this user datagram  including  this
+      header  and the data.   (This  means  the minimum value of the length is
+      eight.)
 
-  ALL the data in the packet MUST be filled.
+      Checksum is the 16-bit one's complement of the one's complement sum of a
+      pseudo header of information from the IP header, the UDP header, and the
+      data,  padded  with zero octets  at the end (if  necessary)  to  make  a
+      multiple of two octets.
 
-  The "Magic" is a unique id, permitting a small verifiction that the client
-  correctly send a packet to the server, so they have the same communication
-  protocol.
+      The pseudo  header  conceptually prefixed to the UDP header contains the
+      source  address,  the destination  address,  the protocol,  and the  UDP
+      length.   This information gives protection against misrouted datagrams.
+      This checksum procedure is the same as is used in TCP.
 
-  The "Game ID" is the ID of the game that the client whants to join.
-  This id MUST be unique.
+                        0      7 8     15 16    23 24    31
+                       +--------+--------+--------+--------+
+                       |          source address           |
+                       +--------+--------+--------+--------+
+                       |        destination address        |
+                       +--------+--------+--------+--------+
+                       |  zero  |protocol|   UDP length    |
+                       +--------+--------+--------+--------+
 
-  The "Packet ID" defines the Packet ID.
-
-  The "OpCode" defines specify the form of data OR the packet's feature.
-
-  The "Data" defines the size of the packet, the size is variable.
-
+      If the computed  checksum  is zero,  it is transmitted  as all ones (the
+      equivalent  in one's complement  arithmetic).   An all zero  transmitted
+      checksum  value means that the transmitter  generated  no checksum  (for
+      debugging or for higher level protocols that don't care).
 
 
+    3̲.̲4̲ ̲-̲ ̲U̲s̲e̲r̲ ̲I̲n̲t̲e̲r̲f̲a̲c̲e̲
+
+      A user interface should allow
+
+        the creation of new receive ports,
+
+        receive  operations  on the receive  ports that return the data octets
+        and an indication of source port and source address,
+
+        and an operation  that allows  a datagram  to be sent,  specifying the
+        data, source and destination ports and addresses to be sent.
 
 
   ___________________________________________________________________________
  /                                                                           \
 |   Standards                                                       [Page 15] |
 |                                   ~R-Type~                                  |
-|   RFC 1                                                        Novembre2016 |
+|   RFC 1                                                       November 2016 |
  \___________________________________________________________________________/
 
-//TITLE
+    3̲.̲5̲ ̲-̲ ̲I̲P̲ ̲I̲n̲t̲e̲r̲f̲a̲c̲e̲
 
-  The game client send many packets when he's trying do an action
-  on the map, this action is done by the player when he press a / some
-  key(s).
-  
-  The input data from client is defined like this:
-
-  +======+===============================+===============================+
-  | Byte |       1       |       2       |       3       |       4       |
-  |------|---------------|---------------|---------------|---------------|
-  | Bit  |   0  ...  7   |   8  ...  15  |  16  ...  23  |  24  ...  31  |
-  |------|---------------+---------------|---------------+---------------|
-  |      |        Input snapshot         |    Previous snapshots (1)     |
-  |------|-------------------------------+-------------------------------|
-  |      |                    Previous Snapshots (2)                     |
-  +======+===============================+===============================+
+      The UDP module  must be able to determine  the  source  and  destination
+      internet addresses and the protocol field from the internet header.  One
+      possible  UDP/IP  interface  would return  the whole  internet  datagram
+      including all of the internet header in response to a receive operation.
+      Such an interface  would  also allow  the UDP to pass  a  full  internet
+      datagram  complete  with header  to the IP to send.  The IP would verify
+      certain fields for consistency and compute the internet header checksum.
 
 
-  The "Input snapshot" defines the current state of the client, defined by the
-  key(s) he pressed.
 
 
-  The "Previous snapshot  (1)" defines the previous states of the client if
-  it has not been validated by the server. 
 
-  The "Previous snapshot  (2)" defines the previous states of the client if
-  it has not been validated by the server, with a maximum of 10. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -863,29 +908,360 @@ T̲a̲b̲l̲e̲ ̲o̲f̲ ̲c̲o̲n̲t̲e̲n̲t̲s̲ ̲:̲ ̲
  /                                                                           \
 |   Standards                                                       [Page 16] |
 |                                   ~R-Type~                                  |
-|   RFC 1                                                        Novembre2016 |
+|   RFC 1                                                       November 2016 |
  \___________________________________________________________________________/
+
+// TITLE
+
+  The client (player) and the server share the same game header protocol
+
+  The header for game client protocol is defined like this:
+
+  +======+===============+===============+===============+===============+
+  | Byte |       1       |       2       |       3       |       4       |
+  |------|---------------|---------------|---------------|---------------|
+  | Bit  |   0  ...  7   |   8  ...  15  |  16  ...  23  |  24  ...  31  |
+  |------|---------------|---------------|---------------|---------------|
+  |      |     Magic     |    Game ID    |   Packet ID   |    OpCode     |
+  |      |---------------+---------------+---------------+---------------|
+  |      |                             Size                              |
+  |      |---------------------------------------------------------------|
+  |      |                             Timer                             |
+  |      |---------------------------------------------------------------|
+  |      |                             Data                              |
+  +======+===============================================================+
+
+
+  ALL the data in the packet MUST be filled.
+
+
+  The "Magic" is a unique id, permitting a small verifiction that the client
+  correctly send a packet to the server, so they have the same communication
+  protocol.
+
+  The "Game ID" is the ID of the game where the client is.
+  This id MUST be unique to separate games on the server.
+
+  The "Packet ID" defines the Packet ID.
+
+  The "OpCode" specify the form of data OR the packet's feature.
+
+  The "Data" defines the size of the packet, the size is variable.
+
+
+
+
+
+
+
+
+
+
+
+
+
   ___________________________________________________________________________
  /                                                                           \
 |   Standards                                                       [Page 17] |
 |                                   ~R-Type~                                  |
-|   RFC 1                                                        Novembre2016 |
+|   RFC 1                                                       November 2016 |
  \___________________________________________________________________________/
+
+//TITLE
+
+  The game client sends many packets when he's doing an action on the map,
+  this action is done by the player when he press a / some key(s).
+  
+
+  The input data from client is defined like this:
+
+  +======+===============+===============+===============+===============+
+  | Byte |       1       |       2       |       3       |       4       |
+  |------|---------------|---------------|---------------|---------------|
+  | Bit  |   0  ...  7   |   8  ...  15  |  16  ...  23  |  24  ...  31  |
+  |------|---------------+---------------|---------------+---------------|
+  |      |        Input snapshot         |    Previous snapshots [1]     |
+  |      |-------------------------------+-------------------------------|
+  |      |                    Previous Snapshots [2]                     |
+  +======+===============================================================+
+
+
+  The "Input snapshot" defines the current state of the client, defined by
+  the key(s) he pressed.
+  This element MUST be filled.
+
+
+  The "Previous snapshot [1]" defines the previous states of the client if
+  it has not been validated by the server.
+  This element CAN be filled.
+
+  The "Previous snapshot [2]" defines the previous states of the client if
+  it has not been validated by the server, with a maximum of 10.
+  This element CAN be filled. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   ___________________________________________________________________________
  /                                                                           \
 |   Standards                                                       [Page 18] |
 |                                   ~R-Type~                                  |
-|   RFC 1                                                        Novembre2016 |
+|   RFC 1                                                       November 2016 |
  \___________________________________________________________________________/
+
+//TITLE
+
+  The game clients receive many packets sent by the server, these packets
+  are sent by the server right after there is a modification on the map,
+  when it refreshes the game.
+  In this case the content on the map is sent.
+  
+
+  The packets are defined with this structure :
+
+  +======+===============+===============+===============+===============+
+  | Byte |       1       |       2       |       3       |       4       |
+  |------|---------------|---------------|---------------|---------------|
+  | Bit  |   0  ...  7   |   8  ...  15  |  16  ...  23  |  24  ...  31  |
+  |------|---------------+---------------+---------------+---------------|
+  |      |                      Array of PlayerGame                      |
+  |      |---------------------------------------------------------------|
+  |      |                      Array of GameElement                     |
+  +======+===============================================================+
+
+
+  ALL the data in the packet MUST be filled.
+
+
+  The "Array of PlayerGame" defines an array of "PlayerGame", each
+  "PlayerGame" takes 64 bits / 8 bytes. A "PlayerGame" contains data
+  for one player.
+
+  The "Array of GameElement" defines an array of "GameElement", each
+  "GameElement" takes 64 bits / 8 bytes. A "GameElement" contains data
+  for one element of the map (enemy, rocket, ...) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   ___________________________________________________________________________
  /                                                                           \
 |   Standards                                                       [Page 19] |
 |                                   ~R-Type~                                  |
-|   RFC 1                                                        Novembre2016 |
+|   RFC 1                                                       November 2016 |
  \___________________________________________________________________________/
+
+//TITLE
+
+  The game clients receive many packets sent by the server, these packets
+  are sent by the server right after there is a modification on the map,
+  when it refreshes the game.
+  In this case the characteristics of a player is sent.
+
+  The packet is defined with this structure :
+
+  +======+===============+===============+===============+===============+
+  | Byte |       1       |       2       |       3       |       4       |
+  |------|---------------|---------------|---------------|-----------+---|
+  | Bit  |   0  ...  7   |   8  ...  15  |  16  ...  23  | 24 ... 30 | 31|
+  |------|---------------+---------------|---------------+-----------|---|
+  |      |              ID               |           Lives           |Al.|
+  |      |-------------------------------+---------------------------+---|
+  |      |                             Score                             |
+  +======+===============================================================+
+
+
+  ALL the data in the packet MUST be filled.
+
+
+  The "ID" represents the ID of the concerned player.
+
+  The "Lives" defines how many lives the player has.
+
+  The "Al." defines the state of the player, if he is alive.
+
+  The "Score" is the score of the player, in points.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   ___________________________________________________________________________
  /                                                                           \
 |   Standards                                                       [Page 20] |
 |                                   ~R-Type~                                  |
-|   RFC 1                                                        Novembre2016 |
+|   RFC 1                                                       November 2016 |
+ \___________________________________________________________________________/
+
+//TITLE
+
+  The game clients receive many packets sent by the server, these packets
+  are sent by the server right after there is a modification on the map,
+  when it refreshes the game.
+  In this case the properties of a player / enemy on the map is sent.
+
+  The packet is defined with this structure :
+
+  +======+===============+===============+===============+===============+
+  | Byte |       1       |       2       |       3       |       4       |
+  |------|---------------|---------------|---------------|---------------|
+  | Bit  |   0  ...  7   |   8  ...  15  |  16  ...  23  |  24  ...  31  |
+  |------|---------------+---------------+---------------+---------------|
+  |      |                              ID                               |
+  |      |---------------------------------------------------------------|
+  |      |                             Timer                             |
+  |      |-------------------------------+-------------------------------|
+  |      |               X               |               Y               |
+  |      |-------------------------------+-------------------------------|
+  |      |                             Angle                             |
+  |      |---------------+-----------------------------------------------|
+  |      |     Speed     |             Additional properties             |
+  +======+===============+===============================================+
+
+
+  ALL the data in the packet MUST be filled.
+
+
+  The "ID" represents the id of the player / enemy.
+
+  The "Timer" is the times of the player / enemy.
+
+
+  The "X" defines the x coordinate on the map.
+
+  The "Y" defines the y coordinate on the map.
+
+  The "Angle" is the angle.
+
+  The "Speed" defines the player / enemy speed.
+
+  The "Additional properties" are additional properties that define the
+  player / enemy.
+
+
+
+
+
+
+
+
+
+
+
+  ___________________________________________________________________________
+ /                                                                           \
+|   Standards                                                       [Page 21] |
+|                                   ~R-Type~                                  |
+|   RFC 1                                                       November 2016 |
+ \___________________________________________________________________________/
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  ___________________________________________________________________________
+ /                                                                           \
+|   Standards                                                       [Page 22] |
+|                                   ~R-Type~                                  |
+|   RFC 1                                                       November 2016 |
  \___________________________________________________________________________/
