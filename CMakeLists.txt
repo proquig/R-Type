@@ -4,6 +4,9 @@ enable_language(CXX)
 
 project(R-Type)
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
+set(SFML_EXTERNAL False)
+
 find_package(SFML 2.4 QUIET COMPONENTS system window graphics audio)
 if (NOT SFML_FOUND)
   find_package(Git REQUIRED)
@@ -11,7 +14,22 @@ if (NOT SFML_FOUND)
     COMMAND "${GIT_EXECUTABLE}" submodule update --init -- SFML
 	WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 	)
+  macro (install)
+  endmacro ()
   add_subdirectory(SFML)
+  set_target_properties(sfml-main PROPERTIES
+    EXCLUDE_FROM_ALL 1
+	EXCLUDE_FROM_DEFAULT_BUILD 1
+	)
+  set_target_properties(sfml-network PROPERTIES
+    EXCLUDE_FROM_ALL 1
+	EXCLUDE_FROM_DEFAULT_BUILD 1
+	)
+  macro (install)
+    _install(${ARGV})
+  endmacro(install)
+  set(SFML_EXTERNAL True)
+  set(SFML_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/SFML/include)
 endif()
 
 add_subdirectory(shared)
