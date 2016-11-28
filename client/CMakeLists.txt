@@ -1,7 +1,7 @@
 project(rtype_client VERSION 1.0 LANGUAGES CXX)
 
 #Include files
-file(GLOB RTYPE_CLIENT_INCS "includes/*.hh")
+file(GLOB RTYPE_CLIENT_INCS "include/*.hh")
 source_group(Headers FILES ${RTYPE_CLIENT_INCS})
 
 #Source files
