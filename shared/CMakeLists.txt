@@ -1,1 +1,5 @@
 add_subdirectory(observer)
+add_subdirectory(dlloader)
+if (MSVC)
+  add_subdirectory(dlloader_test)
+endif()
