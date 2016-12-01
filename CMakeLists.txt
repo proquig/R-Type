@@ -4,6 +4,10 @@ enable_language(CXX)
 
 project(R-Type)
 
+if (MSVC)
+  set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+endif()
+
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
 set(SFML_EXTERNAL False)
 
