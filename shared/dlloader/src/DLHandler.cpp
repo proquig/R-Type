@@ -1,32 +1,4 @@
-#include <iostream>
-#include "DLibrary.hh"
-
-#ifdef RT_UNIX
-  #include "CUDLibrary.hh"
-#elif RT_WIN
-  #include "CWDLibrary.hh"
-#endif
-
-/////////////////////////////////////////////////////////
-// DLFactory
-/////////////////////////////////////////////////////////
-
-IDLibrary *DLFactory::createLibrary(int _id, const char *_name, const char *_path)
-{
-  IDLibrary *library;
-
-#ifdef RT_UNIX
-  library = new CUDLibrary(_id, _name, _path);
-#elif RT_WIN
-  library = new CWDLibrary(_id, _name, _path);
-#endif
-
-  return (library);
-}
-
-/////////////////////////////////////////////////////////
-// DLHandler
-/////////////////////////////////////////////////////////
+#include "DLHandler.hh"
 
 void DLHandler::add(IDLibrary *lib)
 {
@@ -73,16 +45,4 @@ bool DLHandler::closeList(void)
     (*lib)->close();
   }
   return (true);
-}
-
-/////////////////////////////////////////////////////////
-// DLManager
-/////////////////////////////////////////////////////////
-
-void DLManager::add(int _id, const char *_name, const char *_path)
-{
-  IDLibrary *lib;
-
-  lib = this->factory.createLibrary(_id, _name, _path);
-  this->handler.add(lib);
 }

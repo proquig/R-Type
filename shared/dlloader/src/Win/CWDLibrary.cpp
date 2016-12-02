@@ -1,36 +1,27 @@
-#include <iostream>
 #include "CWDLibrary.hh"
 
-/////////////////////////////////////////////////
-// GETTERS / SETTERS
-/////////////////////////////////////////////////
-
-const char *CWDLibrary::getName(void) const
+CWDLibrary::CWDLibrary(int id, std::string name, std::string path)
+    : ADLibrary(id, name, path), _handler(nullptr)
 {
-  return (this->name);
 }
-
-/////////////////////////////////////////////////
-// METHODS
-/////////////////////////////////////////////////
 
 bool CWDLibrary::load(void)
 {
-  if (this->handler = LoadLibrary(this->path))
-    return (true);
-  return (false);
+  return ((_handler = LoadLibrary(_path.c_str())) != NULL);
 }
 
 Dictionary CWDLibrary::getDictionary(void)
 {
   GET_DICTIONARY getDict;
 
-  if (!(getDict = (GET_DICTIONARY) GetProcAddress(this->handler, DICTIONARY_GETTER)))
+  if (!(getDict = (GET_DICTIONARY) GetProcAddress(_handler, DICTIONARY_GETTER)))
     return (NULL);
   return (getDict());
 }
 
 bool CWDLibrary::close(void)
 {
-  return (FreeLibrary(this->handler));
+  if (_handler)
+    return (FreeLibrary(_handler));
+  return true;
 }

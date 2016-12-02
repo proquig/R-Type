@@ -1,37 +1,28 @@
-#include <iostream>
 #include <dlfcn.h>
 #include "CUDLibrary.hh"
 
-/////////////////////////////////////////////////
-// GETTERS / SETTERS
-/////////////////////////////////////////////////
-
-const char *CUDLibrary::getName(void) const
+CUDLibrary::CUDLibrary(int id, std::string name, std::string path)
+    : ADLibrary(id, name, path), _handler(nullptr)
 {
-  return (this->name);
 }
-
-/////////////////////////////////////////////////
-// METHODS
-/////////////////////////////////////////////////
 
 bool CUDLibrary::load(void)
 {
-  if (this->handler = dlopen(this->path, RTLD_LAZY))
-    return (true);
-  return (false);
+  return ((this->_handler = dlopen(_path.c_str(), RTLD_LAZY)) != NULL);
 }
 
 Dictionary CUDLibrary::getDictionary(void)
 {
   GET_DICTIONARY getDict;
 
-  if (!(getDict = (GET_DICTIONARY) dlsym(this->handler, DICTIONARY_GETTER)))
+  if (!(getDict = (GET_DICTIONARY) dlsym(_handler, DICTIONARY_GETTER)))
     return (NULL);
   return (getDict());
 }
 
 bool CUDLibrary::close(void)
 {
-  return (dlclose(this->handler));
+  if (_handler)
+    return (dlclose(_handler) == 0);
+  return true;
 }

@@ -1,23 +1,15 @@
 #ifndef CUDLIBRARY_H__
 # define CUDLIBRARY_H__
 
-# include "DLibrary.hh"
+#include "ADLibrary.hh"
 
-class CUDLibrary : public IDLibrary, private ADLibrary
+class CUDLibrary : public ADLibrary
 {
-
-  void *handler;
-
+private:
+  void *_handler;
 public:
-
-  CUDLibrary(int _id, const char *_name, const char *_path)
-      :
-      ADLibrary(_id, _name, _path)
-  {
-  }
-
-  const char *getName(void) const;
-
+  CUDLibrary(int id, std::string name, std::string path);
+public:
   bool load(void);
   bool close(void);
   Dictionary getDictionary(void);

@@ -1,5 +1,5 @@
-add_subdirectory(observer)
+#DLLoader
 add_subdirectory(dlloader)
-if (MSVC)
-  add_subdirectory(dlloader_test)
-endif()
+
+#Observer
+add_subdirectory(observer)

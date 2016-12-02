@@ -1,24 +1,17 @@
 #ifndef CWDLIBRARY_H__
-# define CWDLIBRARY_H__
+#define CWDLIBRARY_H__
 
-# include <Windows.h>
-# include "DLibrary.hh"
+#define WIN32_LEAN_AND_MEAN
+#include <Windows.h>
+#include "ADLibrary.hh"
 
-class CWDLibrary : public IDLibrary, private ADLibrary
+class CWDLibrary : public ADLibrary
 {
-
-  HMODULE handler;
-
+private:
+  HMODULE _handler;
 public:
-
-  CWDLibrary(int _id, const char *_name, const char *_path)
-      :
-      ADLibrary(_id, _name, _path)
-  {
-  }
-
-  const char *getName(void) const;
-
+  CWDLibrary(int id, std::string name, std::string path);
+public:
   bool load(void);
   bool close(void);
   Dictionary getDictionary(void);
