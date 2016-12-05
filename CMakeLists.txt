@@ -19,14 +19,16 @@ if (NOT SFML_FOUND)
   macro(install)
   endmacro()
   add_subdirectory(SFML)
-  set_target_properties(sfml-main PROPERTIES
-      EXCLUDE_FROM_ALL 1
-      EXCLUDE_FROM_DEFAULT_BUILD 1
-      )
   set_target_properties(sfml-network PROPERTIES
       EXCLUDE_FROM_ALL 1
       EXCLUDE_FROM_DEFAULT_BUILD 1
       )
+  if (MSVC)
+    set_target_properties(sfml-main PROPERTIES
+        EXCLUDE_FROM_ALL 1
+        EXCLUDE_FROM_DEFAULT_BUILD 1
+        )
+  endif()
   macro(install)
     _install(${ARGV})
   endmacro(install)
