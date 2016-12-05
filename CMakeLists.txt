@@ -4,6 +4,9 @@ enable_language(CXX)
 
 project(R-Type)
 
+# CMake module path
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
+
 # SFML detection
 set(SFML_EXTERNAL False)
 find_package(SFML 2.4 QUIET COMPONENTS system window graphics audio)
