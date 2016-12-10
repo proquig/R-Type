@@ -52,6 +52,12 @@ if (MSVC)
   set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 endif ()
 
+# Unix PThread
+if (UNIX)
+  set(THREADS_PREFER_PTHREAD_FLAG ON)
+  find_package(Threads REQUIRED)
+endif()
+
 add_subdirectory(shared)
 add_subdirectory(client)
 add_subdirectory(server)

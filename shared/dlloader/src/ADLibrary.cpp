@@ -20,6 +20,11 @@ IDLibrary* ADLibrary::createLibrary(int id, std::string name, std::string path)
 #endif
 }
 
+void ADLibrary::deleteLibrary(IDLibrary *lib)
+{
+  if (lib)
+    delete lib;
+}
 std::string ADLibrary::getName() const
 {
   return (this->_name);

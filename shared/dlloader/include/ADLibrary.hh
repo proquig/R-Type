@@ -14,6 +14,7 @@ public:
   virtual ~ADLibrary() = default;
 public:
   static IDLibrary *createLibrary(int id, std::string name, std::string path);
+  static void deleteLibrary(IDLibrary*);
   std::string getName() const;
 };
 
