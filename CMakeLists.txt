@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.4)
 
 enable_language(CXX)
+enable_testing()
 
 project(R-Type)
 
