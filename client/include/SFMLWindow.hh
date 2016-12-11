@@ -16,6 +16,7 @@ public:
 
 	void	run(WorkQueue<AElement *> *, WorkQueue<Event *> *);
 	void	pollEvent(void);
+	void	renderScene(void);
 	void	render(void);
 
 	void *	getHandler(void);

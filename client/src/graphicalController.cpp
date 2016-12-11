@@ -1,5 +1,6 @@
 #include "graphicalController.hh"
 #include "SFMLWindow.hh"
+#include "SFMLSprite.hh"
 #include <thread>
 
 GraphicalController::GraphicalController(GLib lib, int _w, int _h, std::string _n)
@@ -7,6 +8,7 @@ GraphicalController::GraphicalController(GLib lib, int _w, int _h, std::string _
 	switch (lib)
 	{
 	case SFML:
+
 		this->window = new SFMLWindow(_w, _h, _n);
 		this->windowQueue = new WorkQueue<AElement *>;
 		this->eventQueue = new WorkQueue<Event *>;

@@ -1,8 +1,30 @@
 #ifndef PLAYER_HH__
 # define PLAYER_HH__
 
-class Player
+# include "element.hh"
+
+class Player : public AElement
 {
+
+public:
+
+	void	print();
+	void	move(Coords *);
+	void	animate(std::string);
+	void	destroy();
+
+	//////////////////////////////////////////////
+	// SETTERS
+	//////////////////////////////////////////////
+
+	void	setId(unsigned int);
+
+	//////////////////////////////////////////////
+	// GETTERS
+	//////////////////////////////////////////////
+
+	unsigned int	getId() const;
+
 };
 
 #endif /* !PLAYER_HH__ */

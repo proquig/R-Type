@@ -5,6 +5,7 @@
 # include "window.hh"
 # include "hookEvent.hh"
 # include <thread>
+# include <vector>
 
 enum GLib
 {
@@ -23,6 +24,9 @@ class GraphicalController
 	WorkQueue<Event *>		*eventQueue;
 
 	std::thread				*windowThread;
+
+	///////////////////////////////////////
+	std::vector<ASprite *>	ressources;
 
 public:
 

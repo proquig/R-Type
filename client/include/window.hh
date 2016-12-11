@@ -6,6 +6,9 @@
 # include "coords.hh"
 # include <iostream>
 # include <thread>
+# include <vector>
+
+# define EVENT_TIMER	1000
 
 struct Event
 {
@@ -19,10 +22,11 @@ struct Event
 		CLICK
 	};
 
+	char	*name;
 	Type	type;
 	Coords	*mouse;
 
-	Event(Type _type, int _x, int _y) : type(_type), mouse(new Coords(_x, _y)) {}
+	Event(Type _type, char *_name, int _x, int _y) : type(_type), name(_name), mouse(new Coords(_x, _y)) {}
 };
 
 class IWindow
@@ -32,6 +36,7 @@ public:
 
 	virtual void	run(WorkQueue<AElement *> *, WorkQueue<Event *> *) = 0;
 	virtual void	pollEvent(void) = 0;
+	virtual void	renderScene(void) = 0;
 	virtual void	render(void) = 0;
 
 	/////////////////////////////////////////////////
@@ -52,6 +57,8 @@ protected:
 	int						width;
 	int						height;
 	std::string				name;
+
+	std::vector<AElement *>	scene;
 
 	WorkQueue<AElement *>	*elementQueue;
 	WorkQueue<Event *>		*eventQueue;
