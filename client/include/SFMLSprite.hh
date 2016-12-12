@@ -1,7 +1,7 @@
 #ifndef SFML_SPRITE_HH__
 # define SFML_SPRITE_HH__
 
-# include <SFML\Graphics.hpp>
+# include <SFML/Graphics.hpp>
 # include "SFMLWindow.hh"
 # include "sprite.hh"
 

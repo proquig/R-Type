@@ -19,6 +19,12 @@ else()
   target_link_libraries(rtype_client PUBLIC ${SFML_LIBRARIES})
 endif()
 
+if (UNIX)
+  if (Threads_FOUND)
+    target_link_libraries(rtype_client PUBLIC Threads::Threads)
+  endif ()
+endif()
+
 target_include_directories(rtype_client PUBLIC include)
 target_include_directories(rtype_client PRIVATE ${SFML_INCLUDE_DIR})
 
