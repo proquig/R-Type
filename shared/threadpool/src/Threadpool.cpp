@@ -90,7 +90,6 @@ DWORD WINAPI ThreadPool::exec(void*)
 
 void ThreadPool::addTask(Task *task)
 {
-  std::cout << "Task added :" << task << std::endl;
   _tasks.push(task);
   _condition->signal();
 }
