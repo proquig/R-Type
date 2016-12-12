@@ -1,26 +1,21 @@
 #include "SFMLSprite.hh"
 
-void	SFMLSprite::load(void)
+void	SFMLSprite::addRessource(std::string name, const std::vector<Cut *> pieces)
 {
-	this->texture = new sf::Texture();
-	this->sprite = new sf::Sprite();
-
-	this->texture->loadFromFile(this->path);
-	this->sprite->setTexture(*this->texture);
-	this->sprite->setTextureRect(
-		sf::IntRect(
-			this->begin->x, this->begin->y,
-			this->end->x, this->end->y
-		));
+	// name = nom de l'animation à jouer.
+	// pieces = pièces nécéssaire à l'animation (dans l'ordre)
+	//		1 pièce = sprite statique
 }
 
-void	SFMLSprite::print(Coords *pos, float angle)
+void	SFMLSprite::setAnimation(std::string name, Coords *pos, Coords *size)
 {
-	this->sprite->setPosition(pos->x, pos->y);
-	this->window->draw(*this->sprite);
+	// name = nom de l'animation à jouer.
+	// pos = position coin superieur droit.
+	// size = size.x = width; size.y = height
 }
 
-void	SFMLSprite::free()
+bool	SFMLSprite::isOver(void) const
 {
-	// TO-DO
+	// Animation done
+	return (true);
 }

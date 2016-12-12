@@ -35,6 +35,7 @@ void											SFMLWindow::renderScene(void)
 	}
 	if (!match) {
 		// Create
+		// element->init();
 		this->scene.push_back(element);
 	}
 }

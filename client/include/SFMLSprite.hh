@@ -8,18 +8,19 @@
 class SFMLSprite : public ASprite
 {
 
-	sf::RenderWindow	*window;
-	sf::Texture			*texture;
-	sf::Sprite			*sprite;
-
 public:
 
-	SFMLSprite(std::string _path, Coords *_begin, Coords *_end, sf::RenderWindow *_window)
-		: ASprite(_path, _begin, _end), window(_window) {}
+	SFMLSprite(std::string _path)
+		: ASprite(_path) {}
 
-	void	load(void);
-	void	print(Coords *, float);
-	void	free(void);
+	void	addRessource(std::string, const std::vector<Cut *>);
+
+	/////////////////////////////////////////////////////////////////////////////
+	// ANIMATION
+	/////////////////////////////////////////////////////////////////////////////
+
+	void	setAnimation(std::string, Coords *, Coords *);
+	bool	isOver(void) const;
 };
 
 #endif /* !SFML_SPRITE_HH__ */
