@@ -7,11 +7,6 @@
 # include <thread>
 # include <vector>
 
-enum GLib
-{
-	SFML
-};
-
 class GraphicalController
 {
 

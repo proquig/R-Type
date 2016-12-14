@@ -10,11 +10,17 @@
 # define PTC_OBSTACLE	(char)8
 # define PTC_SET		(char)16
 
+enum GLib
+{
+	SFML
+};
+
 class IElement
 {
 public:
 
-	virtual void	print() = 0;
+	virtual void	loadSprites(GLib) = 0;
+	virtual void	print(void *) = 0;
 	virtual void	move(Coords *) = 0;
 	virtual void	animate(std::string) = 0;
 	virtual void	destroy() = 0;

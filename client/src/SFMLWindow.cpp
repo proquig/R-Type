@@ -8,13 +8,13 @@ void	SFMLWindow::run(WorkQueue<AElement *> *_elemqueue, WorkQueue<Event *> *_eve
 {
 	this->elementQueue = _elemqueue;
 	this->eventQueue = _eventqueue;
-	this->scene.empty();
+	this->scene = std::vector<AElement *>();
 	this->handler = new sf::RenderWindow(sf::VideoMode(this->width, this->height), this->name);
 	this->handler->clear(sf::Color::Black);
 	while (this->handler->isOpen())
 	{
 		this->pollEvent();
-		//this->renderScene();
+		this->renderScene();
 		this->render();
 	}
 }
@@ -27,6 +27,8 @@ void											SFMLWindow::renderScene(void)
 	bool										match = false;
 
 	element = this->elementQueue->pop();
+	if (!element)
+		return;
 	for (elem = this->scene.begin(); elem != this->scene.end(); ++elem) {
 		if ((*elem)->getId() == element->getId()) {
 			// Update
@@ -34,8 +36,8 @@ void											SFMLWindow::renderScene(void)
 		}
 	}
 	if (!match) {
-		// Create
-		// element->init();
+		std::cout << "New element" << std::endl;
+		element->loadSprites(SFML);
 		this->scene.push_back(element);
 	}
 }
@@ -47,7 +49,7 @@ void											SFMLWindow::render(void)
 	if (!this->scene.size())
 		return;
 	for (element = this->scene.begin(); element != this->scene.end(); ++element)
-		(*element)->print();
+		(*element)->print((void *)this->handler);
 	this->handler->display();
 }
 

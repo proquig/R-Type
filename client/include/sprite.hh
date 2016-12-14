@@ -22,17 +22,19 @@ struct Cut
 class ISprite
 {
 public:
+
 	virtual void	addRessource(std::string, const std::vector<Cut *>) = 0;
+	virtual void	print(void *window) = 0;
 	
 	/////////////////////////////////////////////////////////////////////////////
 	// ANIMATION
 	/////////////////////////////////////////////////////////////////////////////
 
 	virtual void	setAnimation(std::string, Coords *, Coords *) = 0;
-	virtual bool	isOver(void) = 0;
+	virtual bool	isOver(void) const = 0;
 };
 
-class ASprite
+class ASprite : public ISprite
 {
 protected:
 

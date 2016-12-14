@@ -16,7 +16,7 @@ int main(int ac, char **av)
 
 	//////////////////////////////////////////////////////////////////////
 	//	UNIT TEST
-	// controller.elementAction(ElementFactory::create(PLAYER, 0, 0));
+	controller.elementAction(ElementFactory::create(PLAYER, 0, 0));
 	//////////////////////////////////////////////////////////////////////
 
 	controller.initAction();

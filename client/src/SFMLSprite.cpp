@@ -59,9 +59,11 @@ void				SFMLSprite::draw(sf::RenderTarget& target, sf::RenderStates states) cons
 	return;
 }
 
-/*	*/
+
+////////////////////////////////////////////////
 //	Public Functions
-/*	*/
+////////////////////////////////////////////////
+
 void				SFMLSprite::addRessource(std::string name, const std::vector<Cut *> pieces)
 {
 	//Add une suite d'element a jouer
@@ -73,6 +75,13 @@ void				SFMLSprite::addRessource(std::string name, const std::vector<Cut *> piec
 	}
 	_anim[name] = vect;
 	return;
+}
+
+void					SFMLSprite::print(void *_window)
+{
+	sf::RenderWindow	*window = (sf::RenderWindow *)_window;
+
+	window->draw(*_spr);
 }
 
 void				SFMLSprite::setAnimation(std::string name, Coords *pos, Coords *size)

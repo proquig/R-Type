@@ -28,6 +28,7 @@ private:
 public:
 	SFMLSprite(std::string _path) : ASprite(_path) {}
 	void	addRessource(std::string, const std::vector<Cut *>);
+	void	print(void *);
 	void	setAnimation(std::string, Coords *, Coords *);
 	bool	isOver(void) const;
 	bool	getLoop() const;

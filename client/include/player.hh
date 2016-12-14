@@ -8,7 +8,8 @@ class Player : public AElement
 
 public:
 
-	void	print();
+	void	loadSprites(GLib);
+	void	print(void *);
 	void	move(Coords *);
 	void	animate(std::string);
 	void	destroy();
