@@ -16,8 +16,8 @@ void Observable::removeObserver(IObserver *o)
     _collectionObserver.erase(it);
 }
 
-void Observable::notify()
+void Observable::notify(int status)
 {
   for (std::vector<IObserver*>::iterator it = _collectionObserver.begin() ; it != _collectionObserver.end() ; ++it)
-    (*it)->update(this);
+    (*it)->update(this, status);
 }

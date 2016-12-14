@@ -10,7 +10,7 @@ public:
 public:
   virtual void addObserver(IObserver*) = 0;
   virtual void removeObserver(IObserver*) = 0;
-  virtual void notify() = 0;
+  virtual void notify(int) = 0;
 };
 
 #endif //RTYPE_IOBSERVABLE_HPP_

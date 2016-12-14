@@ -9,7 +9,7 @@ public:
   Observer() = default;
   virtual ~Observer() = default;
 public:
-  virtual void update(IObservable*);
+  virtual void update(IObservable*, int);
 };
 
 #endif //RTYPE_OBSERVER_HPP_

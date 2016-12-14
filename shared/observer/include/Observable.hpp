@@ -14,7 +14,7 @@ public:
 public:
   virtual void addObserver(IObserver*);
   virtual void removeObserver(IObserver*);
-  virtual void notify();
+  virtual void notify(int);
 };
 
 #endif //RTYPE_OBSERVABLE_HPP_

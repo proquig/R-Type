@@ -1,6 +1,6 @@
 #include <iostream>
 #include "Observer.hpp"
 
-void Observer::update(IObservable *o)
+void Observer::update(IObservable *o, int)
 {
 }
