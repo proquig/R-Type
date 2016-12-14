@@ -36,12 +36,12 @@ class ASprite
 {
 protected:
 
-	std::string		path;
+	std::string		_path;
 
 public:
 
 	ASprite(std::string _path)
-		: path(_path) {}
+		: _path(_path) {}
 };
 
 #endif /* !SPRITE_HH__ */
