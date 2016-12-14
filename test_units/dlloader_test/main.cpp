@@ -6,6 +6,7 @@
 #endif
 
 #include <iostream>
+#include <thread>
 
 #include "IThreadPool.hh"
 #include "ADLibrary.hh"
@@ -47,6 +48,7 @@ int main(int ac, char **av)
         if ((pool = reinterpret_cast<IThreadPool *(*)(int)>(dic->at("instantiate"))(4)) != nullptr)
         {
           std::cout << "Init=" << pool->init() << std::endl;
+          std::this_thread::sleep_for(std::chrono::milliseconds(100));
           pool->addTask(pool->createTask(std::bind(splash)));
           pool->addTask(pool->createTask(std::bind(sleep_and_end, pool)));
           reinterpret_cast<void *(*)(IThreadPool *)>(dic->at("destroy"))(pool);
