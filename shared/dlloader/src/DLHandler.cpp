@@ -1,3 +1,4 @@
+#include "ADLibrary.hh"
 #include "DLHandler.hh"
 
 void DLHandler::add(IDLibrary *lib)
@@ -40,9 +41,14 @@ Dictionary DLHandler::getDictionaryByName(std::string name)
 
 bool DLHandler::closeList(void)
 {
-  for (std::list<IDLibrary *>::const_iterator lib = this->libs.begin(); lib != libs.end(); ++lib)
+  Dictionary dic;
+  std::list<IDLibrary *>::iterator lib = libs.begin();
+
+  while (lib != libs.end())
   {
     (*lib)->close();
+    ADLibrary::deleteLibrary(*lib);
+    lib = libs.erase(lib);
   }
   return (true);
 }

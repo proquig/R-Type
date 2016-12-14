@@ -8,7 +8,7 @@ class DLManager
 {
 public:
   DLHandler handler;
-  void add(int id, std::string name, std::string path);
+  bool add(int id, std::string name, std::string path);
 };
 
 #endif //R_TYPE_DLMANAGER_HH_
