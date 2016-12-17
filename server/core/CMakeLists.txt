@@ -26,7 +26,7 @@ else ()
   target_compile_options(rtype_server PRIVATE -DRT_UNIX)
 endif ()
 
-target_link_libraries(rtype_server PRIVATE dlloader rtype_observer)
+target_link_libraries(rtype_server PRIVATE dlloader rtype_observer packet)
 
 if (UNIX)
   if (Threads_FOUND)

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <thread>
 #include "Server.hpp"
+#include "APacket.hh"
 #include "ICondVar.hh"
 #include "IMutex.hh"
 #include "ISocket.hpp"
@@ -110,6 +111,15 @@ void Server::update(IObservable *o, int status)
     //Gestion protocole 1 game
     if (status == ISocket::READ)
     {
+      struct sockaddr *addr;
+      std::vector<unsigned char> &ref = _test->read(&addr);
+      if (ref.size() != 0)
+      {
+        IPacket *packet;
+        std::string data(ref.begin(), ref.end());
+        if ((packet = APacket::create(data)) != nullptr)
+          std::cout << "Packet received" << std::endl;
+      }
     }
     if (status == ISocket::CLOSE)
     {
