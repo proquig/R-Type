@@ -1,1 +1,3 @@
 add_subdirectory(dlloader_test)
+
+add_subdirectory(network_test)

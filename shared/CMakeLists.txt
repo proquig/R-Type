@@ -6,3 +6,6 @@ add_subdirectory(observer)
 
 #Threadpool
 add_subdirectory(threadpool)
+
+#Network
+add_subdirectory(network)
