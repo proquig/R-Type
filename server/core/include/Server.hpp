@@ -9,17 +9,18 @@ class IMutex;
 class IThreadPool;
 class ISocketFactory;
 
-class Server
+class Server : public IObserver
 {
 protected:
   ICondVar *_cond;
   std::pair<Dictionary, Dictionary> _dic;
   DLManager _dlManager;
+  ISocketFactory *_factory;
   IMutex *_mutex;
   NetworkHandler _network;
   IThreadPool *_pool;
   bool _stop;
-  ISocketFactory *_socketFactory;
+  ISocket *_test;
   bool _waiting;
 public:
   Server(unsigned short port = 4242);
@@ -29,6 +30,7 @@ public:
   virtual bool init();
   virtual bool run();
   virtual void stop(unsigned int);
+  virtual void update(IObservable *, int status);
 };
 
 #endif //R_TYPE_SERVER_HPP_

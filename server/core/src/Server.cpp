@@ -1,9 +1,11 @@
 #include <iostream>
 #include <thread>
+#include "Server.hpp"
 #include "ICondVar.hh"
 #include "IMutex.hh"
+#include "ISocket.hpp"
+#include "ISocketFactory.hpp"
 #include "IThreadPool.hh"
-#include "Server.hpp"
 
 Server::Server(unsigned short port)
     : _dic(std::make_pair(nullptr, nullptr)), _stop(false), _waiting(false)
@@ -14,10 +16,11 @@ Server::Server(unsigned short port)
 
 Server::~Server()
 {
-  if (_socketFactory)
+  _network.removeObserver(this);
+  if (_factory)
   {
     _network.stop();
-    reinterpret_cast<void *(*)(ISocketFactory *)>(_dic.second->at("destroy"))(_socketFactory);
+    reinterpret_cast<void *(*)(ISocketFactory *)>(_dic.second->at("destroy"))(_factory);
   }
   if (_pool)
   {
@@ -34,8 +37,7 @@ Server::~Server()
 bool Server::game_test(unsigned short port, unsigned short time)
 {
   if (port != 0)
-  {
-  }
+    _test = _factory->createSocketUDP(this, port);
   if (time != 0)
     _pool->addTask(_pool->createTask(std::bind(&Server::stop, this, time)));
   return true;
@@ -61,12 +63,13 @@ bool Server::init()
     return false;
   if ((_dic.second = _dlManager.handler.getDictionaryByName("rtype_network")) != NULL
       && !_dic.second->empty()
-    && (_socketFactory = reinterpret_cast<ISocketFactory *(*)(IThreadPool*)>(_dic.second->at("instantiate"))(_pool)) != nullptr)
+    && (_factory = reinterpret_cast<ISocketFactory *(*)(IThreadPool*)>(_dic.second->at("instantiate"))(_pool)) != nullptr)
     std::cout << "socketFactory spawned" << std::endl;
   else
     return false;
-  _network = NetworkHandler(_socketFactory);
-  return true;
+  _network = NetworkHandler(_factory);
+  _network.addObserver(this);
+  return (_network.getState() == NetworkHandler::RUNNING);
 }
 
 bool Server::run()
@@ -91,5 +94,25 @@ void Server::stop(unsigned int delay)
     _stop = true;
     if (_waiting)
       _cond->signal();
+  }
+}
+
+void Server::update(IObservable *o, int status)
+{
+  if (o == &_network)
+  {
+    if (status == NetworkHandler::LISTENER_ERROR)
+      stop(0);
+    return;
+  }
+  if (_test)
+  {
+    //Gestion protocole 1 game
+    if (status == ISocket::READ)
+    {
+    }
+    if (status == ISocket::CLOSE)
+    {
+    }
   }
 }
