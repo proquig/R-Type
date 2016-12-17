@@ -16,14 +16,12 @@ private:
 	std::vector<sf::IntRect>							*_currAnim;
 	std::pair<unsigned int, unsigned int>				_pos;
 	std::pair<unsigned int, unsigned int>				_size;
-	bool												_loop;
-	bool												_isOver;
-	bool												_isAnimated;
 	sf::Texture											_tex;
-	sf::Sprite											*_spr;
-	int													_cnt;
+	sf::Sprite											_spr;
+	//int													_cnt;
 	// Not usefull										_notUsed;
 	sf::Vertex											_vert[4];
+	std::string											_name;
 // Public Functions
 public:
 	SFMLSprite(std::string _path) : ASprite(_path) {}
@@ -34,6 +32,9 @@ public:
 	bool	getLoop() const;
 	void	setLoop(bool);
 	void	setAnimTime(float);
+	bool	getAnimated() const;
+	void	setAnimated(bool);
+
 	//Private Functions
 private:
 	void			init();

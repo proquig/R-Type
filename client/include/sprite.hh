@@ -32,6 +32,11 @@ public:
 
 	virtual void	setAnimation(std::string, Coords *, Coords *) = 0;
 	virtual bool	isOver(void) const = 0;
+	virtual bool	getAnimated() const = 0;
+	virtual void	setAnimated(bool) = 0;
+	virtual void	setAnimTime(float) = 0;
+	virtual void	setLoop(bool) = 0;
+
 };
 
 class ASprite : public ISprite
@@ -39,11 +44,15 @@ class ASprite : public ISprite
 protected:
 
 	std::string		_path;
+	bool			_isOver;
+	bool			_isAnimated;
+	bool			_loop;
+	int				_cnt;
 
 public:
 
-	ASprite(std::string _path)
-		: _path(_path) {}
+	ASprite(std::string _path, bool loop = false, bool isOver = true, bool isAnim = false)
+		: _path(_path), _loop(loop), _isOver(isOver), _isAnimated(isAnim) {_cnt = 0;}
 };
 
 #endif /* !SPRITE_HH__ */
