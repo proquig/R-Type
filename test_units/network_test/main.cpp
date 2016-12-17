@@ -21,24 +21,16 @@ int main(void)
   if (dlManager.handler.loadAll(error))
   {
     std::cout << "Library load success" << std::endl;
-    if ((dic.first = dlManager.handler.getDictionaryByName("threadpool")) != NULL && !dic.first->empty())
-    {
-      for (std::map<std::string, void *>::iterator sit = dic.first->begin(); sit != dic.first->end(); sit++)
-        std::cout << "key=" << sit->first.c_str() << std::endl;
-      pool = reinterpret_cast<IThreadPool *(*)(int)>(dic.first->at("instantiate"))(4);
-      std::cout << "pool spawned" << std::endl;
-    }
-    if ((dic.second = dlManager.handler.getDictionaryByName("rtype_network")) != NULL && !dic.second->empty())
-    {
-      for (std::map<std::string, void *>::iterator sit = dic.second->begin(); sit != dic.second->end(); sit++)
-        std::cout << "key=" << sit->first.c_str() << std::endl;
-      socketFactory = reinterpret_cast<ISocketFactory *(*)(int)>(dic.second->at("instantiate"))(0);
+    if ((dic.first = dlManager.handler.getDictionaryByName("threadpool")) != NULL
+        && !dic.first->empty()
+        && (pool = reinterpret_cast<IThreadPool *(*)(size_t)>(dic.first->at("instantiate"))(4)) != nullptr)
+      std::cout << "Pool spawned" << std::endl;
+    if (pool && (dic.second = dlManager.handler.getDictionaryByName("rtype_network")) != NULL
+        && !dic.second->empty()
+        && (socketFactory = reinterpret_cast<ISocketFactory *(*)(IThreadPool*)>(dic.second->at("instantiate"))(pool)) != nullptr)
       std::cout << "socketFactory spawned" << std::endl;
-    }
     if (pool && socketFactory)
     {
-      std::cout << "Init=" << pool->init() << std::endl;
-      socketFactory->bindThreadpool(pool);
       if ((server = new Server(socketFactory, pool)) != nullptr)
       {
         std::cout << "Server spawned" << std::endl;

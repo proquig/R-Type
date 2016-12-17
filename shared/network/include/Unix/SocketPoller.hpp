@@ -4,9 +4,9 @@
 #include <map>
 #include <poll.h>
 #include <vector>
-#include "ICondVar.hh"
 #include "ISocketPoll.hpp"
 
+class ICondVar;
 class IMutex;
 class IThreadPool;
 
@@ -21,11 +21,10 @@ protected:
   bool _stop;
   static struct pollfd _zero;
 public:
-  SocketPoller();
+  SocketPoller(IThreadPool *);
   virtual ~SocketPoller();
 public:
   virtual void add(ISocketPoll*);
-  virtual void bindThreadpool(IThreadPool*);
   virtual IThreadPool* getThreadpool();
   virtual void run();
   virtual void stop();

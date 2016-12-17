@@ -4,14 +4,8 @@
 #include "Listener.hpp"
 #include "SocketUDP.hpp"
 
-SocketFactory::SocketFactory()
+SocketFactory::SocketFactory(IThreadPool *pool) : _poller(pool)
 {
-}
-
-void SocketFactory::bindThreadpool(IThreadPool *pool)
-{
-  if (pool && !_poller.getThreadpool())
-    _poller.bindThreadpool(pool);
 }
 
 IListener *SocketFactory::createListener()

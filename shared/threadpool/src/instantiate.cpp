@@ -1,10 +1,14 @@
 #include "DLDictionary.hh"
 #include "ThreadPool.hh"
 
-IThreadPool *instantiate(int nb)
+IThreadPool *instantiate(size_t nb)
 {
   IThreadPool *threadpool = new ThreadPool(nb);
-  return threadpool;
+
+  if (threadpool->init() == nb)
+    return threadpool;
+  delete threadpool;
+  return nullptr;
 }
 
 void destroy(IThreadPool *pool)

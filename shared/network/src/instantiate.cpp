@@ -1,9 +1,9 @@
 #include "DLDictionary.hh"
 #include "SocketFactory.hpp"
 
-ISocketFactory *instantiate(int nb)
+ISocketFactory *instantiate(IThreadPool* pool)
 {
-  ISocketFactory *factory = new SocketFactory();
+  ISocketFactory *factory = new SocketFactory(pool);
   return factory;
 }
 

@@ -6,9 +6,22 @@
 
 struct pollfd SocketPoller::_zero = {-1, 0, 0};
 
-SocketPoller::SocketPoller()
+SocketPoller::SocketPoller(IThreadPool *pool)
     : _cond(nullptr), _mutex(nullptr), _pool(nullptr), _stop(false)
 {
+  if (pool)
+  {
+    if ((_mutex = pool->createMutex()) == nullptr)
+      return;
+    if ((_cond = pool->createCondVar()) == nullptr)
+    {
+      pool->deleteMutex(_mutex);
+      _mutex = nullptr;
+      return;
+    }
+    _pool = pool;
+    _pool->addTask(_pool->createTask(std::bind(&SocketPoller::run, this)));
+  }
 }
 
 SocketPoller::~SocketPoller()
@@ -37,23 +50,6 @@ void SocketPoller::add(ISocketPoll *socketPoll)
     events |= POLLOUT;
   _pollfds.front().events = events;
   _mutex->unlock();
-}
-
-void SocketPoller::bindThreadpool(IThreadPool *pool)
-{
-  if (pool && !_pool)
-  {
-    if ((_mutex = pool->createMutex()) == nullptr)
-      return;
-    if ((_cond = pool->createCondVar()) == nullptr)
-    {
-      pool->deleteMutex(_mutex);
-      _mutex = nullptr;
-      return;
-    }
-    _pool = pool;
-    _pool->addTask(_pool->createTask(std::bind(&SocketPoller::run, this)));
-  }
 }
 
 IThreadPool *SocketPoller::getThreadpool()

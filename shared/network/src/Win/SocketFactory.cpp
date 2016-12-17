@@ -4,7 +4,8 @@
 #include "Listener.hpp"
 #include "SocketUDP.hpp"
 
-SocketFactory::SocketFactory()
+SocketFactory::SocketFactory(IThreadPool *pool)
+    : _poller(pool)
 {
   WSADATA wsa;
   //Initialise winsock
@@ -20,12 +21,6 @@ SocketFactory::SocketFactory()
 SocketFactory::~SocketFactory()
 {
   WSACleanup();
-}
-
-void SocketFactory::bindThreadpool(IThreadPool *pool)
-{
-  if (pool && !_poller.getThreadpool())
-    _poller.bindThreadpool(pool);
 }
 
 IListener *SocketFactory::createListener()

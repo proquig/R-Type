@@ -9,10 +9,9 @@ class SocketFactory : public ISocketFactory
 protected:
   SocketPoller _poller;
 public:
-  SocketFactory();
+  SocketFactory(IThreadPool*);
   virtual ~SocketFactory() = default;
 public:
-  virtual void bindThreadpool(IThreadPool*);
   virtual IListener* createListener();
   virtual ISocket* createSocketUDP(IObserver *, unsigned short);
   virtual bool hintSockaddr(const std::string &, struct sockaddr &, unsigned short = 4242);
