@@ -7,7 +7,7 @@ source_group(Headers FILES ${LIBRTYPE_SERVER_CORE_INCS})
 file(GLOB LIBRTYPE_SERVER_CORE_SRCS "src/*.cpp")
 source_group(Sources FILES ${LIBRTYPE_SERVER_CORE_SRCS})
 
-# Library
+# Executable
 add_executable(rtype_server
     ${LIBRTYPE_SERVER_CORE_SRCS}
     ${LIBRTYPE_SERVER_CORE_INCS}

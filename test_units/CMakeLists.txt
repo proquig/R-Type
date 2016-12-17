@@ -9,3 +9,6 @@ add_subdirectory(network_test)
 
 #Packet
 add_subdirectory(packet_test)
+
+#Server
+add_subdirectory(server_test)
