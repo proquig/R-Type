@@ -9,7 +9,7 @@ source_group(Headers FILES ${LIBOBSERVER_INCS})
 file(GLOB LIBOBSERVER_SRCS "src/*.cpp")
 source_group(Sources FILES ${LIBOBSERVER_SRCS})
 
-add_library(rtype_observer SHARED
+add_library(rtype_observer
     ${LIBOBSERVER_SRCS}
     ${LIBOBSERVER_INCS}
     )

@@ -3,7 +3,7 @@
 
 #include <vector>
 #include "File.hh"
-#include "GameElement.hh"
+#include "GameElement.hpp"
 
 class Parser
 {

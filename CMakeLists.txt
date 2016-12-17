@@ -5,6 +5,9 @@ enable_testing()
 
 project(R-Type)
 
+# Set PIC ON
+set(CMAKE_POSITION_INDEPENDENT_CODE True)
+
 # CMake module path
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 

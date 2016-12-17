@@ -2,7 +2,7 @@
 #define GAMEHANDLER_GAMESCENE_HH
 
 #include 	<vector>
-#include	"GameElement.hh"
+#include	"GameElement.hpp"
 
 class GameScene
 {

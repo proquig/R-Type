@@ -1,6 +1,9 @@
 #DLLoader
 add_subdirectory(dlloader)
 
+#GameElement
+add_subdirectory(game_element)
+
 #Observer
 add_subdirectory(observer)
 

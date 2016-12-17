@@ -8,18 +8,6 @@ file(GLOB GAMEHANDLER_INCS "include/*.hh")
 source_group(Headers FILES ${GAMEHANDLER_INCS})
 file(GLOB GAMEHANDLER_SRCS "src/*.cpp")
 source_group(Sources FILES ${GAMEHANDLER_SRCS})
- 
-# Platform files
-if (UNIX)
-  file(GLOB GAMEHANDLER_PLATFORM_INCS "include/*.hh")
-  file(GLOB GAMEHANDLER_PLATFORM_SRCS "src/*.cpp")
-  set(GAMEHANDLER_PLATFORM_INCLUDE include/)
-endif (UNIX)
-if (MSVC)
-  file(GLOB GAMEHANDLER_PLATFORM_INCS "include/*.hh")
-  file(GLOB GAMEHANDLER_PLATFORM_SRCS "src/*.cpp")
-  set(GAMEHANDLER_PLATFORM_INCLUDE include/)
-endif (MSVC)
 
 add_executable(rtype_gamehandler
 				${GAMEHANDLER_SRCS}
@@ -28,6 +16,7 @@ add_executable(rtype_gamehandler
 # Include directories
 target_include_directories(rtype_gamehandler PUBLIC include)
 target_include_directories(rtype_gamehandler PRIVATE ${GAMEHANDLER_PLATFORM_INCLUDE})
+target_link_libraries(rtype_gamehandler PUBLIC rtype_game_element)
  
 # Flags for different platforms
 if (MSVC)
