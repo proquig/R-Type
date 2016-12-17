@@ -9,3 +9,6 @@ add_subdirectory(threadpool)
 
 #Network
 add_subdirectory(network)
+
+#Packet
+add_subdirectory(packet)
