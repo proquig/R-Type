@@ -1,6 +1,7 @@
 #ifndef CLIENT_STATES_HH__
 # define CLIENT_STATES_HH__
 
+# include <InputPacket.hh>
 # ifdef __linux__ 
 #  include <unistd.h>
 # elif _WIN32
@@ -9,7 +10,6 @@
 # include <iostream>
 # include <vector>
 # include "graphicalController.hh"
-# include "InputPacket.hh"
 # include "element.hh"
 
 class ClientStates
