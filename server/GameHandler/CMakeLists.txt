@@ -9,7 +9,7 @@ source_group(Headers FILES ${GAMEHANDLER_INCS})
 file(GLOB GAMEHANDLER_SRCS "src/*.cpp")
 source_group(Sources FILES ${GAMEHANDLER_SRCS})
 
-add_executable(rtype_gamehandler
+add_library(rtype_gamehandler
 				${GAMEHANDLER_SRCS}
 				${GAMEHANDLER_INCS})
   

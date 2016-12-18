@@ -11,7 +11,7 @@
     int main(int ac, char *av[])
     {
 
-        File *file = new File("/home/cloque_b/R-Type/server/GameHandler/map.txt");
+        File *file = new File("./map.txt");
 
         GameFactory             gf;
         ControllerFactory       controllerFactory;
