@@ -5,20 +5,18 @@
 void				SFMLSprite::init()
 {
 	//_delta = _clock.restart();
-	std::cout << "isAnimated = " << _isAnimated << std::endl;
+	//std::cout << "isAnimated = " << _isAnimated << std::endl;
 	//_isAnimated = false;
 	if (_tex.loadFromFile(_path))
 	{
 		std::cout << "Texture loaded." << std::endl;
 	}
 	//Generation du sprite courrant a partir du path
-	std::cout << "init" << std::endl;
 	return;
 }
 
 void				SFMLSprite::update()
 {
-	std::cout << "_isAnimated = " << _isAnimated << " _isOver = " << _isOver << std::endl;
 	_delta += _clock.restart();
 	if (!_isAnimated)
 	{
@@ -27,19 +25,16 @@ void				SFMLSprite::update()
 	}
 	if (_isAnimated && !_isOver)
 	{
-		std::cout << "Delta = " << _delta.asMilliseconds() << "AnimTime = " << _animTime.asMilliseconds() << "cnt = " << _cnt << std::endl;
 		if (_delta >= _animTime)
 		{
 			_cnt++;
 			_delta = sf::seconds(0);
 			if (_cnt >= _currAnim->size())
 			{
-				std::cout << "Reseting cnt" << std::endl;
 				if (_loop)
 					_cnt = 0;
 				else
 				{
-					std::cout << "ou ici" << std::endl;
 					_cnt = 0;
 					_isOver = true;
 				}
@@ -62,7 +57,6 @@ void				SFMLSprite::draw(sf::RenderTarget& target, sf::RenderStates states) cons
 	{
 		target.draw(_spr, states);
 	}
-	std::cout << "draw" << std::endl;
 	return;
 }
 
@@ -91,25 +85,21 @@ void					SFMLSprite::print(void *_window)
 	update();
 	if (_isAnimated == true)
 	{
-		std::cout << "Animation" << std::endl;
 		window->draw(_spr);
 	}
 	else
 	{
 		window->draw(_spr);
 	}
-	std::cout << "print" << std::endl;
 	return;
 }
 
 void				SFMLSprite::setAnimation(std::string name, Coords *pos, Coords *size)
 {
-	std::cout << "SETANIMATION" << std::endl;
 	_name = name;
 	_currAnim = _anim[name];
 	_pos = std::make_pair(pos->x, pos->y);
 	_size = std::make_pair(size->x, size->y);
-	std::cout << "curranima -> size = " << _currAnim->size() << std::endl;
 	init();
 	return;
 }
