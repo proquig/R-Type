@@ -33,3 +33,8 @@ void				GameScene::addElems(std::vector<IElement*> elems)
 		_map.push_back(g);
 	}
 }
+
+void				GameScene::addElem(IElement* elem)
+{
+	_map.push_back(elem);
+}

@@ -17,6 +17,7 @@ public:
 	void						deleteElem(int);
 	std::vector<IElement*>		getMap() const;
 	void						addElems(std::vector<IElement*>);
+	void						addElem(IElement*);
 };
 
 #endif

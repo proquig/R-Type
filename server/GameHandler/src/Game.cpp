@@ -1,8 +1,9 @@
 #include "Game.hh"
 
 
-Game::Game()
+Game::Game(int id)
 {
+	_id = id;
 	_gameScene = new GameScene();
 }
 
@@ -33,4 +34,17 @@ bool			Game::end()
 GameScene*		Game::getScene() const
 {
 	return _gameScene;
+}
+
+void			Game::addPlayer(Player* player)
+{
+	_players.push_back(player);
+	_gameScene->addElem(player);
+}
+
+bool			Game::isReady() const
+{
+	if (_players.size() > 4 || _players.size() < 1)
+		return false;
+		return true;
 }

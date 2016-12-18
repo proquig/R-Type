@@ -17,7 +17,7 @@ public:
 		BULLET
 	};
 
-private:
+protected:
 	uint32_t _idFrom;
 	uint32_t _id;
 	uint16_t _type;
@@ -32,6 +32,7 @@ private:
 
 public:
 	AElement();
+	AElement(uint32_t, uint32_t, uint16_t, uint16_t, uint16_t, uint16_t, uint16_t, uint16_t, uint16_t, float, char);
 	~AElement();
 
 	uint32_t	getIdFrom() const;

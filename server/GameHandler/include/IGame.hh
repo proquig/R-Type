@@ -2,6 +2,7 @@
 #define GAMEHANDLER_IGAME_HH
 
 #include "GameScene.hh"
+#include "Player.hh"
 
 class IGame
 {
@@ -12,6 +13,8 @@ class IGame
 	virtual bool pause() = 0;
 	virtual bool end() = 0;
 	virtual GameScene* getScene() const = 0;
+	virtual void addPlayer(Player*) = 0;
+	virtual bool isReady() const = 0;
 };
 
 #endif
