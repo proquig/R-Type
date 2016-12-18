@@ -27,6 +27,9 @@ endif()
 
 target_include_directories(rtype_client PUBLIC include)
 target_include_directories(rtype_client PRIVATE ${SFML_INCLUDE_DIR})
+target_include_directories(rtype_client PRIVATE ${CMAKE_SOURCE_DIR}/shared/packet/include)
+
+target_link_libraries(rtype_client PRIVATE packet)
 
 set_property(TARGET rtype_client PROPERTY CXX_STANDARD 11)
 set_property(TARGET rtype_client PROPERTY CXX_STANDARD_REQUIRED ON)

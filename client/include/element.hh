@@ -15,8 +15,6 @@ enum GLib
 	SFML
 };
 
-typedef AElement AElement;
-
 class IElement
 {
 public:
@@ -67,7 +65,7 @@ enum ElementType {
 
 class ElementFactory {
 public:
-	static AElement *	create(ElementType, std::string, unsigned int, unsigned int, unsigned int, unsigned int);
+	static AElement *	create(unsigned int, ElementType, std::string, unsigned int, unsigned int, unsigned int, unsigned int);
 };
 
 #endif /* !ELEMENT_HH__ */

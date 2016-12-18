@@ -5,7 +5,7 @@
 #include "obstacle.hh"
 #include "set.hh"
 
-AElement *	ElementFactory::create(ElementType type, std::string _animation, unsigned int _x, unsigned int _y, unsigned int _w, unsigned int _h)
+AElement *	ElementFactory::create(unsigned int _id, ElementType type, std::string _animation, unsigned int _x, unsigned int _y, unsigned int _w, unsigned int _h)
 {
 	AElement	*element;
 
@@ -22,6 +22,7 @@ AElement *	ElementFactory::create(ElementType type, std::string _animation, unsi
 		// unknown TO-DO
 		break;
 	}
+	element->setId(_id);
 	element->move(new Coords(_x, _y));
 	element->setSize(new Coords(_w, _h));
 	element->setAnimation(_animation);
