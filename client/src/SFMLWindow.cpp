@@ -33,7 +33,9 @@ void											SFMLWindow::renderScene(void)
 	for (element = elements->begin(); element != elements->end(); ++element) {
 		for (elem = this->scene.begin(); elem != this->scene.end(); ++elem) {
 			if ((*elem)->getId() == (*element)->getId()) {
-				(*elem)->update((*element));
+				(*elem)->move((*element)->getCoords());
+				(*elem)->setSize((*element)->getSize());
+				(*elem)->setAnimation((*element)->getAnimation());
 				match = true;
 			}
 		}

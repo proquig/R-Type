@@ -21,7 +21,6 @@ class IElement
 {
 public:
 
-	virtual void	update(AElement *) = 0;
 	virtual void	loadSprites(GLib) = 0;
 	virtual void	print(void *) = 0;
 	virtual void	move(Coords *) = 0;

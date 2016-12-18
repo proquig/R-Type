@@ -6,7 +6,7 @@ void	Player::loadSprites(GLib lib)
 	switch (lib)
 	{
 	case SFML:
-		this->sprite = new SFMLSprite("C:\\Users\\Mimoone\\Documents\\c++\\R-Type\\client\\media\\GAME-Assets\\r-typesheet42.gif");
+		this->sprite = new SFMLSprite(".\\..\\..\\client\\media\\GAME-Assets\\r-typesheet42.gif");
 		break;
 	}
 
@@ -17,13 +17,6 @@ void	Player::loadSprites(GLib lib)
 
 	// Init on cyan_stay
 	this->sprite->setAnimation("cyan_stay", new Coords(0, 0), new Coords(50, 50));
-}
-
-void	Player::update(AElement *other)
-{
-	this->move(other->getCoords());
-	this->size = other->getSize();
-	this->animation = other->getAnimation();
 }
 
 void	Player::print(void * window)

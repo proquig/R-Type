@@ -8,7 +8,6 @@ class Player : public AElement
 
 public:
 
-	void	update(AElement *);
 	void	loadSprites(GLib);
 	void	print(void *);
 	void	move(Coords *);
