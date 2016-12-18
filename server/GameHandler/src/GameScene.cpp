@@ -1,4 +1,5 @@
 #include		"GameScene.hh"
+#include	<iostream>
 
 GameScene::GameScene()
 {
@@ -25,3 +26,10 @@ std::vector<GameElement*> GameScene::getMap() const
 	return _map;
 }
 
+void				GameScene::addElems(std::vector<GameElement*> elems)
+{
+	for (GameElement* g : elems)
+	{
+		_map.push_back(g);
+	}
+}

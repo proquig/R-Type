@@ -2,7 +2,7 @@
 
 /*! \brief Constructor of CollisionHandler
 */
-CollisionHandler::CollisionHandler(int x, int y) :							_quadtree(0, *(new Rectangle(x / 2, y / 2, x, y, -1)))
+CollisionHandler::CollisionHandler(int x, int y) : _quadtree(0, *(new Rectangle(x / 2, y / 2, x, y, -1)))
 {
 	_sizeX = x;
 	_sizeY = y;
@@ -10,7 +10,7 @@ CollisionHandler::CollisionHandler(int x, int y) :							_quadtree(0, *(new Rect
 
 /*! \brief Constructor by copy of CollisionHandler
 */
-CollisionHandler::CollisionHandler(const CollisionHandler & copy) :			_quadtree(copy.getQuadtree())
+CollisionHandler::CollisionHandler(const CollisionHandler & copy) : _quadtree(copy.getQuadtree())
 {
 	_sizeX = copy.getSizeX();
 	_sizeY = copy.getSizeY();
@@ -31,7 +31,7 @@ CollisionHandler&															CollisionHandler::operator=(const CollisionHandl
 }
 
 /*! \brief foundCollisions of CollisionHandler
-* takes a list of entitys on the map 
+* takes a list of entitys on the map
 * returns a vector of vectors of entitys in collision
 */
 std::vector<GameElement*> 														CollisionHandler::foundCollisions(std::vector<GameElement*>& entitys, std::vector<int>* collisionId)
@@ -49,8 +49,7 @@ std::vector<GameElement*> 														CollisionHandler::foundCollisions(std::v
 		_rectangles[(*it)] = *(new Rectangle((*it)->getX(), (*it)->getY(), (*it)->getSizeX(), (*it)->getSizeY(), (*it)->getId()));
 		_quadtree.insert(_rectangles[(*it)]);
 	}
-	_quadtree.display();
-	for(mit = _rectangles.begin(); mit != _rectangles.end(); mit++)
+	for (mit = _rectangles.begin(); mit != _rectangles.end(); mit++)
 	{
 		current.clear();
 		current = _quadtree.retrieve(current, (*mit).second);
@@ -58,6 +57,7 @@ std::vector<GameElement*> 														CollisionHandler::foundCollisions(std::v
 		{
 			if (isCollision((*vit), (*mit).second))
 			{
+				std::cout << "Collision between " << (*vit).getId() << " and " << (*mit).second.getId() << std::endl;
 				if ((*mit).first && collisionId) {
 					tmp = handleCollision((*vit).getId(), (*mit).first->getId(), entitys, collisionId);
 					while (tmp.size() != 0) {
@@ -73,7 +73,7 @@ std::vector<GameElement*> 														CollisionHandler::foundCollisions(std::v
 
 /*! \brief handleCollision of CollisionHandler
 * takes two entitys Id and vector of entitys
-* returns 
+* returns
 */
 std::vector<GameElement*>														CollisionHandler::handleCollision(int id, int pid, std::vector<GameElement*>& entitys, std::vector<int>* collisionId)
 {
@@ -99,7 +99,6 @@ std::vector<GameElement*>														CollisionHandler::handleCollision(int id,
 	}
 	if (f == NULL || s == NULL)
 		return ret;
-		std::cout << "Collision here between " << f->getId() << " and " << s->getId() << std::endl;
 	//ret = f->collision(s);
 	//if (f->getHp() <= 0)
 	//{
@@ -129,7 +128,7 @@ void																		CollisionHandler::addScore(std::vector<GameElement*>& enti
 				if (*it) {
 					int id = (*it)->getId();
 					if (entity->getIdFrom())
-						if ( id == entity->getIdFrom()) {
+						if (id == entity->getIdFrom()) {
 							std::cout << "id = " << entity->getIdFrom();
 							//(*it)->setHighScore((*it)->getHighScore() + 10);
 						}

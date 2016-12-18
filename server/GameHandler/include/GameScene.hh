@@ -16,6 +16,7 @@ public:
 	void						drawNewElem();
 	void						deleteElem(int);
 	std::vector<GameElement*>	getMap() const;
+	void						addElems(std::vector<GameElement*>);
 };
 
 #endif

@@ -40,14 +40,17 @@ void    Parser::parsePlayer() {
 			position1 =  players.find(';', position + 1);
 			gameElement->setX((uint16_t) std::stoi(players.substr(position + 1, players.find(';', position))));
 			gameElement->setY((uint16_t) std::stoi(players.substr(position1 + 1)));
+			gameElement->setSizeX(1);
+			gameElement->setSizeY(1);
 		} catch (std::exception &e) {
 			std::cerr << e.what() << std::endl;
 		}
 		gameElement->setId(id++);
 		_line.push_back(gameElement);
 		data.erase(0, data.find('\n') + 1);
-		data.erase(0, data.find('\n') + 1);
+		std::cout << data << std::endl;
 	}
+	std::cout << _line.size() << std::endl;
 	data.erase(0, data.find('\n') + 1);
 }
 
@@ -58,6 +61,7 @@ void     Parser::parseElement() {
 	size_t                       pos1 = 0;
 	size_t                       pos = 0;
 	uint32_t                    id = 1;
+
 
 	while ((pos = data.find("\n", pos1)) != std::string::npos)
 	{
@@ -100,6 +104,6 @@ void    Parser::parseTitle() {
 		std::cerr << e.what() << std::endl;
 	}
 	gameElement->setId(0);
-	_line.push_back(gameElement);
+	//_line.push_back(gameElement);
 	data.erase(0, data.find('\n'));
 }

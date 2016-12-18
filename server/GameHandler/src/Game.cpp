@@ -2,7 +2,9 @@
 
 
 Game::Game()
-{}
+{
+	_gameScene = new GameScene();
+}
 
 Game::~Game()
 {
@@ -26,4 +28,9 @@ bool			Game::pause()
 bool			Game::end()
 {
 	return true;
+}
+
+GameScene*		Game::getScene() const
+{
+	return _gameScene;
 }

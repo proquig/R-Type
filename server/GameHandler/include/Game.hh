@@ -8,7 +8,7 @@
 class Game : public IGame {
 
 private:
-	GameScene _gameScene;
+	GameScene* _gameScene;
 	
 public:
 	Game();
@@ -17,6 +17,7 @@ public:
 	virtual bool stop();
 	virtual bool pause();
 	virtual bool end();
+	virtual GameScene* getScene() const;
 };
 
 #endif
