@@ -15,6 +15,8 @@ enum GLib
 	SFML
 };
 
+typedef AElement AElement;
+
 class IElement
 {
 public:
