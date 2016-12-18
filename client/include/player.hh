@@ -8,23 +8,28 @@ class Player : public AElement
 
 public:
 
+	void	update(AElement *);
 	void	loadSprites(GLib);
 	void	print(void *);
 	void	move(Coords *);
-	void	animate(std::string);
 	void	destroy();
 
 	//////////////////////////////////////////////
 	// SETTERS
 	//////////////////////////////////////////////
 
-	void	setId(unsigned int);
+	void			setId(unsigned int);
+	void			setAnimation(std::string);
+	void			setSize(Coords *);
 
 	//////////////////////////////////////////////
 	// GETTERS
 	//////////////////////////////////////////////
 
 	unsigned int	getId() const;
+	Coords *		getCoords(void) const;
+	Coords *		getSize(void) const;
+	std::string		getAnimation(void) const;
 
 };
 

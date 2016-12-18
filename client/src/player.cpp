@@ -14,23 +14,27 @@ void	Player::loadSprites(GLib lib)
 	this->sprite->setAnimated(true);
 	this->sprite->setAnimTime(500);
 	this->sprite->setLoop(true);
+
+	// Init on cyan_stay
+	this->sprite->setAnimation("cyan_stay", new Coords(0, 0), new Coords(50, 50));
+}
+
+void	Player::update(AElement *other)
+{
+	this->move(other->getCoords());
+	this->size = other->getSize();
+	this->animation = other->getAnimation();
 }
 
 void	Player::print(void * window)
 {
-	std::cout << "Print player ..." << std::endl;
-	this->sprite->setAnimation("cyan_stay", new Coords (0, 0), new Coords(50, 50));
+	this->sprite->setAnimation(this->animation, this->coords, this->size);
 	this->sprite->print(window);
 }
 
 void	Player::move(Coords *to)
 {
-
-}
-
-void	Player::animate(std::string action)
-{
-
+	this->coords = to;
 }
 
 void	Player::destroy()
@@ -47,6 +51,16 @@ void	Player::setId(unsigned int _id)
 	this->id = _id;
 }
 
+void	Player::setAnimation(std::string _animation)
+{
+	this->animation = _animation;
+}
+
+void	Player::setSize(Coords *_size)
+{
+	this->size = _size;
+}
+
 /////////////////////////////////////////////////////////////////
 // GETTERS
 /////////////////////////////////////////////////////////////////
@@ -54,4 +68,19 @@ void	Player::setId(unsigned int _id)
 unsigned int	Player::getId(void) const
 {
 	return (this->id);
+}
+
+Coords *		Player::getCoords(void) const
+{
+	return (this->coords);
+}
+
+Coords *	Player::getSize(void) const
+{
+	return (this->size);
+}
+
+std::string		Player::getAnimation(void) const
+{
+	return (this->animation);
 }

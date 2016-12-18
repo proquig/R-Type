@@ -22,24 +22,27 @@ void	SFMLWindow::run(WorkQueue<AElement *> *_elemqueue, WorkQueue<Event *> *_eve
 
 void											SFMLWindow::renderScene(void)
 {
-	AElement									*element;
+	std::vector<AElement *>						*elements;
+	std::vector<AElement *>::const_iterator		element;
 	std::vector<AElement *>::const_iterator		elem;
 	bool										match = false;
 
-	element = this->elementQueue->pop();
-	if (!element)
+	elements = this->elementQueue->popAll();
+	if (!elements->size())
 		return;
-	for (elem = this->scene.begin(); elem != this->scene.end(); ++elem) {
-		if ((*elem)->getId() == element->getId()) {
-			// Update
-			match = true;
+	for (element = elements->begin(); element != elements->end(); ++element) {
+		for (elem = this->scene.begin(); elem != this->scene.end(); ++elem) {
+			if ((*elem)->getId() == (*element)->getId()) {
+				(*elem)->update((*element));
+				match = true;
+			}
+		}
+		if (!match) {
+			(*element)->loadSprites(SFML);
+			this->scene.push_back(*element);
 		}
 	}
-	if (!match) {
-		std::cout << "New element" << std::endl;
-		element->loadSprites(SFML);
-		this->scene.push_back(element);
-	}
+
 }
 
 void											SFMLWindow::render(void)

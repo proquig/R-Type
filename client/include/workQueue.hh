@@ -42,6 +42,19 @@ public:
 		return (mem);
 	}
 
+	std::vector<T>		*popAll(void) {
+
+		T				res = new std::vector<T>();
+
+		this->access.lock();
+		while (this->queue.size()) {
+			res->pushFront(this->queue.back());
+			this->queue.pop_back();
+		}
+		this->access.unlock();
+		return (res);
+	}
+
 	void	flush(void) {
 		this->access.lock();
 		this->queue.clear();

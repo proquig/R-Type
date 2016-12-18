@@ -19,10 +19,10 @@ class IElement
 {
 public:
 
+	virtual void	update(AElement *) = 0;
 	virtual void	loadSprites(GLib) = 0;
 	virtual void	print(void *) = 0;
 	virtual void	move(Coords *) = 0;
-	virtual void	animate(std::string) = 0;
 	virtual void	destroy() = 0;
 
 	//////////////////////////////////////////////
@@ -30,12 +30,17 @@ public:
 	//////////////////////////////////////////////
 
 	virtual void	setId(unsigned int) = 0;
+	virtual void	setAnimation(std::string) = 0;
+	virtual void	setSize(Coords *) = 0;
 
 	//////////////////////////////////////////////
 	// GETTERS
 	//////////////////////////////////////////////
 
 	virtual unsigned int	getId(void) const = 0;
+	virtual Coords *		getCoords(void) const = 0;
+	virtual Coords *		getSize(void) const = 0;
+	virtual std::string		getAnimation(void) const = 0;
 
 };
 
@@ -45,7 +50,10 @@ protected:
 
 	unsigned int	id;
 	Coords			*coords;
+	Coords			*size;
 	ASprite			*sprite;
+	std::string		animation;
+
 };
 
 enum ElementType {
@@ -58,7 +66,7 @@ enum ElementType {
 
 class ElementFactory {
 public:
-	static AElement *	create(ElementType, unsigned int, unsigned int);
+	static AElement *	create(ElementType, std::string, unsigned int, unsigned int, unsigned int, unsigned int);
 };
 
 #endif /* !ELEMENT_HH__ */
