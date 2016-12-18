@@ -4,8 +4,19 @@
 #include	"IElement.hh"
 #include	<iostream>
 
+
 class AElement : public IElement
 {
+public:
+	enum										eType
+	{
+		AI,
+		BONUS,
+		DECOR,
+		PLAYER,
+		BULLET
+	};
+
 private:
 	uint32_t _idFrom;
 	uint32_t _id;
@@ -15,6 +26,7 @@ private:
 	uint16_t _hp;
 	uint16_t _size_x;
 	uint16_t _size_y;
+	uint16_t _damage;
 	float _angle;
 	char _speed;
 
@@ -30,6 +42,7 @@ public:
 	uint16_t	getHp() const;
 	uint16_t	getSizeX() const;
 	uint16_t	getSizeY() const; 
+	uint16_t	getDamage() const;
 	float		getAngle() const;
 	char		getSpeed() const;
 
@@ -39,6 +52,7 @@ public:
 	void		setX(uint16_t x);
 	void		setY(uint16_t y);	
 	void		setHp(uint16_t);
+	void		setDamage(uint16_t);
 	void		setSizeX(uint16_t x);
 	void		setSizeY(uint16_t y);
 	void		setAngle(float angle);

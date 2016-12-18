@@ -2,6 +2,7 @@
 
 AElement::AElement()
 {
+	_hp = -1;
 }
 
 AElement::~AElement()
@@ -109,8 +110,24 @@ void					AElement::setSpeed(char speed)
 	_speed = speed;
 }
 
+void					AElement::setDamage(uint16_t damage)
+{
+	_damage = damage;
+}
+
+uint16_t				AElement::getDamage() const
+{
+	return _damage;
+}
+
 std::vector<IElement*>					AElement::collideWith(IElement* elem)
 {
-	std::cout << this->getId() << " collides with " << elem->getId() << std::endl;
+	if (elem->getType() == AElement::BULLET && elem->getIdFrom() < 10)
+	{	
+		_hp -= elem->getDamage();
+	}
+	if (elem->getType() == AElement::DECOR || elem->getType() == AElement::PLAYER)
+		_hp = 0;
+	std::cout << "hp after collide : " << _hp << std::endl;
 	return std::vector<IElement*>();
 }

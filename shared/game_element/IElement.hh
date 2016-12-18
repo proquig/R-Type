@@ -7,7 +7,7 @@
 class IElement
 {
 public:
-	virtual ~IElement() = 0{};
+	virtual ~IElement() = 0 {};
 	virtual uint32_t getIdFrom() const = 0;
 	virtual uint32_t getId() const = 0;
 	virtual uint16_t getType() const = 0;
@@ -16,6 +16,7 @@ public:
 	virtual uint16_t getSizeX() const = 0;
 	virtual uint16_t getSizeY() const = 0;
 	virtual uint16_t getHp() const = 0;
+	virtual uint16_t getDamage() const = 0;
 	virtual float getAngle() const = 0;
 	virtual char getSpeed() const = 0;
 
@@ -25,11 +26,12 @@ public:
 	virtual void setX(uint16_t) = 0;
 	virtual void setY(uint16_t) = 0;
 	virtual void setHp(uint16_t) = 0;
+	virtual void setDamage(uint16_t) = 0;
 	virtual void setSizeX(uint16_t) = 0;
 	virtual void setSizeY(uint16_t) = 0;
 	virtual void setAngle(float) = 0;
 	virtual void setSpeed(char) = 0;
-	
+
 	virtual std::vector<IElement*> collideWith(IElement*) = 0;
 
 };

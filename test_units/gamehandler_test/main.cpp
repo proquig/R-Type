@@ -29,6 +29,8 @@
 		first->setY(60);
 		first->setSizeX(20);
 		first->setSizeY(20);
+		first->setHp(10);
+		second->setHp(10);
 
 		second->setX(70);
 		second->setY(70); 
