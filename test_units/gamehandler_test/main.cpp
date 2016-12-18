@@ -27,13 +27,13 @@
 
 		first->setX(60);
 		first->setY(60);
-		first->setSizeX(10);
-		first->setSizeY(10);
+		first->setSizeX(1);
+		first->setSizeY(1);
 
 		second->setX(70);
 		second->setY(70); 
 		second->setSizeX(12);
-		second->setSizeY(10);
+		second->setSizeY(12);
 		
         gh.addGame(gf.create());
         gh.addController(controllerFactory.create());
@@ -47,7 +47,7 @@
 		std::cout << gh.getGames()[0]->getScene()->getMap().size() << std::endl;
 
 		gh.getControllers()[0]->handleCollisions();
-        std::cerr << "END" << std::endl;
+
         //parser.parseElement();
 		
         return (0);

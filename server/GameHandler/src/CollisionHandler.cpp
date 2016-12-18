@@ -57,7 +57,6 @@ std::vector<GameElement*> 														CollisionHandler::foundCollisions(std::v
 		{
 			if (isCollision((*vit), (*mit).second))
 			{
-				std::cout << "Collision between " << (*vit).getId() << " and " << (*mit).second.getId() << " in quadtree " << std::endl;
 				if ((*mit).first && collisionId) {
 					tmp = handleCollision((*vit).getId(), (*mit).first->getId(), entitys, collisionId);
 					while (tmp.size() != 0) {
@@ -100,23 +99,23 @@ std::vector<GameElement*>														CollisionHandler::handleCollision(int id,
 	if (f == NULL || s == NULL)
 		return ret;
 	//ret = f->collision(s);
-	//if (f->getHp() <= 0)
-	//{
-	//	collisionId->push_back(entitys[iF]->getId());
-	//	addScore(entitys, entitys[iF]);
-	//	delete(entitys[iF]);
-	//	entitys.erase(entitys.begin() + iF);
-	//	if (iF < iS)
-	//		iS--;
-	//}
-	//if (s->getHp() <= 0)
-	//{
-	//	collisionId->push_back(entitys[iS]->getId());
-	//	if (entitys[iS])
-	//		addScore(entitys, entitys[iS]);
-	//	delete(entitys[iS]);
-	//	entitys.erase(entitys.begin() + iS);
-	//}
+//	if (f->getHp() <= 0)
+//	{
+		collisionId->push_back(entitys[iF]->getId());
+		addScore(entitys, entitys[iF]);
+		delete(entitys[iF]);
+		entitys.erase(entitys.begin() + iF);
+		if (iF < iS)
+			iS--;
+//	}
+//	if (s->getHp() <= 0)
+//	{
+		collisionId->push_back(entitys[iS]->getId());
+		if (entitys[iS])
+			addScore(entitys, entitys[iS]);
+		delete(entitys[iS]);
+		entitys.erase(entitys.begin() + iS);
+//	}
 	return (ret);
 }
 

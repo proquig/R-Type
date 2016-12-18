@@ -18,11 +18,16 @@ void			GameController::handleCollisions()
 	std::vector<GameElement *>		aEntity;
 
 	aEntity = _collisionHandler.foundCollisions(_game->getScene()->getMap(), &destructElementId);
+	std::cout << "Found Collisions result = " << aEntity.size() << std::endl;
 	for (std::vector<GameElement *>::iterator it = aEntity.begin(); it != aEntity.end(); ++it)
+	{
+		std::cout << (*it)->getId() << " is colliding" << std::endl; 
 		_game->getScene()->getMap().push_back((*it));
+		}
 	for (std::vector<int>::iterator it = destructElementId.begin(); it != destructElementId.end(); ++it)
 	{
+		//sendDestructElement((*it));
 		std::cout << (*it) << " needs to be destroy" << std::endl;
 	}
-	//sendDestructElement((*it));
 }
+
