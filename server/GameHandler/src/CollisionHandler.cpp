@@ -57,7 +57,7 @@ std::vector<GameElement*> 														CollisionHandler::foundCollisions(std::v
 		{
 			if (isCollision((*vit), (*mit).second))
 			{
-				std::cout << "Collision between " << (*vit).getId() << " and " << (*mit).second.getId() << std::endl;
+				std::cout << "Collision between " << (*vit).getId() << " and " << (*mit).second.getId() << " in quadtree " << std::endl;
 				if ((*mit).first && collisionId) {
 					tmp = handleCollision((*vit).getId(), (*mit).first->getId(), entitys, collisionId);
 					while (tmp.size() != 0) {

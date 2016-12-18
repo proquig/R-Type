@@ -69,3 +69,7 @@ int					Rectangle::getId() const
 	return (_id);
 }
 
+void				Rectangle::display() const
+{
+	std::cout << "Rectangle " << _id << ":(" << _posX << ";" << _posY << ")|(" << _sizeX  << ";" << _sizeY << ");" << std::endl;
+}

@@ -17,18 +17,24 @@
         GameHandler             gh;
 		std::vector<GameElement*> elems;
 
-		for (int i = 0; i != 40; i++)
-		{
-			GameElement* g = new GameElement();
-			g->setId(i);
-			g->setSizeX(10);
-			g->setSizeY(10);
-			g->setX(i * 10);
-			g->setY(i * 10);
-			elems.push_back(g);
-		}
-		elems[0]->setX(15);
-		elems[0]->setY(15);
+		GameElement* first = new GameElement();
+		GameElement* second = new GameElement();
+		elems.push_back(first);
+		elems.push_back(second);
+
+		first->setId(0);
+		second->setId(1);
+
+		first->setX(60);
+		first->setY(60);
+		first->setSizeX(10);
+		first->setSizeY(10);
+
+		second->setX(70);
+		second->setY(70); 
+		second->setSizeX(12);
+		second->setSizeY(10);
+		
         gh.addGame(gf.create());
         gh.addController(controllerFactory.create());
 		gh.getControllers()[0]->setGame(gh.getGames()[0]);

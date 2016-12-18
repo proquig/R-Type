@@ -1,5 +1,7 @@
 #pragma once
 
+#include			<iostream>
+
 class				Rectangle
 {
 private:
@@ -20,4 +22,5 @@ public:
 	int				getPosX() const;
 	int				getPosY() const;
 	int				getId() const;
+	void			display() const;
 };

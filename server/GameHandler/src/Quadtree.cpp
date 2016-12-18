@@ -5,6 +5,8 @@
 */
 Quadtree::Quadtree(int plevel, Rectangle bounds) :		 _bounds(bounds)
 {
+	std::cout << "Quadtree created :" << std::endl;
+	bounds.display();
 	_maxLvl = 5;
 	_maxObj = 4;
 	_level = plevel;
