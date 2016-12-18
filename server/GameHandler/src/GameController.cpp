@@ -15,11 +15,11 @@ void			GameController::setGame(IGame* game)
 void			GameController::handleCollisions()
 {
 	std::vector<int>			destructElementId;
-	std::vector<GameElement *>		aEntity;
+	std::vector<IElement *>		aEntity;
 
 	aEntity = _collisionHandler.foundCollisions(_game->getScene()->getMap(), &destructElementId);
 	std::cout << "Found Collisions result = " << aEntity.size() << std::endl;
-	for (std::vector<GameElement *>::iterator it = aEntity.begin(); it != aEntity.end(); ++it)
+	for (std::vector<IElement *>::iterator it = aEntity.begin(); it != aEntity.end(); ++it)
 	{
 		std::cout << (*it)->getId() << " is colliding" << std::endl; 
 		_game->getScene()->getMap().push_back((*it));

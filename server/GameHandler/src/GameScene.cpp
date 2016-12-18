@@ -21,14 +21,14 @@ void			GameScene::deleteElem(int id)
 {
 }
 
-std::vector<GameElement*> GameScene::getMap() const
+std::vector<IElement*> GameScene::getMap() const
 {
 	return _map;
 }
 
-void				GameScene::addElems(std::vector<GameElement*> elems)
+void				GameScene::addElems(std::vector<IElement*> elems)
 {
-	for (GameElement* g : elems)
+	for (IElement* g : elems)
 	{
 		_map.push_back(g);
 	}

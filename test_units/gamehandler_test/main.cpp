@@ -15,10 +15,10 @@
         GameFactory             gf;
         ControllerFactory       controllerFactory;
         GameHandler             gh;
-		std::vector<GameElement*> elems;
+		std::vector<IElement*> elems;
 
-		GameElement* first = new GameElement();
-		GameElement* second = new GameElement();
+		IElement* first = new GameElement();
+		IElement* second = new GameElement();
 		elems.push_back(first);
 		elems.push_back(second);
 
@@ -27,8 +27,8 @@
 
 		first->setX(60);
 		first->setY(60);
-		first->setSizeX(1);
-		first->setSizeY(1);
+		first->setSizeX(20);
+		first->setSizeY(20);
 
 		second->setX(70);
 		second->setY(70); 

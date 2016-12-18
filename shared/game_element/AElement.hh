@@ -2,6 +2,7 @@
 #define AELEMENT_HH_
 
 #include	"IElement.hh"
+#include	<iostream>
 
 class AElement : public IElement
 {
@@ -43,7 +44,7 @@ public:
 	void		setAngle(float angle);
 	void		setSpeed(char speed);
 
-	void		collideWith(IElement*);
+	std::vector<IElement*>		collideWith(IElement*);
 };
 
 #endif

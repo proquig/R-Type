@@ -109,6 +109,8 @@ void					AElement::setSpeed(char speed)
 	_speed = speed;
 }
 
-void					AElement::collideWith(IElement* elem)
+std::vector<IElement*>					AElement::collideWith(IElement* elem)
 {
+	std::cout << this->getId() << " collides with " << elem->getId() << std::endl;
+	return std::vector<IElement*>();
 }

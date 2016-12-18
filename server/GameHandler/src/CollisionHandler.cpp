@@ -34,14 +34,14 @@ CollisionHandler&															CollisionHandler::operator=(const CollisionHandl
 * takes a list of entitys on the map
 * returns a vector of vectors of entitys in collision
 */
-std::vector<GameElement*> 														CollisionHandler::foundCollisions(std::vector<GameElement*>& entitys, std::vector<int>* collisionId)
+std::vector<IElement*> 														CollisionHandler::foundCollisions(std::vector<IElement*>& entitys, std::vector<int>* collisionId)
 {
-	std::vector<GameElement*>::iterator											it;
-	std::map<GameElement*, Rectangle>::iterator									mit;
-	std::map<GameElement*, Rectangle>::iterator									sit;
+	std::vector<IElement*>::iterator											it;
+	std::map<IElement*, Rectangle>::iterator									mit;
+	std::map<IElement*, Rectangle>::iterator									sit;
 	std::vector<Rectangle>														current;
-	std::vector<GameElement*>													ret;
-	std::vector<GameElement*>													tmp;
+	std::vector<IElement*>													ret;
+	std::vector<IElement*>													tmp;
 
 	_quadtree.clear();
 	for (it = entitys.begin(); it != entitys.end(); it++)
@@ -74,12 +74,12 @@ std::vector<GameElement*> 														CollisionHandler::foundCollisions(std::v
 * takes two entitys Id and vector of entitys
 * returns
 */
-std::vector<GameElement*>														CollisionHandler::handleCollision(int id, int pid, std::vector<GameElement*>& entitys, std::vector<int>* collisionId)
+std::vector<IElement*>														CollisionHandler::handleCollision(int id, int pid, std::vector<IElement*>& entitys, std::vector<int>* collisionId)
 {
-	std::vector<GameElement*>													ret;
-	GameElement																	*f = NULL;
-	GameElement																	*s = NULL;
-	std::vector<GameElement*>													tmp;
+	std::vector<IElement*>													ret;
+	IElement																	*f = NULL;
+	IElement																	*s = NULL;
+	std::vector<IElement*>													tmp;
 	int																			iF;
 	int																			iS;
 
@@ -98,32 +98,32 @@ std::vector<GameElement*>														CollisionHandler::handleCollision(int id,
 	}
 	if (f == NULL || s == NULL)
 		return ret;
-	//ret = f->collision(s);
-//	if (f->getHp() <= 0)
-//	{
+	ret = f->collideWith(s);
+	if (f->getHp() <= 0)
+	{
 		collisionId->push_back(entitys[iF]->getId());
 		addScore(entitys, entitys[iF]);
 		delete(entitys[iF]);
 		entitys.erase(entitys.begin() + iF);
 		if (iF < iS)
 			iS--;
-//	}
-//	if (s->getHp() <= 0)
-//	{
+	}
+	if (s->getHp() <= 0)
+	{
 		collisionId->push_back(entitys[iS]->getId());
 		if (entitys[iS])
 			addScore(entitys, entitys[iS]);
 		delete(entitys[iS]);
 		entitys.erase(entitys.begin() + iS);
-//	}
+	}
 	return (ret);
 }
 
-void																		CollisionHandler::addScore(std::vector<GameElement*>& entities, GameElement * entity)
+void																		CollisionHandler::addScore(std::vector<IElement*>& entities, IElement * entity)
 {
 	if (entity) {
-		if (entity->getType() == /*GameElement::BULLET*/ 0) {
-			for (std::vector<GameElement *>::iterator it = entities.begin(); it != entities.end(); it++) {
+		if (entity->getType() == /*IElement::BULLET*/ 0) {
+			for (std::vector<IElement *>::iterator it = entities.begin(); it != entities.end(); it++) {
 				if (*it) {
 					int id = (*it)->getId();
 					if (entity->getIdFrom())
@@ -154,9 +154,9 @@ bool																		CollisionHandler::isCollision(const Rectangle a, const Rec
 }
 
 /*! \brief getRectangles of CollisionHandler
-* returns map of GameElement*,Rectange
+* returns map of IElement*,Rectange
 */
-std::map<GameElement*, Rectangle>												CollisionHandler::getRectangles() const
+std::map<IElement*, Rectangle>												CollisionHandler::getRectangles() const
 {
 	return (_rectangles);
 }

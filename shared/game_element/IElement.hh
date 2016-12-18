@@ -1,6 +1,7 @@
 #ifndef IELEMENT_HH_
 #define IELEMENT_HH_
 
+#include <vector>
 #include <cstdint>
 
 class IElement
@@ -29,7 +30,7 @@ public:
 	virtual void setAngle(float) = 0;
 	virtual void setSpeed(char) = 0;
 	
-	virtual void collideWith(IElement*) = 0;
+	virtual std::vector<IElement*> collideWith(IElement*) = 0;
 
 };
 
