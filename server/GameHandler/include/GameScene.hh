@@ -7,7 +7,7 @@
 class GameScene
 {
 private:
-	std::vector<GameElement> 	_map;
+	std::vector<GameElement*> 	_map;
 	
 public:
 	GameScene();
@@ -15,6 +15,7 @@ public:
 	void						updateScene();
 	void						drawNewElem();
 	void						deleteElem(int);
+	std::vector<GameElement*>	getMap() const;
 };
 
 #endif

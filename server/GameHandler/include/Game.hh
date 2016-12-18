@@ -3,6 +3,7 @@
 
 #include "IGame.hh"
 #include "GameScene.hh"
+#include "CollisionHandler.hh"
 
 class Game : public IGame {
 

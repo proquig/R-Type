@@ -10,7 +10,6 @@
 
     int main(int ac, char *av[])
     {
-
         File *file = new File("./map.txt");
 
         GameFactory             gf;
@@ -24,8 +23,9 @@
 
         parser.parseTitle();
         parser.parsePlayer();
+		
         std::cerr << "END" << std::endl;
-        parser.parseElement();
-
+        //parser.parseElement();
+		
         return (0);
     }

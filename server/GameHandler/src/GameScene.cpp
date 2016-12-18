@@ -20,3 +20,8 @@ void			GameScene::deleteElem(int id)
 {
 }
 
+std::vector<GameElement*> GameScene::getMap() const
+{
+	return _map;
+}
+

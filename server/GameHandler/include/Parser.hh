@@ -8,7 +8,7 @@
 class Parser
 {
 private:
-	std::vector<GameElement> 	_line;
+	std::vector<GameElement*> 	_line;
 	File*						_file;
 	std::string              	data;
 	
@@ -20,7 +20,7 @@ public:
 	void 						parseTitle();
 	void        				parsePlayer();
 	void             			parseElement();
-	const std::vector<GameElement> &	getLine() const;
+	const std::vector<GameElement*> &	getLine() const;
 };
 
 #endif

@@ -17,6 +17,7 @@ add_library(rtype_gamehandler
 target_include_directories(rtype_gamehandler PUBLIC include)
 target_include_directories(rtype_gamehandler PRIVATE ${GAMEHANDLER_PLATFORM_INCLUDE})
 target_link_libraries(rtype_gamehandler PUBLIC rtype_game_element)
+target_include_directories(rtype_gamehandler PRIVATE ${CMAKE_SOURCE_DIR}/shared/game_element)
  
 # Flags for different platforms
 if (MSVC)

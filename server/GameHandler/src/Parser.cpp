@@ -17,7 +17,7 @@ Parser::~Parser()
 	delete _file;
 }
 
-const std::vector<GameElement>&	Parser::getLine() const {
+const std::vector<GameElement*>&	Parser::getLine() const {
 	return _line;
 }
 
@@ -44,7 +44,7 @@ void    Parser::parsePlayer() {
 			std::cerr << e.what() << std::endl;
 		}
 		gameElement->setId(id++);
-		_line.push_back(*gameElement);
+		_line.push_back(gameElement);
 		data.erase(0, data.find('\n') + 1);
 		data.erase(0, data.find('\n') + 1);
 	}
@@ -61,24 +61,24 @@ void     Parser::parseElement() {
 
 	while ((pos = data.find("\n", pos1)) != std::string::npos)
 	{
-//		pos1 = data.find('\n', pos);
+		pos1 = data.find('\n', pos);
 		players = data.substr(pos1, pos);
         std::cout<< "LOL:" << players << std::endl;
         data.erase(0, pos + 1);
 		GameElement                  *gameElement = new GameElement;
-/*		try {
+		try {
 			while ((pos = data.find(";", pos1)) != std::string::npos) {
 				size_t position = 0;
 				size_t position1 = 0;
 				position = players.find(';', position);
 				position1 = players.find(';', position + 1);
-				gameElement->setX((u_int16_t) std::stoi(players.substr(position + 1, players.find(';', position))));
-				gameElement->setY((u_int16_t) std::stoi(players.substr(position1 + 1)));
+				gameElement->setX((uint16_t) std::stoi(players.substr(position + 1, players.find(';', position))));
+				gameElement->setY((uint16_t) std::stoi(players.substr(position1 + 1)));
 			}
 		} catch (std::exception &e) {
 			std::cerr << e.what() << std::endl;
-		}*/
-	//	_line.push_back(gameElement);
+		}
+		_line.push_back(gameElement);
 	}
 }
 
@@ -100,6 +100,6 @@ void    Parser::parseTitle() {
 		std::cerr << e.what() << std::endl;
 	}
 	gameElement->setId(0);
-	_line.push_back(*gameElement);
+	_line.push_back(gameElement);
 	data.erase(0, data.find('\n'));
 }

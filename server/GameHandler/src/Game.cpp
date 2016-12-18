@@ -27,4 +27,3 @@ bool			Game::end()
 {
 	return true;
 }
-
