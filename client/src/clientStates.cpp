@@ -60,19 +60,26 @@ bool		ClientStates::gameState(void)
 	InputPacket		eventPacket;
 	std::string		serializedEvent;
 	
-	// CONNECT TO SERVER
+	// [TO-DO NETWORK] CONNECT TO SERVER
 	this->game_id	= 0;
 	this->packet_id = 0;
 
-	// RECEIVE FROM NETWORK
-	this->controller->elementAction(
-		ElementFactory::create(
-			1, PLAYER, "CYAN_STAY",
-			0, 0, 50, 50
-		)
-	);
-
 	while (!event || event->type != Event::QUIT) {
+
+		// [TO-DO NETWORK] RECEIVE GameDataPacket FROM NETWORK
+
+		// [TO-DO SERIALISATION] unserialize it and get id_element, x, y
+		// [TO-DO SERIALISATION] Implement type, width, height
+		// [TO-DO GRAPHICAL] Remove skin from factory and make it auto.
+
+		/*
+		this->controller->elementAction(
+			ElementFactory::create(
+				[id_element], PLAYER, "CYAN_STAY",
+				[x], [y], [width], [height]
+			)
+		);
+		*/
 
 		// Check for events
 		event = this->controller->eventAction();
@@ -84,10 +91,12 @@ bool		ClientStates::gameState(void)
 			eventPacket.setHeader(
 				IPacket::INPUT_DATA, IPacket::ACK_NEED,
 				MAGIC, this->game_id,
-				this->packet_id, serializedEvent.size(), 0
+				this->packet_id, 4242, 0
 			);
 			eventPacket.putInput(event->type);
 			serializedEvent = eventPacket.serialize();
+
+			// [TO-DO NETWORK] Send std::string serializedEvent to server
 
 			// Required for the threads
 			#ifdef __linux__ 
