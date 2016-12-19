@@ -15,7 +15,7 @@ namespace clientUDP {
 # define ACK_NEED			(char)16
 # define ACK_DONE			(char)32
 
-	struct PlayerGame {
+	struct ObstacleGame {
 		unsigned short	id;
 		unsigned short	lives;
 		unsigned int	score;

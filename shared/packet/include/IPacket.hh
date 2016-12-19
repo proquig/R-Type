@@ -34,7 +34,7 @@ public:
 	UNDEFINED		= -1,
 	INPUT_DATA		= 0,
 	GAME_DATA		= 1,
-	PLAYER_INFO		= 2,
+	Obstacle_INFO		= 2,
 	GAME_ELEM_INFO	= 3
   } PACKET_TYPE;
 

@@ -18,7 +18,7 @@ public:
 	~Parser();
 
 	void 						parseTitle();
-	void        				parsePlayer();
+	void        				parseObstacle();
 	void             			parseElement();
 	const std::vector<GameElement> &	getLine() const;
 };

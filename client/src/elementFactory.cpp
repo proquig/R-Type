@@ -15,8 +15,18 @@ AElement *	ElementFactory::create(unsigned int _id, ElementType type, std::strin
 	case PLAYER:
 		element = new Player();
 		break;
-
-		// Others ...
+	case MONSTER:
+		element = new Monster();
+		break;
+	case MISSILE:
+		element = new Missile();
+		break;
+	case OBSTACLE:
+		element = new Obstacle();
+		break;
+	case SET:
+		element = new Set();
+		break;
 
 	default:
 		// unknown TO-DO

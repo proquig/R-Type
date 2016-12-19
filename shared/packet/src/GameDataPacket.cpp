@@ -10,7 +10,7 @@
  * - CHECK SERIALIZATION & DESERIALIZATION GAMEELEMENT
  * - UPDATE SIZE
  * - TIMER
- * - PLAYERS
+ * - ObstacleS
  *
  */
 
@@ -29,7 +29,7 @@ GameDataPacket::~GameDataPacket()
 
 std::string GameDataPacket::serialize()
 {
-  // TODO: ADD UP TO 4 PLAYER & OTHER ELEMENTS
+  // TODO: ADD UP TO 4 Obstacle & OTHER ELEMENTS
   // TODO: ADD TIMER !!!
   APacket::serialize();
   for (uint8_t i = 0; i < this->_gameElements.size(); ++i)

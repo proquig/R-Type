@@ -4,7 +4,7 @@
 # include <iostream>
 # include "sprite.hh"
 
-# define PTC_PLAYER		(char)1
+# define PTC_Obstacle		(char)1
 # define PTC_MONSTER	(char)2
 # define PTC_MISSILE	(char)4
 # define PTC_OBSTACLE	(char)8

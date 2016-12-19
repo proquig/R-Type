@@ -21,8 +21,8 @@ const std::vector<GameElement>&	Parser::getLine() const {
 	return _line;
 }
 
-void    Parser::parsePlayer() {
-	std::string                  players;
+void    Parser::parseObstacle() {
+	std::string                  Obstacles;
 	size_t                       pos1 = 0;
 	size_t                       pos = 0;
 	uint32_t                    id = 1;
@@ -31,15 +31,15 @@ void    Parser::parsePlayer() {
 	while ((pos = data.find("J", pos1)) != std::string::npos)
 	{
 		pos1 = data.find('\n', pos);
-		players = data.substr(pos, pos1 - pos);
+		Obstacles = data.substr(pos, pos1 - pos);
 		GameElement                  *gameElement = new GameElement;
 		try {
 			size_t                       position = 0;
 			size_t                       position1 = 0;
-			position =   players.find(';', position);
-			position1 =  players.find(';', position + 1);
-			gameElement->setX((uint16_t) std::stoi(players.substr(position + 1, players.find(';', position))));
-			gameElement->setY((uint16_t) std::stoi(players.substr(position1 + 1)));
+			position =   Obstacles.find(';', position);
+			position1 =  Obstacles.find(';', position + 1);
+			gameElement->setX((uint16_t) std::stoi(Obstacles.substr(position + 1, Obstacles.find(';', position))));
+			gameElement->setY((uint16_t) std::stoi(Obstacles.substr(position1 + 1)));
 		} catch (std::exception &e) {
 			std::cerr << e.what() << std::endl;
 		}
@@ -54,7 +54,7 @@ void    Parser::parsePlayer() {
 void     Parser::parseElement() {
 	std::cout << "DATA:" << data << std::endl;
 
-    std::string                  players;
+    std::string                  Obstacles;
 	size_t                       pos1 = 0;
 	size_t                       pos = 0;
 	uint32_t                    id = 1;
@@ -62,18 +62,18 @@ void     Parser::parseElement() {
 	while ((pos = data.find("\n", pos1)) != std::string::npos)
 	{
 //		pos1 = data.find('\n', pos);
-		players = data.substr(pos1, pos);
-        std::cout<< "LOL:" << players << std::endl;
+		Obstacles = data.substr(pos1, pos);
+        std::cout<< "LOL:" << Obstacles << std::endl;
         data.erase(0, pos + 1);
 		GameElement                  *gameElement = new GameElement;
 /*		try {
 			while ((pos = data.find(";", pos1)) != std::string::npos) {
 				size_t position = 0;
 				size_t position1 = 0;
-				position = players.find(';', position);
-				position1 = players.find(';', position + 1);
-				gameElement->setX((u_int16_t) std::stoi(players.substr(position + 1, players.find(';', position))));
-				gameElement->setY((u_int16_t) std::stoi(players.substr(position1 + 1)));
+				position = Obstacles.find(';', position);
+				position1 = Obstacles.find(';', position + 1);
+				gameElement->setX((u_int16_t) std::stoi(Obstacles.substr(position + 1, Obstacles.find(';', position))));
+				gameElement->setY((u_int16_t) std::stoi(Obstacles.substr(position1 + 1)));
 			}
 		} catch (std::exception &e) {
 			std::cerr << e.what() << std::endl;

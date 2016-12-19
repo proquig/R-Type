@@ -201,7 +201,7 @@ APacket*	APacket::create(const std::string& data)
 	packet = new InputPacket();
   else if (APacket::getFirstOpCodePart(data) == APacket::GAME_DATA
 		  || APacket::getFirstOpCodePart(data) == APacket::GAME_ELEM_INFO
-		  || APacket::getFirstOpCodePart(data) == APacket::PLAYER_INFO)
+		  || APacket::getFirstOpCodePart(data) == APacket::Obstacle_INFO)
 	packet = new GameDataPacket();
   if (packet)
 	packet->unserialize(data);
