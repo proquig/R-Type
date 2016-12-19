@@ -10,6 +10,7 @@ class Timer : public ITimer, public Observable
 {
 protected:
   IThreadPool *_pool;
+  bool _stop;
   unsigned int _timer;
 public:
   Timer(IThreadPool* = nullptr);
@@ -17,6 +18,7 @@ public:
 public:
   virtual void addObserver(IObserver*);
   virtual void setTimer(unsigned int);
+  virtual void stop();
 protected:
   virtual void update(unsigned int);
 };

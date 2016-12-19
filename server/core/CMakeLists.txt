@@ -17,6 +17,7 @@ add_executable(rtype_server
 target_include_directories(rtype_server PUBLIC include)
 target_include_directories(rtype_server PRIVATE ${CMAKE_SOURCE_DIR}/shared/threadpool/include)
 target_include_directories(rtype_server PRIVATE ${CMAKE_SOURCE_DIR}/shared/network/include)
+target_include_directories(rtype_server PRIVATE ${CMAKE_SOURCE_DIR}/shared/timer/include)
 
 # Flags and libraries for different platforms
 if (MSVC)

@@ -3,7 +3,7 @@
 #include "IThreadPool.hh"
 
 Timer::Timer(IThreadPool *pool)
-    : _pool(pool)
+    : _pool(pool), _stop(false)
 {
 }
 
@@ -20,8 +20,15 @@ void Timer::setTimer(unsigned int timer)
     _timer = timer;
 }
 
+void Timer::stop()
+{
+  _stop = true;
+}
+
 void Timer::update(unsigned int timer)
 {
+  if (_stop)
+    return;
   std::this_thread::sleep_for(std::chrono::milliseconds(timer));
   notify(timer);
   if (_collectionObserver.size() >= 1 && _pool)

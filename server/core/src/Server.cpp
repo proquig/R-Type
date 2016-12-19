@@ -7,31 +7,40 @@
 #include "ISocket.hpp"
 #include "ISocketFactory.hpp"
 #include "IThreadPool.hh"
+#include "ITimer.hpp"
 
 Server::Server(unsigned short port)
-    : _dic(std::make_pair(nullptr, nullptr)), _stop(false), _waiting(false)
+    : _factory(nullptr), _pool(nullptr), _stop(false),
+    _timer(nullptr), _waiting(false)
 {
   _dlManager.add(0, "threadpool", "");
   _dlManager.add(0, "rtype_network", "");
+  _dlManager.add(0, "rtype_timer", "");
 }
 
 Server::~Server()
 {
   _network.removeObserver(this);
+  if (_timer)
+  {
+    _timer->stop();
+    reinterpret_cast<void *(*)(ITimer *)>(_dic[1]->at("destroy"))(_timer);
+  }
   if (_factory)
   {
     _network.stop();
-    reinterpret_cast<void *(*)(ISocketFactory *)>(_dic.second->at("destroy"))(_factory);
+    reinterpret_cast<void *(*)(ISocketFactory *)>(_dic[1]->at("destroy"))(_factory);
   }
   if (_pool)
   {
     _pool->stop();
-    reinterpret_cast<void *(*)(IThreadPool *)>(_dic.first->at("destroy"))(_pool);
+    reinterpret_cast<void *(*)(IThreadPool *)>(_dic[0]->at("destroy"))(_pool);
   }
-  if (_dic.first)
-    delete _dic.first;
-  if (_dic.second)
-    delete _dic.second;
+  for (Dictionary dic : _dic)
+  {
+    if (dic)
+      delete dic;
+  }
 }
 
 
@@ -46,6 +55,7 @@ bool Server::game_test(unsigned short port, unsigned short time)
 
 bool Server::init()
 {
+  Dictionary dic;
   std::string error;
 
   if (!_dlManager.handler.loadAll(error))
@@ -54,18 +64,24 @@ bool Server::init()
     return false;
   }
   std::cout << "Library load success" << std::endl;
-  if ((_dic.first = _dlManager.handler.getDictionaryByName("threadpool")) != NULL
-      && !_dic.first->empty()
-      && (_pool = reinterpret_cast<IThreadPool *(*)(size_t)>(_dic.first->at("instantiate"))(4)) != nullptr
+  if ((dic = _dlManager.handler.getDictionaryByName("threadpool")) != NULL
+      && !(*_dic.insert(_dic.end(), dic))->empty()
+      && (_pool = reinterpret_cast<IThreadPool *(*)(size_t)>(_dic.back()->at("instantiate"))(4)) != nullptr
       && ((_cond = _pool->createCondVar()) != nullptr)
       && ((_mutex = _pool->createMutex()) != nullptr))
     std::cout << "pool spawned" << std::endl;
   else
     return false;
-  if ((_dic.second = _dlManager.handler.getDictionaryByName("rtype_network")) != NULL
-      && !_dic.second->empty()
-    && (_factory = reinterpret_cast<ISocketFactory *(*)(IThreadPool*)>(_dic.second->at("instantiate"))(_pool)) != nullptr)
+  if ((dic = _dlManager.handler.getDictionaryByName("rtype_network")) != NULL
+      && !(*_dic.insert(_dic.end(), dic))->empty()
+      && (_factory = reinterpret_cast<ISocketFactory *(*)(IThreadPool*)>(_dic.back()->at("instantiate"))(_pool)) != nullptr)
     std::cout << "socketFactory spawned" << std::endl;
+  else
+    return false;
+  if ((dic = _dlManager.handler.getDictionaryByName("rtype_timer")) != NULL
+      && !(*_dic.insert(_dic.end(), dic))->empty()
+      && (_timer = reinterpret_cast<ITimer *(*)(IThreadPool*)>(_dic.back()->at("instantiate"))(_pool)) != nullptr)
+    std::cout << "timer spawned" << std::endl;
   else
     return false;
   _network = NetworkHandler(_factory);
