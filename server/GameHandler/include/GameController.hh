@@ -20,6 +20,8 @@ private:
 	int				_clock;
   	ISocket 		*_socket;
   	ITimer 			*_timer;
+	int				_delta;
+	int				_tick;
 
 public:
 	GameController(IGame*, ISocket* = nullptr, ITimer* = nullptr);
@@ -29,7 +31,10 @@ public:
 	void				setGame(IGame*);
 	bool				initGame(File*);
 	void				startGame();
-  virtual void update(int);
+	int					getDelta() const;
+	void				setDelta(int);
+	int					getTick() const;
+	virtual void update(int);
 	virtual void update(IObservable*, int);
 	ElementFactory&		getElementFactory();
   virtual ISocket* getSocket();

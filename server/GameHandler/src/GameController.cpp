@@ -9,6 +9,7 @@ GameController::GameController(IGame* game, ISocket *socket, ITimer *timer)
     _socket->addObserver(this);
   if (_timer)
     _timer->addObserver(this);
+  _tick = 0;
 }
 
 GameController::~GameController()
@@ -55,8 +56,13 @@ void			GameController::handleCollisions()
 
 void GameController::update(int timer)
 {
-  //First timer is not accurate at all
-  //Timer show elapsed millesonds since last call to update
+	_tick += timer;
+	if (_tick >= _delta)
+	{
+		_tick = 0;
+		//appel tes fonctions ici :D ça devrais marcher.
+		// Faire attention de bien set la variable _delta (en milisecondes entre chaque passage)
+	}
 }
 
 void GameController::update(IObservable *o, int status)
@@ -84,3 +90,17 @@ ISocket *GameController::getSocket()
   return _socket;
 }
 
+int	GameController::getDelta() const
+{
+	return (_delta);
+}
+
+void GameController::setDelta(int delta)
+{
+	_delta = delta;
+}
+
+int GameController::getTick() const
+{
+	return (_tick);
+}
