@@ -19,6 +19,7 @@ void	SFMLWindow::run(WorkQueue<AElement *> *_elemqueue, WorkQueue<Event *> *_eve
 		this->pollEvent();
 		this->renderScene();
 		this->render();
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
 	}
 }
 
@@ -68,7 +69,7 @@ void											SFMLWindow::render(void)
 
 void	SFMLWindow::pollEvent(void)
 {
-	while (this->handler->waitEvent(this->event))
+	while (this->handler->pollEvent(this->event))
 	{
 		sf::Vector2i	mouse = sf::Mouse::getPosition();
 		sf::Vector2u	size = this->handler->getSize();
