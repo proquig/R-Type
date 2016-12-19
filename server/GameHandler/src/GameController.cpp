@@ -105,3 +105,8 @@ int GameController::getTick() const
 {
 	return (_tick);
 }
+
+IGame* GameController::getGame() const
+{
+	return _game;
+}

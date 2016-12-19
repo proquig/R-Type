@@ -128,7 +128,7 @@ void																		CollisionHandler::addScore(std::vector<IElement*>& entitie
 					int id = (*it)->getId();
 					if (entity->getIdFrom())
 						if (id == entity->getIdFrom()) {
-							std::cout << "id = " << entity->getIdFrom();
+							//std::cout << "id = " << entity->getIdFrom();
 							//(*it)->setHighScore((*it)->getHighScore() + 10);
 						}
 				}
