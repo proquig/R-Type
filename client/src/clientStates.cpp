@@ -237,6 +237,7 @@ void ClientStates::update(IObservable *o, int status)
           std::cout << "Valid packet received" << std::endl;
         //TODO CHECK SOURCE
         _paquetQueue.push(packet);
+        ref.erase(ref.begin(), ref.end());
         if (_waiting)
           _cond->signal();
       }
