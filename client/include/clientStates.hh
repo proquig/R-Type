@@ -11,15 +11,21 @@
 # include <vector>
 # include "graphicalController.hh"
 # include "element.hh"
+# include "DLManager.hh"
+#include "IObserver.hpp"
 
 # define Y_SPEED	10
 # define X_SPEED	10
 
-class ClientStates
+class ICondVar;
+class IMutex;
+class ISocketFactory;
+class ISocket;
+class IThreadPool;
+
+class ClientStates : public IObserver
 {
-
 public:
-
 	enum state
 	{
 		TEST,
@@ -39,11 +45,26 @@ private:
 	// Controllers
 	GraphicalController	*controller;
 
-	// Network
-	uint8_t				game_id;
-	uint8_t				packet_id;
+	//Bool
+	bool _init;
+	bool _waiting;
+	bool _stop;
+	//DLLoader
+	std::vector<Dictionary> _dic;
+	DLManager _dlManager;
+	//ThreadPool
+	ICondVar *_cond;
+	IMutex *_mutex;
+	IThreadPool *_pool;
+	//Network
+	uint8_t game_id;
+	uint8_t packet_id;
+	ISocketFactory *_socketFactory;
+	ISocket *_socket;
 
 public:
+	ClientStates();
+	virtual ~ClientStates();
 
 	bool			run(state);
 	std::string		getErr(void) const;
@@ -58,7 +79,9 @@ public:
 	bool	scoreState(void);
 	bool	endState(void);
 	bool	testState(void);
-
+	virtual void update(IObservable*, int);
+protected:
+	bool init();
 };
 
 

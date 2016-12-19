@@ -1,13 +1,16 @@
 #include "SFMLWindow.hh"
+#include "IObservable.hpp"
+
 
 ////////////////////////////////////////////////////////////////////
 // WINDOW
 ////////////////////////////////////////////////////////////////////
 
-void	SFMLWindow::run(WorkQueue<AElement *> *_elemqueue, WorkQueue<Event *> *_eventqueue)
+void	SFMLWindow::run(WorkQueue<AElement *> *_elemqueue, WorkQueue<Event *> *_eventqueue, IObservable* _obs)
 {
 	this->elementQueue = _elemqueue;
 	this->eventQueue = _eventqueue;
+	this->obs = _obs;
 	this->scene = std::vector<AElement *>();
 	this->handler = new sf::RenderWindow(sf::VideoMode(this->width, this->height), this->name);
 	this->handler->clear(sf::Color::Black);
@@ -65,7 +68,7 @@ void											SFMLWindow::render(void)
 
 void	SFMLWindow::pollEvent(void)
 {
-	while (this->handler->pollEvent(this->event))
+	while (this->handler->waitEvent(this->event))
 	{
 		sf::Vector2i	mouse = sf::Mouse::getPosition();
 		sf::Vector2u	size = this->handler->getSize();
@@ -101,12 +104,14 @@ void	SFMLWindow::pollEvent(void)
 				this->eventQueue->push(new Event(Event::ENTER, "ENTER", _x, _y, _w, _h));
 				break;
 			default:
-				break;
+				return;
 			}
 			break;
 		default:
-			break;
+			return;
 		}
+		if (obs)
+			obs->notify(0);
 	}
 }
 

@@ -1,4 +1,37 @@
 #include "clientStates.hh"
+#include "ICondVar.hh"
+#include "IMutex.hh"
+#include "ISocket.hpp"
+#include "ISocketFactory.hpp"
+#include "IThreadPool.hh"
+
+ClientStates::ClientStates()
+    : _init(false), _stop(false), _waiting(false),
+    _cond(nullptr), _mutex(nullptr), _pool(nullptr),
+    _socketFactory(nullptr), _socket(nullptr)
+{
+  _dlManager.add(0, "threadpool", "");
+  _dlManager.add(0, "rtype_network", "");
+}
+
+ClientStates::~ClientStates()
+{
+  if (_socketFactory)
+  {
+    _socketFactory->stopPoller();
+    reinterpret_cast<void *(*)(ISocketFactory *)>(_dic[1]->at("destroy"))(_socketFactory);
+  }
+  if (_pool)
+  {
+    _pool->stop();
+    reinterpret_cast<void *(*)(IThreadPool *)>(_dic[0]->at("destroy"))(_pool);
+  }
+  for (Dictionary dic : _dic)
+  {
+    if (dic)
+      delete dic;
+  }
+}
 
 bool	ClientStates::run(state to)
 {
@@ -44,7 +77,10 @@ bool	ClientStates::launchState(void)
 {
 	this->controller	= new GraphicalController(SFML, 800, 450, "R-type");
 
+  controller->addObserver(this);
 	this->controller->initAction();
+  if (!_init && !init())
+      return false;
 	return this->run(MENU);
 }
 
@@ -56,57 +92,39 @@ bool	ClientStates::menuState(void)
 
 bool		ClientStates::gameState(void)
 {
-	Event			*event = NULL;
-	InputPacket		eventPacket;
-	std::string		serializedEvent;
-	
-	// [TO-DO NETWORK] CONNECT TO SERVER
-	this->game_id	= 0;
-	this->packet_id = 0;
+  Event			*event = nullptr;
 
-	while (!event || event->type != Event::QUIT) {
+  _mutex->lock();
+  while (!_stop)
+  {
+    _waiting = true;
+    _cond->wait(_mutex);
+    _waiting = false;
+    if (!_stop)
+    {
+      while ((event = this->controller->eventAction()) != nullptr)
+      {
+        if (event->type == Event::QUIT)
+        {
+          _stop = true;
+          break;
+        }
+        InputPacket		eventPacket;
+        std::string		serializedEvent;
 
-		// [TO-DO NETWORK] RECEIVE GameDataPacket FROM NETWORK
+        eventPacket.setHeader(
+            IPacket::INPUT_DATA, IPacket::ACK_NEED,
+            MAGIC, this->game_id,
+            this->packet_id, 4242, 0
+        );
 
-		// [TO-DO SERIALISATION] unserialize it and get id_element, x, y
-		// [TO-DO SERIALISATION] Implement type, width, height
-		// [TO-DO GRAPHICAL] Remove skin from factory and make it auto.
-
-		/*
-		this->controller->elementAction(
-			ElementFactory::create(
-				[id_element], PLAYER, "CYAN_STAY",
-				[x], [y], [width], [height]
-			)
-		);
-		*/
-
-		// Check for events
-		event = this->controller->eventAction();
-
-		// Event received
-		if (event) {
-
-			// SERIALIZE EVENT
-			eventPacket.setHeader(
-				IPacket::INPUT_DATA, IPacket::ACK_NEED,
-				MAGIC, this->game_id,
-				this->packet_id, 4242, 0
-			);
-			eventPacket.putInput(event->type);
-			serializedEvent = eventPacket.serialize();
-
-			// [TO-DO NETWORK] Send std::string serializedEvent to server
-
-			// Required for the threads
-			#ifdef __linux__ 
-				sleep(20);
-			#elif _WIN32
-				Sleep(20);
-			#endif
-		}
-	}
-	return true;
+        eventPacket.putInput(event->type);
+        serializedEvent = eventPacket.serialize();
+      }
+    }
+  }
+  _mutex->unlock();
+  return true;
 }
 
 bool	ClientStates::scoreState(void)
@@ -185,4 +203,46 @@ bool	ClientStates::testState(void)
 		}
 	}
 	return true;
+}
+
+
+void ClientStates::update(IObservable *o, int status)
+{
+  if (controller && o == controller)
+  {
+    if (_waiting)
+      _cond->signal();
+  }
+  if (_socket && o == _socket)
+  {
+  }
+}
+
+bool ClientStates::init()
+{
+  Dictionary dic;
+  std::string error;
+
+  if (!_dlManager.handler.loadAll(error))
+  {
+    std::cout << "Failed loading library module : " << error << std::endl;
+    return false;
+  }
+  std::cout << "Library load success" << std::endl;
+  if ((dic = _dlManager.handler.getDictionaryByName("threadpool")) != NULL
+      && !(*_dic.insert(_dic.end(), dic))->empty()
+      && (_pool = reinterpret_cast<IThreadPool *(*)(size_t)>(_dic.back()->at("instantiate"))(4)) != nullptr
+      && ((_cond = _pool->createCondVar()) != nullptr)
+      && ((_mutex = _pool->createMutex()) != nullptr))
+    std::cout << "pool spawned" << std::endl;
+  else
+    return false;
+  if ((dic = _dlManager.handler.getDictionaryByName("rtype_network")) != NULL
+      && !(*_dic.insert(_dic.end(), dic))->empty()
+      && (_socketFactory = reinterpret_cast<ISocketFactory *(*)(IThreadPool*)>(_dic.back()->at("instantiate"))(_pool)) != nullptr)
+    std::cout << "_socketFactory spawned" << std::endl;
+  else
+    return false;
+  _init = true;
+  return (true);
 }

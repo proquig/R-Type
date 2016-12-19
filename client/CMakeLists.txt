@@ -13,6 +13,8 @@ add_executable(rtype_client
     ${RTYPE_CLIENT_INCS}
     )
 
+target_link_libraries(rtype_client PUBLIC dlloader rtype_observer rtype_game_element)
+
 if (SFML_EXTERNAL)
   target_link_libraries(rtype_client PUBLIC sfml-system sfml-window sfml-graphics sfml-audio)
 else()
@@ -28,6 +30,8 @@ endif()
 target_include_directories(rtype_client PUBLIC include)
 target_include_directories(rtype_client PRIVATE ${SFML_INCLUDE_DIR})
 target_include_directories(rtype_client PRIVATE ${CMAKE_SOURCE_DIR}/shared/packet/include)
+target_include_directories(rtype_client PRIVATE ${CMAKE_SOURCE_DIR}/shared/threadpool/include)
+target_include_directories(rtype_client PRIVATE ${CMAKE_SOURCE_DIR}/shared/network/include)
 
 target_link_libraries(rtype_client PRIVATE packet)
 

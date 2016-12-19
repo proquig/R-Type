@@ -9,12 +9,13 @@ class SFMLWindow : public AWindow
 
 	sf::RenderWindow	*handler;
 	sf::Event			event;
+	IObservable *obs;
 
 public:
 
 	SFMLWindow(int _w, int _h, std::string _name) : AWindow(_w, _h, _name) {}
 
-	void	run(WorkQueue<AElement *> *, WorkQueue<Event *> *);
+	void	run(WorkQueue<AElement *> *, WorkQueue<Event *> *, IObservable*);
 	void	pollEvent(void);
 	void	renderScene(void);
 	void	render(void);

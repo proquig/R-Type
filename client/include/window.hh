@@ -10,6 +10,8 @@
 
 # define EVENT_TIMER	1000
 
+class IObservable;
+
 struct Event
 {
 	enum Type {
@@ -37,7 +39,7 @@ class IWindow
 
 public:
 
-	virtual void	run(WorkQueue<AElement *> *, WorkQueue<Event *> *) = 0;
+	virtual void	run(WorkQueue<AElement *> *, WorkQueue<Event *> *, IObservable* = nullptr) = 0;
 	virtual void	pollEvent(void) = 0;
 	virtual void	renderScene(void) = 0;
 	virtual void	render(void) = 0;

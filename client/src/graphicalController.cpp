@@ -25,7 +25,7 @@ bool	GraphicalController::initAction(void)
 void	GraphicalController::windowAction(void)
 {
 	std::cout << "Start Window ..." << std::endl;
-	this->window->run(this->windowQueue, this->eventQueue);
+	this->window->run(this->windowQueue, this->eventQueue, this);
 }
 
 void	GraphicalController::elementAction(AElement *element)
