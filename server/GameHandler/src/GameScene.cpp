@@ -11,8 +11,16 @@ GameScene::~GameScene()
 
 void			GameScene::updateScene()
 {
-	for (IElement* elem : _map)
+	std::vector<IElement*>::iterator it = _map.begin();
+	while (it != _map.end())
 	{
+		IElement* elem = (*it);
+		if (!_bounds.isIn(*(new Rectangle(elem->getX(), elem->getY(), elem->getSizeX(), elem->getSizeY()))))
+		{
+			it = _map.erase(it);
+		}
+		else
+		it++;
 	}
 }
 
