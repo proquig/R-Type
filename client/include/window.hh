@@ -14,6 +14,7 @@ struct Event
 {
 	enum Type {
 		QUIT = 0,
+		RESIZE,
 		ENTER,
 		UP,
 		DOWN,
@@ -25,8 +26,10 @@ struct Event
 	char	*name;
 	Type	type;
 	Coords	*mouse;
+	Coords	*size;
 
-	Event(Type _type, char *_name, int _x, int _y) : type(_type), name(_name), mouse(new Coords(_x, _y)) {}
+	Event(Type _type, char *_name, int _x, int _y, int _w, int _h)
+		: type(_type), name(_name), mouse(new Coords(_x, _y)), size(new Coords(_w, _h)) {}
 };
 
 class IWindow

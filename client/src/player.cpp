@@ -10,13 +10,14 @@ void	Player::loadSprites(GLib lib)
 		break;
 	}
 
-	this->sprite->addRessource("cyan_stay", std::vector<Cut *>{new Cut(66, 0, 33, 19), new Cut(33, 0, 33, 19), new Cut(0, 0, 33, 19)});
+	this->sprite->addRessource("CYAN_STAY", std::vector<Cut *>{new Cut(66, 0, 33, 19), new Cut(33, 0, 33, 19), new Cut(0, 0, 33, 19)});
+
+	// Init on cyan_stay
+	this->sprite->setAnimation("CYAN_STAY", new Coords(0, 0), new Coords(50, 50));
+
 	this->sprite->setAnimated(true);
 	this->sprite->setAnimTime(500);
 	this->sprite->setLoop(true);
-
-	// Init on cyan_stay
-	this->sprite->setAnimation("cyan_stay", new Coords(0, 0), new Coords(50, 50));
 }
 
 void	Player::print(void * window)

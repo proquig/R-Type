@@ -12,11 +12,17 @@
 # include "graphicalController.hh"
 # include "element.hh"
 
+# define Y_SPEED	10
+# define X_SPEED	10
+
 class ClientStates
 {
 
+public:
+
 	enum state
 	{
+		TEST,
 		LAUNCH,
 		MENU,
 		GAME,
@@ -24,6 +30,8 @@ class ClientStates
 		END,
 		PREVIOUS
 	};
+
+private:
 
 	std::vector<state>	history;
 	std::string			error;
@@ -49,6 +57,7 @@ public:
 	bool	gameState(void);
 	bool	scoreState(void);
 	bool	endState(void);
+	bool	testState(void);
 
 };
 

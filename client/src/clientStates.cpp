@@ -23,6 +23,8 @@ bool	ClientStates::run(state to)
 		break;
 	case END: return this->endState();
 		break;
+	case TEST: return this->testState();
+		break;
 	default: return false;
 		break;
 	}
@@ -65,7 +67,7 @@ bool		ClientStates::gameState(void)
 	// RECEIVE FROM NETWORK
 	this->controller->elementAction(
 		ElementFactory::create(
-			1, PLAYER, "cyan_stay",
+			1, PLAYER, "CYAN_STAY",
 			0, 0, 50, 50
 		)
 	);
@@ -79,13 +81,13 @@ bool		ClientStates::gameState(void)
 		if (event) {
 
 			// SERIALIZE EVENT
-			eventPacket.putInput(event->type);
-			serializedEvent = eventPacket.serialize();
 			eventPacket.setHeader(
 				IPacket::INPUT_DATA, IPacket::ACK_NEED,
 				MAGIC, this->game_id,
 				this->packet_id, serializedEvent.size(), 0
 			);
+			eventPacket.putInput(event->type);
+			serializedEvent = eventPacket.serialize();
 
 			// Required for the threads
 			#ifdef __linux__ 
@@ -106,5 +108,72 @@ bool	ClientStates::scoreState(void)
 bool	ClientStates::endState(void)
 {
 	std::cout << "Bye Bye !" << std::endl;
+	return true;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
+// UNIT_TEST
+/////////////////////////////////////////////////////////////////////////////////////////
+
+bool	ClientStates::testState(void)
+{
+	Event			*event = NULL;
+	Coords			*player = new Coords(200, 20);
+	Coords			*windowSize = new Coords(800, 450);
+
+	std::cout << "=================================" << std::endl;
+	std::cout << "============  TEST  =============" << std::endl;
+	std::cout << "=================================" << std::endl << std::endl;
+
+	this->controller = new GraphicalController(SFML, windowSize->x, windowSize->y, "R-type - Graphical tests");
+	this->controller->initAction();
+
+	/*
+	this->controller->elementAction(
+		ElementFactory::create(
+			1, SET, "WASTE_LAND",
+			0, 0, windowSize->x, windowSize->y
+		)
+	);
+	*/
+
+	while (!event || event->type != Event::QUIT) {
+		if (event = this->controller->eventAction()) {
+			switch (event->type) {
+				case Event::UP: player->y -= Y_SPEED; break;
+				case Event::DOWN: player->y += Y_SPEED; break;
+				case Event::RIGHT: player->x += X_SPEED; break;
+				case Event::LEFT: player->x -= X_SPEED; break;
+				case Event::RESIZE: windowSize = event->size; break;
+				default: break;
+			}
+
+			/*
+			if (player->x < 0)
+				player->x = 0;
+			if (player->x > windowSize->x)
+				player->x = windowSize->x;
+			if (player->y < 0)
+				player->y = 0;
+			if (player->y > windowSize->y)
+				player->y = windowSize->y;
+
+				*/
+			this->controller->elementAction(
+				ElementFactory::create(
+					1, PLAYER, "CYAN_STAY",// + std::string(event->name),
+					player->x, player->y, 300, 200
+				)
+			);
+
+			// Required for the threads
+			#ifdef __linux__ 
+				sleep(20);
+			#elif _WIN32
+				Sleep(20);
+			#endif
+		}
+	}
 	return true;
 }

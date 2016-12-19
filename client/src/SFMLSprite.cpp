@@ -7,10 +7,8 @@ void				SFMLSprite::init()
 	//_delta = _clock.restart();
 	//std::cout << "isAnimated = " << _isAnimated << std::endl;
 	//_isAnimated = false;
-	if (_tex.loadFromFile(_path))
-	{
-		std::cout << "Texture loaded." << std::endl;
-	}
+	if (_tex.loadFromFile(_path));
+		//std::cout << "Texture loaded." << std::endl;
 	//Generation du sprite courrant a partir du path
 	return;
 }
