@@ -136,10 +136,12 @@ bool		ClientStates::gameState(void)
         serializedEvent = eventPacket.serialize();
         if (_socket)
           this->_socket->write(std::vector<unsigned char>(serializedEvent.begin(), serializedEvent.end()), &_sockaddr);
+        _ref = _clock.now();
       }
       //PACKET RECEPTION
       while ((packet = _paquetQueue.pop()) != nullptr)
       {
+        delete packet;
       }
     }
   }
