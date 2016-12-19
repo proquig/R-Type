@@ -8,9 +8,10 @@
 #include "ISocketFactory.hpp"
 #include "IThreadPool.hh"
 #include "ITimer.hpp"
+#include "File.hh"
 
 Server::Server(unsigned short port)
-    : _factory(nullptr), _pool(nullptr), _stop(false),
+    : _socketFactory(nullptr), _pool(nullptr), _stop(false),
     _timer(nullptr), _waiting(false)
 {
   _dlManager.add(0, "threadpool", "");
@@ -26,10 +27,10 @@ Server::~Server()
     _timer->stop();
     reinterpret_cast<void *(*)(ITimer *)>(_dic[1]->at("destroy"))(_timer);
   }
-  if (_factory)
+  if (_socketFactory)
   {
     _network.stop();
-    reinterpret_cast<void *(*)(ISocketFactory *)>(_dic[1]->at("destroy"))(_factory);
+    reinterpret_cast<void *(*)(ISocketFactory *)>(_dic[1]->at("destroy"))(_socketFactory);
   }
   if (_pool)
   {
@@ -46,8 +47,11 @@ Server::~Server()
 
 bool Server::game_test(unsigned short port, unsigned short time)
 {
+  File *file = new File("./map.txt");
+
+  GameController* gc = _controllerFactory.create(file);
   if (port != 0)
-    _test = _factory->createSocketUDP(this, port);
+    _test = _socketFactory->createSocketUDP(this, port);
   if (time != 0)
     _pool->addTask(_pool->createTask(std::bind(&Server::stop, this, time)));
   return true;
@@ -74,8 +78,8 @@ bool Server::init()
     return false;
   if ((dic = _dlManager.handler.getDictionaryByName("rtype_network")) != NULL
       && !(*_dic.insert(_dic.end(), dic))->empty()
-      && (_factory = reinterpret_cast<ISocketFactory *(*)(IThreadPool*)>(_dic.back()->at("instantiate"))(_pool)) != nullptr)
-    std::cout << "socketFactory spawned" << std::endl;
+      && (_socketFactory = reinterpret_cast<ISocketFactory *(*)(IThreadPool*)>(_dic.back()->at("instantiate"))(_pool)) != nullptr)
+    std::cout << "_socketFactory spawned" << std::endl;
   else
     return false;
   if ((dic = _dlManager.handler.getDictionaryByName("rtype_timer")) != NULL
@@ -84,7 +88,7 @@ bool Server::init()
     std::cout << "timer spawned" << std::endl;
   else
     return false;
-  _network = NetworkHandler(_factory);
+  _network = NetworkHandler(_socketFactory);
   _network.addObserver(this);
   return (_network.getState() == NetworkHandler::RUNNING);
 }

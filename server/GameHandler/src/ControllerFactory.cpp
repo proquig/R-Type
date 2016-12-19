@@ -1,4 +1,7 @@
 #include "ControllerFactory.hh"
+#include "Parser.hh"
+#include "Game.hh"
+#include "GameController.hh"
 
 ControllerFactory::ControllerFactory()
 {
@@ -9,11 +12,12 @@ ControllerFactory::~ControllerFactory()
 {
 }
 
-GameController* ControllerFactory::create(File *file){
+GameController* ControllerFactory::create(File *file, ISocket* socket, ITimer* timer)
+{
 	
 	Parser parser = (*new Parser(file));
 	IGame*	game = new Game(_gameId++);
-	GameController* controller = new GameController(game);
+	GameController* controller = new GameController(game, socket, timer);
 	game->addPlayer(controller->getElementFactory().createPlayer(50, 50, 50, 10, 10, 10, 0, 2));
 	game->addPlayer(controller->getElementFactory().createPlayer(500, 500, 50, 10, 10, 10, 0, 2));
 	game->addPlayer(controller->getElementFactory().createPlayer(5, 5, 50, 10, 10, 10, 0, 2));

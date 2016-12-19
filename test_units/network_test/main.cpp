@@ -28,7 +28,7 @@ int main(void)
     if (pool && (dic.second = dlManager.handler.getDictionaryByName("rtype_network")) != NULL
         && !dic.second->empty()
         && (socketFactory = reinterpret_cast<ISocketFactory *(*)(IThreadPool*)>(dic.second->at("instantiate"))(pool)) != nullptr)
-      std::cout << "socketFactory spawned" << std::endl;
+      std::cout << "_socketFactory spawned" << std::endl;
     if (pool && socketFactory)
     {
       if ((server = new Server(socketFactory, pool)) != nullptr)

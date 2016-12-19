@@ -1,9 +1,10 @@
 #ifndef GAMEHANDLER_CONTROLLERFACTORY_HH
 #define GAMEHANDLER_CONTROLLERFACTORY_HH
 
-#include	"GameController.hh"
-#include	"Game.hh"
-#include	"Parser.hh"
+class File;
+class GameController;
+class ISocket;
+class ITimer;
 
 class ControllerFactory {
 private:
@@ -12,7 +13,7 @@ private:
 public:
 	ControllerFactory();
 	~ControllerFactory();
-	GameController* create(File *file);
+	GameController* create(File *file, ISocket* = nullptr, ITimer* = nullptr);
 };
 
 #endif

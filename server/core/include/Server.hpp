@@ -1,6 +1,7 @@
 #ifndef R_TYPE_SERVER_HPP_
 #define R_TYPE_SERVER_HPP_
 
+#include "ControllerFactory.hh"
 #include "DLManager.hh"
 #include "NetworkHandler.hpp"
 
@@ -16,7 +17,8 @@ protected:
   ICondVar *_cond;
   std::vector<Dictionary> _dic;
   DLManager _dlManager;
-  ISocketFactory *_factory;
+  ISocketFactory *_socketFactory;
+  ControllerFactory _controllerFactory;
   IMutex *_mutex;
   NetworkHandler _network;
   IThreadPool *_pool;

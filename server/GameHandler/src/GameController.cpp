@@ -1,12 +1,23 @@
 #include "GameController.hh"
+#include "ISocket.hpp"
+#include "ITimer.hpp"
 
-GameController::GameController(IGame* game) : _collisionHandler(1920, 1080)
+GameController::GameController(IGame* game, ISocket *socket, ITimer *timer)
+    : _collisionHandler(1920, 1080), _game(game), _socket(socket), _timer(timer)
 {
-	_game = game;
+  if (_socket)
+    _socket->addObserver(this);
+  if (_timer)
+    _timer->addObserver(this);
 }
 
 GameController::~GameController()
-{}
+{
+  if (_socket)
+    _socket->removeObserver(this);
+  if (_timer)
+    _timer->removeObserver(this);
+}
 
 void			GameController::setGame(IGame* game)
 {
@@ -42,13 +53,34 @@ void			GameController::handleCollisions()
 	}
 }
 
-void GameController::update(IObservable *, int)
+void GameController::update(int timer)
 {
+  //First timer is not accurate at all
+  //Timer show elapsed millesonds since last call to update
+}
 
+void GameController::update(IObservable *o, int status)
+{
+  if (_socket && o == _socket)
+  {
+    if (status & ISocket::READ)
+    {
+    }
+    if (status & ISocket::CLOSE)
+    {
+    }
+  }
+  if (_timer && o == _timer)
+    update(status);
 }
 
 ElementFactory& GameController::getElementFactory()
 {
 	return _elemFact;
+}
+
+ISocket *GameController::getSocket()
+{
+  return _socket;
 }
 

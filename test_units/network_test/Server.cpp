@@ -8,7 +8,7 @@
 #include "IThreadPool.hh"
 
 Server::Server(ISocketFactory *factory, IThreadPool *pool)
-    : _cond(nullptr), _factory(factory), _init(false), _listener(nullptr),
+    : _cond(nullptr), _socketFactory(factory), _init(false), _listener(nullptr),
     _mutex(nullptr), _pool(pool), _stop(false), _udpSocket(nullptr),
     _waiting(false)
 {
@@ -18,8 +18,8 @@ Server::Server(ISocketFactory *factory, IThreadPool *pool)
     _mutex = _pool->createMutex();
     if (_cond && _mutex)
     {
-      _listener = _factory->createListener();
-      _udpSocket = _factory->createSocketUDP(this, 4242);
+      _listener = _socketFactory->createListener();
+      _udpSocket = _socketFactory->createSocketUDP(this, 4242);
       if (_listener && _udpSocket)
       {
         _listener->addObserver(this);
