@@ -1,6 +1,7 @@
 #include <iostream>
 #include <thread>
 #include <InputPacket.hh>
+#include <GameDataPacket.hh>
 #include "Server.hpp"
 #include "APacket.hh"
 #include "ICondVar.hh"
@@ -138,15 +139,16 @@ void Server::update(IObservable *o, int status)
       {
         IPacket *packet;
         std::string data(ref.begin(), ref.end());
+        std::cout << "SIZE = " << data.size() << std::endl;
         if ((packet = APacket::create(data)) != nullptr)
-		{
-		  this->handleSocket(addr);
-		  if (packet->getType() == APacket::INPUT_DATA)
-			for (int i = 0; i < ((InputPacket *) packet)->getInputs().size(); ++i)
-			  std::cout << "INPUT[" << i << "]=" << (int) ((InputPacket *) packet)->getInputs()[i] << std::endl;
-		}
-        _test->write(ref, addr);
-        std::cout << ref.size() << std::endl;
+          if (packet->getType() == APacket::INPUT_DATA)
+          {
+            this->handleSocket(addr);
+            for (int i = 0; i < ((InputPacket *) packet)->getInputs().size(); ++i)
+              std::cout << "INPUT[" << i << "]=" << (int) ((InputPacket *) packet)->getInputs()[i] << std::endl;
+          }
+        //_test->write(ref, addr);
+        //std::cout << ref.size() << std::endl;
         ref.erase(ref.begin(), ref.end());
       }
     }
@@ -158,6 +160,7 @@ void Server::update(IObservable *o, int status)
 
 void Server::handleSocket(struct sockaddr *addr)
 {
+  Player  *player = nullptr;
   int16_t i = -1;
   while (++i < this->_rooms.size()
 		 && !this->_rooms[i]->socketIsPresent(addr)
@@ -167,11 +170,17 @@ void Server::handleSocket(struct sockaddr *addr)
 	   && this->_rooms[i]->isFull()))
   {
 	std::cout << "NEW ROOM" << std::endl;
-	this->_rooms.push_back(new Room(new Player, addr));
+    player = new Player;
+	this->_rooms.push_back(new Room(player, addr));
+    this->_rooms.back()->sendNotification(_test);
   }
   else if (!this->_rooms[i]->socketIsPresent(addr))
   {
 	std::cout << "NEW PLAYER" << std::endl;
-	this->_rooms[i]->addPlayer(new Player, addr);
+    player = new Player;
+    this->_rooms[i]->addPlayer(player, addr);
+    this->_rooms.back()->sendNotification(_test);
   }
+  else
+    this->_rooms.back()->sendNotification(_test);
 }

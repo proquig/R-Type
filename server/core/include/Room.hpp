@@ -7,6 +7,7 @@
 
 # include	<algorithm>
 # include	<map>
+# include	"APacket.hh"
 # include	"Player.hh"
 
 # define	MAX_PLAYERS	4
@@ -28,7 +29,13 @@ public:
   void 					clearPlayers();
   bool					playerIsPresent(Player* player);
   bool					socketIsPresent(struct sockaddr* sock);
+  struct sockaddr*		getSockFromPlayer(Player* player);
+  Player*				getPlayerFromSock(struct sockaddr* sock);
+//  void 					sendNotificationFromPlayer(Player* player);
+//  void 					sendNotificationFromSock(struct sockaddr* sock);
   bool					isFull();
+  void					sendNotification(ISocket *sock, const std::string &data);
+  void					sendNotification(ISocket *sock);
 };
 
 

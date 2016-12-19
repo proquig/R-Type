@@ -2,6 +2,8 @@
 // Created by proqui_g on 12/19/16.
 //
 
+#include <ISocket.hpp>
+#include <GameDataPacket.hh>
 #include "Room.hpp"
 
 Room::Room()
@@ -12,6 +14,12 @@ Room::Room()
 Room::Room(Player *player, struct sockaddr* sock)
 {
   this->_players.insert(std::pair<struct sockaddr*, Player*>(sock, player));
+  // 800 x 600
+  player->setX(this->_players.size() * 100);
+  player->setY(this->_players.size() * 100);
+  player->setAngle(0);
+  player->setSpeed(1);
+  player->setId(this->_players.size());
 }
 
 Room::~Room()
@@ -34,6 +42,11 @@ std::map<struct sockaddr*, Player*>	Room::getPlayers() const
 
 bool 					Room::addPlayer(Player* player, struct sockaddr* sock)
 {
+  player->setX(this->_players.size() * 100);
+  player->setY(this->_players.size() * 100);
+  player->setAngle(0);
+  player->setSpeed(1);
+  player->setId(this->_players.size());
   if (this->_players.size() == MAX_PLAYERS)
 	return (false);
   this->_players.insert(std::pair<struct sockaddr*, Player*>(sock, player));
@@ -72,4 +85,36 @@ void Room::clearPlayers()
 bool Room::isFull()
 {
   return (this->_players.size() == MAX_PLAYERS);
+}
+
+struct sockaddr *Room::getSockFromPlayer(Player *player)
+{
+  for (std::map<struct sockaddr*, Player*>::iterator it = this->_players.begin(); it != this->_players.end(); ++it)
+	if (it->second == player)
+	  return (it->first);
+  return nullptr;
+}
+
+Player *Room::getPlayerFromSock(struct sockaddr *sock)
+{
+  if (this->_players.find(sock) != this->_players.end())
+	return (this->_players.find(sock)->second);
+  return nullptr;
+}
+
+void Room::sendNotification(ISocket *sock, const std::string& data)
+{
+  for (std::map<struct sockaddr*, Player*>::iterator it = this->_players.begin(); it != this->_players.end(); ++it)
+	sock->write(std::vector<unsigned char>(data.begin(), data.end()), it->first);
+}
+
+void Room::sendNotification(ISocket *sock)
+{
+  std::vector<GameElement*>	vec;
+  for (std::map<struct sockaddr*, Player*>::iterator it = this->_players.begin(); it != this->_players.end(); ++it)
+	vec.push_back((GameElement *&&) it->second);
+  GameDataPacket packet(vec);
+  std::string	str = packet.serialize();
+  for (std::map<struct sockaddr*, Player*>::iterator it = this->_players.begin(); it != this->_players.end(); ++it)
+	sock->write(std::vector<unsigned char>(str.begin(), str.end()), it->first);
 }
