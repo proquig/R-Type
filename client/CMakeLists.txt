@@ -1,7 +1,7 @@
 project(rtype_client VERSION 1.0 LANGUAGES CXX)
 
 #Include files
-file(GLOB RTYPE_CLIENT_INCS "includes/*.hpp")
+file(GLOB RTYPE_CLIENT_INCS "include/*.hh")
 source_group(Headers FILES ${RTYPE_CLIENT_INCS})
 
 #Source files
@@ -19,8 +19,17 @@ else()
   target_link_libraries(rtype_client PUBLIC ${SFML_LIBRARIES})
 endif()
 
+if (UNIX)
+  if (Threads_FOUND)
+    target_link_libraries(rtype_client PUBLIC Threads::Threads)
+  endif ()
+endif()
+
 target_include_directories(rtype_client PUBLIC include)
 target_include_directories(rtype_client PRIVATE ${SFML_INCLUDE_DIR})
+target_include_directories(rtype_client PRIVATE ${CMAKE_SOURCE_DIR}/shared/packet/include)
+
+target_link_libraries(rtype_client PRIVATE packet)
 
 set_property(TARGET rtype_client PROPERTY CXX_STANDARD 11)
 set_property(TARGET rtype_client PROPERTY CXX_STANDARD_REQUIRED ON)
