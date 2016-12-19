@@ -41,3 +41,21 @@ Shot*			ElementFactory::createShot(uint32_t idFrom, uint16_t x, uint16_t y, uint
 	shot->setDamage(damage);
 	return shot;
 }
+
+Decor*			ElementFactory::createDecor(uint16_t x, uint16_t y, uint16_t sizex, uint16_t sizey)
+{
+	Decor*		decor = new Decor();
+	decor->setIdFrom(-1);
+	decor->setId(_elementId++);
+	decor->setType(AElement::DECOR);
+	decor->setX(x);
+	decor->setY(y);
+	decor->setHp(1000000);
+	decor->setSizeX(sizex);
+	decor->setSizeY(sizey);
+	decor->setAngle(0);
+	decor->setSpeed(0);
+	decor->setDamage(0);
+	return decor;
+
+}
