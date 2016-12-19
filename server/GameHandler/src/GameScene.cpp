@@ -11,6 +11,9 @@ GameScene::~GameScene()
 
 void			GameScene::updateScene()
 {
+	for (IElement* elem : _map)
+	{
+	}
 }
 
 void			GameScene::drawNewElem()
@@ -21,7 +24,7 @@ void			GameScene::deleteElem(int id)
 {
 }
 
-std::vector<IElement*> GameScene::getMap() const
+std::vector<IElement*>& GameScene::getMap()
 {
 	return _map;
 }

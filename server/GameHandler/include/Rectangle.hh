@@ -23,4 +23,6 @@ public:
 	int				getPosY() const;
 	int				getId() const;
 	void			display() const;
+	bool			isIn(int x, int y) const;
+	bool			isIn(Rectangle r) const;
 };

@@ -7,7 +7,7 @@
 class IElement
 {
 public:
-	virtual ~IElement() = 0 {};
+	virtual ~IElement() = default;
 	virtual uint32_t getIdFrom() const = 0;
 	virtual uint32_t getId() const = 0;
 	virtual uint16_t getType() const = 0;

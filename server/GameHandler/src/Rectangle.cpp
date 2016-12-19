@@ -71,5 +71,17 @@ int					Rectangle::getId() const
 
 void				Rectangle::display() const
 {
-	std::cout << "Rectangle " << _id << ":(" << _posX << ";" << _posY << ")|(" << _sizeX  << ";" << _sizeY << ");" << std::endl;
+	std::cout << "Rectangle " << _id << ":(" << _posX << ";" << _posY << ")|(" << _sizeX << ";" << _sizeY << ");" << std::endl;
+}
+
+bool				Rectangle::isIn(int x, int y) const
+{
+	if (x >= (_posX - _sizeX / 2) && x <= (_posX + _sizeX / 2) && x <= (_posX + _sizeX / 2) && y >= (_posY - _sizeY / 2) && y <= (_posY - _sizeY / 2))
+		return true;
+	return false;
+}
+
+bool				Rectangle::isIn(Rectangle r) const
+{
+	return (isIn(r.getPosX() - r.getSizeX() / 2, r.getPosY() - r.getSizeY() / 2) ||	isIn(r.getPosX() + r.getSizeX() / 2, r.getPosY() + r.getSizeY() / 2));
 }
