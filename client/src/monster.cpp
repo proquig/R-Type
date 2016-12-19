@@ -6,7 +6,7 @@ void	Monster::loadSprites(GLib lib)
 	switch (lib)
 	{
 	case SFML:
-		this->sprite = new SFMLSprite(".\\..\\..\\client\\media\\GAME-Assets\\r-typesheet42.gif");
+		this->sprite = new SFMLSprite("./../../client/media/GAME-Assets/r-typesheet42.gif");
 		break;
 	}
 

@@ -119,7 +119,8 @@ bool		ClientStates::gameState(void)
         );
         eventPacket.putInput(event->type);
         serializedEvent = eventPacket.serialize();
-		this->_socket->write(std::vector<unsigned char>(serializedEvent.begin(), serializedEvent.end()), this->_socket->getSockaddr());
+        if (_socket)
+          this->_socket->write(std::vector<unsigned char>(serializedEvent.begin(), serializedEvent.end()), this->_socket->getSockaddr());
       }
     }
   }
