@@ -7,6 +7,12 @@ add_library(rtype_game_element
 	IElement.hh
 	AElement.hh
 	AElement.cpp
+	Decor.hh
+	Decor.cpp
+	Player.hh
+	Player.cpp
+	Shot.cpp
+	Shot.hh
     )
 
 target_include_directories(rtype_game_element PUBLIC .)
