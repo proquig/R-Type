@@ -121,7 +121,6 @@ void Server::stop(unsigned int delay)
 
 void Server::update(IObservable *o, int status)
 {
-  int16_t  i = -1;
   if (o == &_network)
   {
     if (status == NetworkHandler::LISTENER_ERROR)
@@ -135,29 +134,17 @@ void Server::update(IObservable *o, int status)
     {
       struct sockaddr *addr;
       std::vector<unsigned char> &ref = _test->read(&addr);
-      while (++i < this->_rooms.size()
-             && !this->_rooms[i]->socketIsPresent(addr)
-             && this->_rooms[i]->isFull());
-      if (i == this->_rooms.size() ||
-              (!this->_rooms[i]->socketIsPresent(addr)
-              && this->_rooms[i]->isFull()))
-      {
-        std::cout << "NEW ROOM" << std::endl;
-        this->_rooms.push_back(new Room(new Player, addr));
-      }
-      else if (!this->_rooms[i]->socketIsPresent(addr))
-      {
-        std::cout << "NEW PLAYER" << std::endl;
-        this->_rooms[i]->addPlayer(new Player, addr);
-      }
       if (ref.size() != 0)
       {
         IPacket *packet;
         std::string data(ref.begin(), ref.end());
         if ((packet = APacket::create(data)) != nullptr)
-          if (packet->getType() == APacket::INPUT_DATA)
-            for (int i = 0; i < ((InputPacket*)packet)->getInputs().size(); ++i)
-              std::cout << "INPUT[" << i << "]=" << (int)((InputPacket*)packet)->getInputs()[i] << std::endl;
+		{
+		  this->handleSocket(addr);
+		  if (packet->getType() == APacket::INPUT_DATA)
+			for (int i = 0; i < ((InputPacket *) packet)->getInputs().size(); ++i)
+			  std::cout << "INPUT[" << i << "]=" << (int) ((InputPacket *) packet)->getInputs()[i] << std::endl;
+		}
         _test->write(ref, addr);
         std::cout << ref.size() << std::endl;
         ref.erase(ref.begin(), ref.end());
@@ -166,5 +153,25 @@ void Server::update(IObservable *o, int status)
     if (status == ISocket::CLOSE)
     {
     }
+  }
+}
+
+void Server::handleSocket(struct sockaddr *addr)
+{
+  int16_t i = -1;
+  while (++i < this->_rooms.size()
+		 && !this->_rooms[i]->socketIsPresent(addr)
+		 && this->_rooms[i]->isFull());
+  if (i == this->_rooms.size() ||
+	  (!this->_rooms[i]->socketIsPresent(addr)
+	   && this->_rooms[i]->isFull()))
+  {
+	std::cout << "NEW ROOM" << std::endl;
+	this->_rooms.push_back(new Room(new Player, addr));
+  }
+  else if (!this->_rooms[i]->socketIsPresent(addr))
+  {
+	std::cout << "NEW PLAYER" << std::endl;
+	this->_rooms[i]->addPlayer(new Player, addr);
   }
 }
