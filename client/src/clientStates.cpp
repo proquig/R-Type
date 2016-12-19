@@ -1,3 +1,4 @@
+#include <cstring>
 #include "clientStates.hh"
 #include "ICondVar.hh"
 #include "IMutex.hh"
@@ -10,6 +11,7 @@ ClientStates::ClientStates()
     _cond(nullptr), _mutex(nullptr), _pool(nullptr),
     _socketFactory(nullptr), _socket(nullptr)
 {
+  memset(&_sockaddr, '0', sizeof(_sockaddr));
   _dlManager.add(0, "threadpool", "");
   _dlManager.add(0, "rtype_network", "");
 }
@@ -120,7 +122,7 @@ bool		ClientStates::gameState(void)
         eventPacket.putInput(event->type);
         serializedEvent = eventPacket.serialize();
         if (_socket)
-          this->_socket->write(std::vector<unsigned char>(serializedEvent.begin(), serializedEvent.end()), this->_socket->getSockaddr());
+          this->_socket->write(std::vector<unsigned char>(serializedEvent.begin(), serializedEvent.end()), &_sockaddr);
       }
     }
   }
@@ -216,6 +218,12 @@ void ClientStates::update(IObservable *o, int status)
   }
   if (_socket && o == _socket)
   {
+    if (status & ISocket::READ)
+    {
+    }
+    if (status & ISocket::CLOSE)
+    {
+    }
   }
 }
 
@@ -243,6 +251,10 @@ bool ClientStates::init()
       && (_socketFactory = reinterpret_cast<ISocketFactory *(*)(IThreadPool*)>(_dic.back()->at("instantiate"))(_pool)) != nullptr)
     std::cout << "_socketFactory spawned" << std::endl;
   else
+    return false;
+  if ((_socket = _socketFactory->createSocketUDP(this, RTYPE_PORT_CLIENT)) == nullptr)
+    return false;
+  if (!_socketFactory->hintSockaddr(std::string(RTYPE_IP_SERVER), _sockaddr, RTYPE_PORT_SERVER))
     return false;
   _init = true;
   return (true);

@@ -16,6 +16,9 @@
 
 # define Y_SPEED	10
 # define X_SPEED	10
+# define RTYPE_PORT_CLIENT 6554
+# define RTYPE_PORT_SERVER 5454
+# define RTYPE_IP_SERVER "localhost"
 
 class ICondVar;
 class IMutex;
@@ -59,6 +62,7 @@ private:
 	//Network
 	uint8_t game_id;
 	uint8_t packet_id;
+	struct sockaddr _sockaddr;
 	ISocketFactory *_socketFactory;
 	ISocket *_socket;
 
