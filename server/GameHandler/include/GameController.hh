@@ -40,6 +40,7 @@ public:
 	virtual void update(IObservable*, int);
 	ElementFactory&		getElementFactory();
   virtual ISocket* getSocket();
+	IGame*				getGame() const;
 };
 
 #endif

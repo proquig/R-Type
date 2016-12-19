@@ -9,6 +9,7 @@
 #include "Player.hh"
 #include "ThreadPool.hh"
 #include "ADLibrary.hh"
+#include "Game.hh"
 
 void run(IThreadPool* pool)
 {
@@ -58,9 +59,18 @@ int main(int ac, char *av[])
 
 	ControllerFactory cf;
 	GameController* gc = cf.create(file);
-	gc->handleCollisions();
-	loadPool();
+	//loadPool();
+	Game* game = (Game*)gc->getGame();
 
+	game->addPlayer(gc->getElementFactory().createPlayer(0, 0, 50, 20, 20, 10, 0, 2));
+	game->addPlayer(gc->getElementFactory().createPlayer(0, 0, 50, 10, 10, 10, 0, 2));
+	game->addPlayer(gc->getElementFactory().createPlayer(5, 5, 50, 10, 10, 10, 0, 2));
+	game->addPlayer(gc->getElementFactory().createPlayer(25, 25, 50, 50, 50, 10, 0, 2));
+	game->getScene()->addElem(gc->getElementFactory().createDecor(0, 0, 1920, 1));
+	game->getScene()->addElem(gc->getElementFactory().createDecor(0, 1079, 1920, 1));
+	gc->handleCollisions();
+
+	std::cout << "game is ready : size =" << game->getScene()->getMap().size() << std::endl;
 //	GameFactory             gf;
 //	ControllerFactory       controllerFactory;
 //	GameHandler             gh;
