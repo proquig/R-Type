@@ -4,22 +4,25 @@
 
 #include "GameHandler.hh"
 #include "ControllerFactory.hh"
-#include "File.hh"
 #include "Parser.hh"
-#include "Player.hh"
-#include "ThreadPool.hh"
-#include "ADLibrary.hh"
 
 int main(int ac, char *av[])
 {
-	File *file = new File("./map.txt");
+    File *file = new File(ac > 0 ? "../../ressources/map.txt" : "../../ressources/map2.txt");
 
-	ControllerFactory cf;
+    Parser parser(file);
+    IElement *elem;
+	std::cout <<  "Test sur le parsing de la carte : '" << file->getName() << "'" << std::endl;
 
-Parser parser(file);
+    while ((elem = parser.parse()) != nullptr)
+    {
+        std::cout << "ELEMENT {\n\t{\n\t"
+                  << elem->getX() << ":"
+                  << elem->getY() << "\n\t}\n\t{\n\t"
+                  << elem->getSizeX() << ":"
+        << elem->getSizeY() << "\n\t}\n" << std::endl;
+        std::cout << "};\n";
 
-//	 //parser.parseTitle();
-//	 //parser.parsePlayer();
-
-	return (0);
+    }
+    return (0);
 }
