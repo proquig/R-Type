@@ -14,9 +14,9 @@ Room::~Room()
 
 }
 
-bool						Room::setPlayers(GameElement *players)
+bool						Room::setPlayers(std::vector<GameElement *> players)
 {
-  if (players.size > MAX_PLAYERS)
+  if (players.size() > MAX_PLAYERS)
 	return (false);
   this->_players = players;
   return (true);
@@ -39,8 +39,13 @@ bool 						Room::deletePlayer(GameElement *player)
 {
   std::vector<GameElement*>::iterator	it;
 
-  if ((it = std::find(this->_inputs.begin(), this->_inputs.end(), player)) == this->_inputs.end())
+  if ((it = std::find(this->_players.begin(), this->_players.end(), player)) == this->_players.end())
 	return (false);
-  this->_inputs.erase(it);
+  this->_players.erase(it);
   return (true);
+}
+
+void Room::clearPlayers()
+{
+  this->_players.clear();
 }
