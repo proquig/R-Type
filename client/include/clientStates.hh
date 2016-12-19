@@ -53,6 +53,8 @@ private:
 	bool _init;
 	bool _waiting;
 	bool _stop;
+	//Input
+	std::vector<uint16_t> _input;
 	//DLLoader
 	std::vector<Dictionary> _dic;
 	DLManager _dlManager;

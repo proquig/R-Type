@@ -6,6 +6,7 @@
 #include "ISocket.hpp"
 #include "ISocketFactory.hpp"
 #include "IThreadPool.hh"
+#include "ITimer.hpp"
 
 ClientStates::ClientStates()
     : _init(false), _stop(false), _waiting(false),
@@ -15,6 +16,7 @@ ClientStates::ClientStates()
   memset(&_sockaddr, '0', sizeof(_sockaddr));
   _dlManager.add(0, "threadpool", "");
   _dlManager.add(0, "rtype_network", "");
+  _dlManager.add(0, "rtype_timer", "");
 }
 
 ClientStates::~ClientStates()
@@ -114,18 +116,6 @@ bool		ClientStates::gameState(void)
           _stop = true;
           break;
         }
-        //PACKET EMISSION
-        InputPacket eventPacket;
-        std::string serializedEvent;
-        eventPacket.setHeader(
-            IPacket::INPUT_DATA, IPacket::ACK_NEED,
-            MAGIC, this->game_id,
-            this->packet_id, 4242, 0
-        );
-        eventPacket.putInput(event->type);
-        serializedEvent = eventPacket.serialize();
-        if (_socket)
-          this->_socket->write(std::vector<unsigned char>(serializedEvent.begin(), serializedEvent.end()), &_sockaddr);
       }
       //PACKET RECEPTION
       while ((packet = _paquetQueue.pop()) != nullptr)
@@ -246,6 +236,21 @@ void ClientStates::update(IObservable *o, int status)
     {
     }
   }
+  if (_timer && o == _timer)
+  {
+    //PACKET EMISSION
+    InputPacket eventPacket;
+    std::string serializedEvent;
+    eventPacket.setHeader(
+        IPacket::INPUT_DATA, IPacket::ACK_NEED,
+        MAGIC, this->game_id,
+        this->packet_id, 4242, 0
+    );
+    eventPacket.putInput(10);
+    serializedEvent = eventPacket.serialize();
+    if (_socket)
+      this->_socket->write(std::vector<unsigned char>(serializedEvent.begin(), serializedEvent.end()), &_sockaddr);
+  }
 }
 
 bool ClientStates::init()
@@ -283,6 +288,8 @@ bool ClientStates::init()
     return false;
   if (!_socketFactory->hintSockaddr(std::string(RTYPE_IP_SERVER), _sockaddr, RTYPE_PORT_SERVER))
     return false;
+  _timer->setTimer(100);
+  _timer->addObserver(this);
   _init = true;
   return (true);
 }
