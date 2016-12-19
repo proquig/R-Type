@@ -10,6 +10,7 @@ GameController::GameController(IGame* game, ISocket *socket, ITimer *timer)
   if (_timer)
     _timer->addObserver(this);
   _tick = 0;
+  _delta = BASE_TICK;
 }
 
 GameController::~GameController()

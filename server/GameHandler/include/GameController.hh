@@ -10,6 +10,8 @@
 class ISocket;
 class ITimer;
 
+#define		BASE_TICK	10;
+
 class GameController : public IObserver
 {
 private:
