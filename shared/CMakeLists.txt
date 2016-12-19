@@ -10,6 +10,9 @@ add_subdirectory(observer)
 #Threadpool
 add_subdirectory(threadpool)
 
+#Timer
+add_subdirectory(timer)
+
 #Network
 add_subdirectory(network)
 
