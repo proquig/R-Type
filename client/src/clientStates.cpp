@@ -117,9 +117,9 @@ bool		ClientStates::gameState(void)
             MAGIC, this->game_id,
             this->packet_id, 4242, 0
         );
-
         eventPacket.putInput(event->type);
         serializedEvent = eventPacket.serialize();
+		this->_socket->write(std::vector<unsigned char>(serializedEvent.begin(), serializedEvent.end()), this->_socket->getSockaddr());
       }
     }
   }
