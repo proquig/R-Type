@@ -42,3 +42,8 @@ void			GameController::handleCollisions()
 	}
 }
 
+void GameController::update(IObservable *, int)
+{
+
+}
+
