@@ -101,6 +101,7 @@ bool		ClientStates::gameState(void)
   IPacket *packet;
 
   _mutex->lock();
+  _ref = _clock.now();
   while (!_stop)
   {
     _waiting = true;
@@ -116,6 +117,25 @@ bool		ClientStates::gameState(void)
           _stop = true;
           break;
         }
+        if (std::find(_input.begin(), _input.end(), event->type) == _input.end())
+          _input.push_back(event->type);
+      }
+      //PACKET EMISSION
+      if (std::chrono::duration_cast<std::chrono::milliseconds>(_clock.now() - _ref).count() > 100)
+      {
+        InputPacket eventPacket;
+        std::string serializedEvent;
+        eventPacket.setHeader(
+            IPacket::INPUT_DATA, IPacket::ACK_NEED,
+            MAGIC, this->game_id,
+            this->packet_id, 4242, 0
+        );
+        eventPacket.setInputs(_input);
+        if (_input.size() != 0)
+          _input.erase(_input.begin(), _input.end());
+        serializedEvent = eventPacket.serialize();
+        if (_socket)
+          this->_socket->write(std::vector<unsigned char>(serializedEvent.begin(), serializedEvent.end()), &_sockaddr);
       }
       //PACKET RECEPTION
       while ((packet = _paquetQueue.pop()) != nullptr)
@@ -224,12 +244,13 @@ void ClientStates::update(IObservable *o, int status)
         std::string data(ref.begin(), ref.end());
         IPacket* packet;
         if ((packet = APacket::create(data)) != nullptr)
-          std::cout << "Valid packet received" << std::endl;
-        //TODO CHECK SOURCE
-        _paquetQueue.push(packet);
-        ref.erase(ref.begin(), ref.end());
-        if (_waiting)
-          _cond->signal();
+        {
+          //TODO CHECK SOURCE
+          _paquetQueue.push(packet);
+          ref.erase(ref.begin(), ref.end());
+          if (_waiting)
+            _cond->signal();
+        }
       }
     }
     if (status & ISocket::CLOSE)
@@ -238,18 +259,6 @@ void ClientStates::update(IObservable *o, int status)
   }
   if (_timer && o == _timer)
   {
-    //PACKET EMISSION
-    InputPacket eventPacket;
-    std::string serializedEvent;
-    eventPacket.setHeader(
-        IPacket::INPUT_DATA, IPacket::ACK_NEED,
-        MAGIC, this->game_id,
-        this->packet_id, 4242, 0
-    );
-    eventPacket.putInput(10);
-    serializedEvent = eventPacket.serialize();
-    if (_socket)
-      this->_socket->write(std::vector<unsigned char>(serializedEvent.begin(), serializedEvent.end()), &_sockaddr);
   }
 }
 
@@ -288,8 +297,6 @@ bool ClientStates::init()
     return false;
   if (!_socketFactory->hintSockaddr(std::string(RTYPE_IP_SERVER), _sockaddr, RTYPE_PORT_SERVER))
     return false;
-  _timer->setTimer(100);
-  _timer->addObserver(this);
   _init = true;
   return (true);
 }

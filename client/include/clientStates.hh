@@ -7,12 +7,13 @@
 # elif _WIN32
 #  include <windows.h>
 # endif
+# include <chrono>
 # include <iostream>
 # include <vector>
 # include "graphicalController.hh"
 # include "element.hh"
 # include "DLManager.hh"
-#include "IObserver.hpp"
+# include "IObserver.hpp"
 
 # define Y_SPEED	10
 # define X_SPEED	10
@@ -70,7 +71,10 @@ private:
 	ISocketFactory *_socketFactory;
 	ISocket *_socket;
 	//Timer
+	std::chrono::high_resolution_clock _clock;
+	std::chrono::high_resolution_clock::time_point _ref;
 	ITimer *_timer;
+
 
 public:
 	ClientStates();
