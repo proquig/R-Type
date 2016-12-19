@@ -5,24 +5,30 @@
 #ifndef		__R_TYPE_ROOM_HH__
 # define	__R_TYPE_ROOM_HH__
 
-# include	"GameElement.hpp"
 # include	<algorithm>
+# include	<map>
+# include	"Player.hh"
 
 # define	MAX_PLAYERS	4
 
 class Room
 {
 private:
-  std::vector<GameElement*>		_players;
+  std::map<struct sockaddr*, Player*>	_players;
+  //std::vector<std::pair<struct sockaddr*, Player*>>	_players;
 
 public:
   Room();
+  Room(Player* player, struct sockaddr* sock);
   ~Room();
-  bool 							setPlayers(std::vector<GameElement* > players);
-  std::vector<GameElement*>		getPlayers() const;
-  bool 							addPlayer(GameElement* player);
-  bool 							deletePlayer(GameElement *player);
-  void 							clearPlayers();
+  bool 					setPlayers(std::map<struct sockaddr*, Player*> players);
+  std::map<struct sockaddr*, Player*>	getPlayers() const;
+  bool 					addPlayer(Player* player, struct sockaddr* sock);
+  bool 					deletePlayer(Player *player, struct sockaddr* sock);
+  void 					clearPlayers();
+  bool					playerIsPresent(Player* player);
+  bool					socketIsPresent(struct sockaddr* sock);
+  bool					isFull();
 };
 
 

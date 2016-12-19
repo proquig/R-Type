@@ -4,6 +4,7 @@
 #include "ControllerFactory.hh"
 #include "DLManager.hh"
 #include "NetworkHandler.hpp"
+#include "Room.hpp"
 
 class ICondVar;
 class IMutex;
@@ -27,6 +28,7 @@ protected:
   ISocket *_test;
   bool _waiting;
   std::vector<struct sockaddr *>	_clients;
+  std::vector<Room*>		_rooms;
 public:
   Server(unsigned short port = 4242);
   virtual ~Server();

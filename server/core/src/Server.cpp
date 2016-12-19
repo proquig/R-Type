@@ -121,6 +121,7 @@ void Server::stop(unsigned int delay)
 
 void Server::update(IObservable *o, int status)
 {
+  int16_t  i = -1;
   if (o == &_network)
   {
     if (status == NetworkHandler::LISTENER_ERROR)
@@ -134,14 +135,21 @@ void Server::update(IObservable *o, int status)
     {
       struct sockaddr *addr;
       std::vector<unsigned char> &ref = _test->read(&addr);
-      if (std::find(this->_clients.begin(), this->_clients.end(), addr) == this->_clients.end())
+      while (++i < this->_rooms.size()
+             && !this->_rooms[i]->socketIsPresent(addr)
+             && this->_rooms[i]->isFull());
+      if (i == this->_rooms.size() ||
+              (!this->_rooms[i]->socketIsPresent(addr)
+              && this->_rooms[i]->isFull()))
       {
-        // TODO: ROOMS
-        std::cout << "NEW CLIENT" << std::endl;
-        this->_clients.push_back(addr);
+        std::cout << "NEW ROOM" << std::endl;
+        this->_rooms.push_back(new Room(new Player, addr));
       }
-      else
-        std::cout << "I ALREADY AM A CLIENT" << std::endl;
+      else if (!this->_rooms[i]->socketIsPresent(addr))
+      {
+        std::cout << "NEW PLAYER" << std::endl;
+        this->_rooms[i]->addPlayer(new Player, addr);
+      }
       if (ref.size() != 0)
       {
         IPacket *packet;
