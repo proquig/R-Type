@@ -23,7 +23,7 @@
         Parser parser(file);
 
         parser.parseTitle();
-        parser.parsePlayer();
+        parser.parseObstacle();
         std::cerr << "END" << std::endl;
         parser.parseElement();
 

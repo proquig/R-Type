@@ -55,40 +55,40 @@ int main(int ac, char **av)
   //
   GameDataPacket	packet3;
   GameDataPacket	packet4;
-  char 				player_ser[] = "\x42\x04\x2a\x32\x00\x00\x00\x64\x00\x00\x00\x0c\x00\x00\x00\x83\x00\x21\x00\x42\x0a\xd7\x28\x42\x12\x00\x00\x00\x04\x00\x01\x00\x02\xa4\x70\x45\x41\x03";
+  char 				Obstacle_ser[] = "\x42\x04\x2a\x32\x00\x00\x00\x64\x00\x00\x00\x0c\x00\x00\x00\x83\x00\x21\x00\x42\x0a\xd7\x28\x42\x12\x00\x00\x00\x04\x00\x01\x00\x02\xa4\x70\x45\x41\x03";
   packet.setHeader(APacket::GAME_ELEM_INFO, APacket::ACK_DONE, 0x42, 4, 42, 100, 12);
-  GameElement		player1;
-  GameElement		player2;
-  player1.setX(0x21);
-  player1.setY(0x42);
-  player1.setSpeed(0x12);
-  player1.setAngle(42.21);
-  player1.setId(0x83);
-  player2.setX(0x01);
-  player2.setY(0x02);
-  player2.setSpeed(0x03);
-  player2.setAngle(12.34);
-  player2.setId(0x04);
+  GameElement		Obstacle1;
+  GameElement		Obstacle2;
+  Obstacle1.setX(0x21);
+  Obstacle1.setY(0x42);
+  Obstacle1.setSpeed(0x12);
+  Obstacle1.setAngle(42.21);
+  Obstacle1.setId(0x83);
+  Obstacle2.setX(0x01);
+  Obstacle2.setY(0x02);
+  Obstacle2.setSpeed(0x03);
+  Obstacle2.setAngle(12.34);
+  Obstacle2.setId(0x04);
 
   packet3.setHeader(APacket::GAME_ELEM_INFO, APacket::ACK_DONE, 0x42, 4, 42, 100, 12);
-  packet3.putGameElement(&player1);
-  assert(packet3.deleteGameElement(&player1));
-  assert(!packet3.deleteGameElement(&player2));
-  packet3.putGameElement(&player1);
-  packet3.putGameElement(&player2);
-  assert(packet3.deleteGameElement(&player2));
-  assert(packet3.deleteGameElement(&player1));
-  assert(!packet3.deleteGameElement(&player2));
-  assert(!packet3.deleteGameElement(&player1));
-  packet3.putGameElement(&player1);
-  packet3.putGameElement(&player2);
+  packet3.putGameElement(&Obstacle1);
+  assert(packet3.deleteGameElement(&Obstacle1));
+  assert(!packet3.deleteGameElement(&Obstacle2));
+  packet3.putGameElement(&Obstacle1);
+  packet3.putGameElement(&Obstacle2);
+  assert(packet3.deleteGameElement(&Obstacle2));
+  assert(packet3.deleteGameElement(&Obstacle1));
+  assert(!packet3.deleteGameElement(&Obstacle2));
+  assert(!packet3.deleteGameElement(&Obstacle1));
+  packet3.putGameElement(&Obstacle1);
+  packet3.putGameElement(&Obstacle2);
   std::cout << "VECTOR SIZE = " << packet3.getGameElements().size() << std::endl;
   //std::cout << packet3.serialize();
 
-  std::string		player_ser1;
-  player_ser1.append(player_ser, sizeof(player_ser) - 1);
-  //std::cout << player_ser1;
-  assert(packet3.serialize() == player_ser1);
+  std::string		Obstacle_ser1;
+  Obstacle_ser1.append(Obstacle_ser, sizeof(Obstacle_ser) - 1);
+  //std::cout << Obstacle_ser1;
+  assert(packet3.serialize() == Obstacle_ser1);
   assert(packet4.unserialize(packet3.serialize()));
   assert(packet3.serialize() == packet4.serialize());
   assert(packet4.getGameElements()[0]->getX() == 0x21);
@@ -121,7 +121,7 @@ int main(int ac, char **av)
 
   //packet.setHeader(header);
   packet.setHeader(APacket::GAME_ELEM_INFO, APacket::ACK_DONE, 0x42, 4, 42, 100, 12);
-  packet.putGameElement(&player1);
+  packet.putGameElement(&Obstacle1);
   header1 = packet.getHeader();
   std::cout << "OpCode = " << (int)header1._opCode << std::endl;
   assert(header1._opCode == 50);
@@ -235,8 +235,8 @@ int main(int ac, char **av)
   assert(APacket::create(pack1) == nullptr);
 
   APacket*	aPacket;
-  assert(packet3.serialize() == player_ser1);
-  std::cout << player_ser1 << std::endl;
+  assert(packet3.serialize() == Obstacle_ser1);
+  std::cout << Obstacle_ser1 << std::endl;
   std::cout << packet3.serialize() << std::endl;
   assert(packet3.getGameElements().size() == 2);
   //std::cout << "CLEAR" << std::endl;
@@ -285,10 +285,10 @@ int main(int ac, char **av)
 	assert(inputs[i] == inputPacket.getInputs()[i]);
 
   assert(gameDataPacket.unserialize(packet3.serialize()));
-  gameElements.push_back(&player2);
-  gameElements.push_back(&player1);
-  gameElements.push_back(&player1);
-  gameElements.push_back(&player2);
+  gameElements.push_back(&Obstacle2);
+  gameElements.push_back(&Obstacle1);
+  gameElements.push_back(&Obstacle1);
+  gameElements.push_back(&Obstacle2);
   gameDataPacket.setGameElements(gameElements);
   assert(gameElements.size() == gameDataPacket.getGameElements().size());
   for (int i = 0; i < gameElements.size(); ++i)
