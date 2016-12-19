@@ -1,5 +1,6 @@
 #include <iostream>
 #include <thread>
+#include <InputPacket.hh>
 #include "Server.hpp"
 #include "APacket.hh"
 #include "ICondVar.hh"
@@ -138,7 +139,12 @@ void Server::update(IObservable *o, int status)
         IPacket *packet;
         std::string data(ref.begin(), ref.end());
         if ((packet = APacket::create(data)) != nullptr)
-          std::cout << "Packet received" << std::endl;
+          if (packet->getType() == APacket::INPUT_DATA)
+            for (int i = 0; i < ((InputPacket*)packet)->getInputs().size(); ++i)
+              std::cout << "INPUT[" << i << "]=" << (int)((InputPacket*)packet)->getInputs()[i] << std::endl;
+        _test->write(ref, addr);
+        std::cout << ref.size() << std::endl;
+        ref.erase(ref.begin(), ref.end());
       }
     }
     if (status == ISocket::CLOSE)
