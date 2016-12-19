@@ -273,6 +273,12 @@ bool ClientStates::init()
     std::cout << "_socketFactory spawned" << std::endl;
   else
     return false;
+  if ((dic = _dlManager.handler.getDictionaryByName("rtype_timer")) != NULL
+      && !(*_dic.insert(_dic.end(), dic))->empty()
+      && (_timer = reinterpret_cast<ITimer *(*)(IThreadPool*)>(_dic.back()->at("instantiate"))(_pool)) != nullptr)
+    std::cout << "timer spawned" << std::endl;
+  else
+    return false;
   if ((_socket = _socketFactory->createSocketUDP(this, RTYPE_PORT_CLIENT)) == nullptr)
     return false;
   if (!_socketFactory->hintSockaddr(std::string(RTYPE_IP_SERVER), _sockaddr, RTYPE_PORT_SERVER))

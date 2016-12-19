@@ -25,6 +25,7 @@ class IMutex;
 class ISocketFactory;
 class ISocket;
 class IThreadPool;
+class ITimer;
 
 class ClientStates : public IObserver
 {
@@ -66,6 +67,8 @@ private:
 	struct sockaddr _sockaddr;
 	ISocketFactory *_socketFactory;
 	ISocket *_socket;
+	//Timer
+	ITimer *_timer;
 
 public:
 	ClientStates();
