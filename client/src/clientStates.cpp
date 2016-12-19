@@ -141,6 +141,18 @@ bool		ClientStates::gameState(void)
       //PACKET RECEPTION
       while ((packet = _paquetQueue.pop()) != nullptr)
       {
+		  if (packet->getType() == APacket::GAME_ELEM_INFO)
+		  {
+			  GameDataPacket* pak = (GameDataPacket*)packet;
+			  for (uint8_t i = 0; i < pak->getGameElements.size(); ++i)
+			  {
+				  std::cout << pak->getGameElements[i]->getID() << std::endl;
+				  std::cout << pak->getGameElements[i]->getX() << std::endl;
+				  std::cout << pak->getGameElements[i]->getY() << std::endl;
+				  std::cout << pak->getGameElements[i]->getAngle() << std::endl;
+				  std::cout << pak->getGameElements[i]->getSpeed() << std::endl;
+			  }
+			}
         delete packet;
       }
     }
