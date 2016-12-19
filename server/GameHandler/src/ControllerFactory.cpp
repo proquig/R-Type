@@ -18,6 +18,8 @@ GameController* ControllerFactory::create(File *file){
 	game->addPlayer(controller->getElementFactory().createPlayer(500, 500, 50, 10, 10, 10, 0, 2));
 	game->addPlayer(controller->getElementFactory().createPlayer(5, 5, 50, 10, 10, 10, 0, 2));
 	game->addPlayer(controller->getElementFactory().createPlayer(25, 25, 50, 10, 10, 10, 0, 2));
+	game->getScene()->addElem(controller->getElementFactory().createDecor(0, 0, 1920, 1));
+	game->getScene()->addElem(controller->getElementFactory().createDecor(0, 1079, 1920, 1));
 
 	std::cout << "game is ready : size =" << game->getScene()->getMap().size() << std::endl;
 //	parser.parseTitle();
