@@ -6,7 +6,7 @@
 
 #include													"Rectangle.hh"
 #include													"Quadtree.hh"
-#include													"IElement.hh"
+#include													"AElement.hh"
 
 class														CollisionHandler
 {

@@ -77,11 +77,11 @@ std::vector<IElement*> 														CollisionHandler::foundCollisions(std::vect
 std::vector<IElement*>														CollisionHandler::handleCollision(int id, int pid, std::vector<IElement*>& entitys, std::vector<int>* collisionId)
 {
 	std::vector<IElement*>													ret;
-	IElement																	*f = NULL;
-	IElement																	*s = NULL;
+	IElement																*f = NULL;
+	IElement																*s = NULL;
 	std::vector<IElement*>													tmp;
-	int																			iF;
-	int																			iS;
+	int																		iF;
+	int																		iS;
 
 	for (unsigned int i = 0; i < entitys.size(); ++i)
 	{
@@ -122,7 +122,7 @@ std::vector<IElement*>														CollisionHandler::handleCollision(int id, in
 void																		CollisionHandler::addScore(std::vector<IElement*>& entities, IElement * entity)
 {
 	if (entity) {
-		if (entity->getType() == /*IElement::BULLET*/ 0) {
+		if (entity->getType() == AElement::BULLET ) {
 			for (std::vector<IElement *>::iterator it = entities.begin(); it != entities.end(); it++) {
 				if (*it) {
 					int id = (*it)->getId();
