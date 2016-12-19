@@ -114,23 +114,23 @@ bool		ClientStates::gameState(void)
           _stop = true;
           break;
         }
+        //PACKET EMISSION
+        InputPacket eventPacket;
+        std::string serializedEvent;
+        eventPacket.setHeader(
+            IPacket::INPUT_DATA, IPacket::ACK_NEED,
+            MAGIC, this->game_id,
+            this->packet_id, 4242, 0
+        );
+        eventPacket.putInput(event->type);
+        serializedEvent = eventPacket.serialize();
+        if (_socket)
+          this->_socket->write(std::vector<unsigned char>(serializedEvent.begin(), serializedEvent.end()), &_sockaddr);
       }
       //PACKET RECEPTION
       while ((packet = _paquetQueue.pop()) != nullptr)
       {
       }
-      //PACKET EMISSION
-      InputPacket eventPacket;
-      std::string serializedEvent;
-      eventPacket.setHeader(
-          IPacket::INPUT_DATA, IPacket::ACK_NEED,
-          MAGIC, this->game_id,
-          this->packet_id, 4242, 0
-      );
-      eventPacket.putInput(event->type);
-      serializedEvent = eventPacket.serialize();
-      if (_socket)
-        this->_socket->write(std::vector<unsigned char>(serializedEvent.begin(), serializedEvent.end()), &_sockaddr);
     }
   }
   _mutex->unlock();
