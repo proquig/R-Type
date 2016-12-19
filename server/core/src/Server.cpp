@@ -134,6 +134,14 @@ void Server::update(IObservable *o, int status)
     {
       struct sockaddr *addr;
       std::vector<unsigned char> &ref = _test->read(&addr);
+      if (std::find(this->_clients.begin(), this->_clients.end(), addr) == this->_clients.end())
+      {
+        // TODO: ROOMS
+        std::cout << "NEW CLIENT" << std::endl;
+        this->_clients.push_back(addr);
+      }
+      else
+        std::cout << "I ALREADY AM A CLIENT" << std::endl;
       if (ref.size() != 0)
       {
         IPacket *packet;

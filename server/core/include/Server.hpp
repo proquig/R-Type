@@ -26,6 +26,7 @@ protected:
   bool _stop;
   ISocket *_test;
   bool _waiting;
+  std::vector<struct sockaddr *>	_clients;
 public:
   Server(unsigned short port = 4242);
   virtual ~Server();
