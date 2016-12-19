@@ -4,7 +4,7 @@
 Game::Game(int id)
 {
 	_id = id;
-	_gameScene = new GameScene();
+	_gameScene = new GameScene(*(new Rectangle(1920 / 2, 1080 / 2, 1920, 1080)));
 }
 
 Game::~Game()

@@ -5,6 +5,9 @@ ElementFactory::ElementFactory()
 	_elementId = 0;
 }
 
+ElementFactory::~ElementFactory()
+{}
+
 Player*			ElementFactory::createPlayer(uint16_t x, uint16_t y, uint16_t hp, uint16_t sizex, uint16_t sizey, uint16_t damage, float angle, char speed)
 {
 	Player*		player = new Player();

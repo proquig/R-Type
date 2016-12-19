@@ -12,7 +12,7 @@ private:
 	Rectangle				_bounds;
 
 public:
-	GameScene();
+	GameScene(const Rectangle&);
 	~GameScene();
 	void						updateScene();
 	void						drawNewElem();

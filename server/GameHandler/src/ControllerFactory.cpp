@@ -14,12 +14,12 @@ GameController* ControllerFactory::create(File *file){
 	Parser parser = (*new Parser(file));
 	IGame*	game = new Game(_gameId++);
 	GameController* controller = new GameController(game);
+	game->addPlayer(controller->getElementFactory().createPlayer(50, 50, 50, 10, 10, 10, 0, 2));
+	game->addPlayer(controller->getElementFactory().createPlayer(500, 500, 50, 10, 10, 10, 0, 2));
+	game->addPlayer(controller->getElementFactory().createPlayer(5, 5, 50, 10, 10, 10, 0, 2));
+	game->addPlayer(controller->getElementFactory().createPlayer(25, 25, 50, 10, 10, 10, 0, 2));
 
-	game->addPlayer(new Player(0, 1, AElement::PLAYER, 10, 10, 50, 15, 15, 10, 0, 2));
-	game->addPlayer(new Player(0, 2, AElement::PLAYER, 10, 50, 50, 15, 15, 10, 0, 2));
-	game->addPlayer(new Player(0, 3, AElement::PLAYER, 100, 50, 50, 15, 15, 10, 0, 2));
-	game->addPlayer(new Player(0, 4, AElement::PLAYER, 100, 50, 50, 15, 15, 10, 0, 2));
-
+	std::cout << "game is ready : size =" << game->getScene()->getMap().size() << std::endl;
 //	parser.parseTitle();
 //	parser.parsePlayer();
 //	for (IElement* elem : parser.getLine())

@@ -1,8 +1,9 @@
 #include		"GameScene.hh"
 #include	<iostream>
 
-GameScene::GameScene()
+GameScene::GameScene(const Rectangle& bounds)
 {
+	_bounds = bounds;
 }
 
 GameScene::~GameScene()
@@ -30,6 +31,16 @@ void			GameScene::drawNewElem()
 
 void			GameScene::deleteElem(int id)
 {
+	std::vector<IElement*>::iterator it = _map.begin();
+	while (it != _map.end())
+	{
+		if ((*it)->getId() == id)
+		{
+			it = _map.erase(it);
+		}
+		else
+			it++;
+	}
 }
 
 std::vector<IElement*>& GameScene::getMap()

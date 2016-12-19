@@ -47,3 +47,8 @@ void GameController::update(IObservable *, int)
 
 }
 
+ElementFactory& GameController::getElementFactory()
+{
+	return _elemFact;
+}
+
