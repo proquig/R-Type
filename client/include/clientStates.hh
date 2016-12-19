@@ -62,6 +62,7 @@ private:
 	//Network
 	uint8_t game_id;
 	uint8_t packet_id;
+	WorkQueue<IPacket*> _paquetQueue;
 	struct sockaddr _sockaddr;
 	ISocketFactory *_socketFactory;
 	ISocket *_socket;

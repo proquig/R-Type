@@ -1,5 +1,6 @@
 #include <cstring>
 #include "clientStates.hh"
+#include "GameDataPacket.hh"
 #include "ICondVar.hh"
 #include "IMutex.hh"
 #include "ISocket.hpp"
@@ -94,7 +95,8 @@ bool	ClientStates::menuState(void)
 
 bool		ClientStates::gameState(void)
 {
-  Event			*event = nullptr;
+  Event *event = nullptr;
+  IPacket *packet;
 
   _mutex->lock();
   while (!_stop)
@@ -104,6 +106,7 @@ bool		ClientStates::gameState(void)
     _waiting = false;
     if (!_stop)
     {
+      //INTERNAL EVENTS
       while ((event = this->controller->eventAction()) != nullptr)
       {
         if (event->type == Event::QUIT)
@@ -111,19 +114,23 @@ bool		ClientStates::gameState(void)
           _stop = true;
           break;
         }
-        InputPacket		eventPacket;
-        std::string		serializedEvent;
-
-        eventPacket.setHeader(
-            IPacket::INPUT_DATA, IPacket::ACK_NEED,
-            MAGIC, this->game_id,
-            this->packet_id, 4242, 0
-        );
-        eventPacket.putInput(event->type);
-        serializedEvent = eventPacket.serialize();
-        if (_socket)
-          this->_socket->write(std::vector<unsigned char>(serializedEvent.begin(), serializedEvent.end()), &_sockaddr);
       }
+      //PACKET RECEPTION
+      while ((packet = _paquetQueue.pop()) != nullptr)
+      {
+      }
+      //PACKET EMISSION
+      InputPacket eventPacket;
+      std::string serializedEvent;
+      eventPacket.setHeader(
+          IPacket::INPUT_DATA, IPacket::ACK_NEED,
+          MAGIC, this->game_id,
+          this->packet_id, 4242, 0
+      );
+      eventPacket.putInput(event->type);
+      serializedEvent = eventPacket.serialize();
+      if (_socket)
+        this->_socket->write(std::vector<unsigned char>(serializedEvent.begin(), serializedEvent.end()), &_sockaddr);
     }
   }
   _mutex->unlock();
@@ -220,6 +227,19 @@ void ClientStates::update(IObservable *o, int status)
   {
     if (status & ISocket::READ)
     {
+      struct sockaddr *addr;
+      std::vector<unsigned char> &ref = _socket->read(&addr);
+      if (ref.size() > 0)
+      {
+        std::string data(ref.begin(), ref.end());
+        IPacket* packet;
+        if ((packet = APacket::create(data)) != nullptr)
+          std::cout << "Valid packet received" << std::endl;
+        //TODO CHECK SOURCE
+        _paquetQueue.push(packet);
+        if (_waiting)
+          _cond->signal();
+      }
     }
     if (status & ISocket::CLOSE)
     {
