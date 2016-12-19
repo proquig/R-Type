@@ -83,6 +83,7 @@ void					SFMLSprite::print(void *_window)
 	sf::RenderWindow	*window = (sf::RenderWindow *)_window;
 
 	update();
+	_spr.setPosition(sf::Vector2f(_pos.first, _pos.second));
 	if (_isAnimated == true)
 	{
 		window->draw(_spr);
