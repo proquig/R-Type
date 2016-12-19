@@ -4,8 +4,23 @@
 
 #include "GameDataPacket.hh"
 
+/*
+ *
+ * TODO:
+ * - CHECK SERIALIZATION & DESERIALIZATION GAMEELEMENT
+ * - UPDATE SIZE
+ * - TIMER
+ * - PLAYERS
+ *
+ */
+
 GameDataPacket::GameDataPacket()
 {
+}
+
+GameDataPacket::GameDataPacket(std::vector<GameElement*> gameElements)
+{
+  this->_gameElements = gameElements;
 }
 
 GameDataPacket::~GameDataPacket()
@@ -14,19 +29,38 @@ GameDataPacket::~GameDataPacket()
 
 std::string GameDataPacket::serialize()
 {
+  // TODO: ADD UP TO 4 PLAYER & OTHER ELEMENTS
+  // TODO: ADD TIMER !!!
   APacket::serialize();
-  *this << (uint32_t)this->_fl;
+  for (uint8_t i = 0; i < this->_gameElements.size(); ++i)
+  	if (this->_gameElements[i])
+		*this << this->_gameElements[i]->getId()
+			  << this->_gameElements[i]->getX()
+			  << this->_gameElements[i]->getY()
+			  << this->_gameElements[i]->getAngle()
+			  << this->_gameElements[i]->getSpeed();
   return (this->_content.str());
 }
 
 bool GameDataPacket::unserialize(const std::string &data)
 {
-  //if (!GameDataPacket::checkData(data))
-	//return (false);
-  APacket::unserialize(data);
-  std::cout << "I PASS HERE" << sizeof(float) << std::endl;
-  this->_fl = (float)htonl(*((uint32_t*)&data[APacket::getHeaderSize()]));
-  std::cout << "I END HERE" << this->_fl << std::endl;
+  if (!(GameDataPacket::checkData(data) && APacket::unserialize(data)))
+	return (false);
+  this->_gameElements.clear();
+  for (uint32_t i = APacket::getHeaderSize(); i < data.size(); i += GameDataPacket::getGameElementSize())
+  {
+	this->_gameElements.push_back(new GameElement);
+	uint8_t j = 0;
+	this->_gameElements.back()->setId(htonl(*(uint32_t *) &data[i + j]));
+	j += sizeof(uint32_t);
+	this->_gameElements.back()->setX(htons(*(uint16_t *) &data[i + j]));
+	j += sizeof(uint16_t);
+	this->_gameElements.back()->setY(htons(*(uint16_t *) &data[i + j]));
+	j += sizeof(uint16_t);
+	this->_gameElements.back()->setAngle(*(float *) &data[i + j]);
+	j += sizeof(float);
+	this->_gameElements.back()->setSpeed(data[i + j]);
+  }
   return (true);
 }
 
@@ -39,22 +73,49 @@ bool GameDataPacket::checkHeader(const std::string &data)
 
 bool GameDataPacket::checkData(const std::string &data)
 {
-  return (GameDataPacket::checkHeader(data));
+  return (GameDataPacket::checkHeader(data)
+		  && !((data.size() - APacket::getHeaderSize()) % GameDataPacket::getGameElementSize()));
 }
 
-void GameDataPacket::set(float value)
+void GameDataPacket::putGameElement(GameElement *gameElement)
 {
-  this->_fl = value;
+  this->_gameElements.push_back(gameElement);
 }
 
-float GameDataPacket::get()
+void GameDataPacket::setGameElements(std::vector<GameElement *> gameElements)
 {
-  return (this->_fl);
+  this->_gameElements = gameElements;
 }
 
-/*
-std::string GameDataPacket::print()
+std::vector<GameElement*>	GameDataPacket::getGameElements() const
 {
-  return this->_content.str();
+  return (this->_gameElements);
 }
-*/
+
+uint16_t GameDataPacket::getGameElementSize()
+{
+  t_element		element;
+
+  uint16_t		i = 0;
+  i += sizeof(element.id);
+  i += sizeof(element.x);
+  i += sizeof(element.y);
+  i += sizeof(element.angle);
+  i += sizeof(element.speed);
+  return (i);
+}
+
+void GameDataPacket::clearGameElements()
+{
+  this->_gameElements.clear();
+}
+
+bool GameDataPacket::deleteGameElement(GameElement* gameElement)
+{
+  std::vector<GameElement*>::iterator	it;
+
+  if ((it = std::find(this->_gameElements.begin(), this->_gameElements.end(), gameElement)) == this->_gameElements.end())
+	return (false);
+  this->_gameElements.erase(it);
+  return (true);
+}

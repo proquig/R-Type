@@ -70,7 +70,6 @@ public:
   {
 	uint32_t 		u32;
 
-	std::cout << "VALUE = " << (float)value << std::endl;
 	u32 = htonl(value);
 	this->_content.write((char *) &u32, sizeof(uint32_t));
 	return (*this);

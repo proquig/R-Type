@@ -9,6 +9,8 @@
 # include	<algorithm>
 # include	"APacket.hh"
 
+# define	MAX_INPUT 12
+
 class InputPacket : public APacket
 {
 private:
@@ -16,6 +18,7 @@ private:
 public:
   InputPacket();
   ~InputPacket();
+  bool 					setInputs(std::vector<uint16_t> inputs);
   std::vector<uint16_t>	getInputs() const;
   bool 					putInput(uint16_t input);
   bool 					deleteInput(uint16_t input);
@@ -24,6 +27,7 @@ public:
   bool					unserialize(const std::string& data);
   static bool 			checkHeader(const std::string& data);
   static bool			checkData(const std::string &data);
+  static uint16_t		getInputSize();
 };
 
 #endif

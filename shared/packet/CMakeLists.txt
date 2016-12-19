@@ -11,10 +11,12 @@ source_group(Sources FILES ${LIBPACKET_SRCS})
 
 # Library
 add_library(packet
-        STATIC
         ${LIBPACKET_SRCS}
         ${LIBPACKET_INCS}
         )
+
+# Link to game_element
+target_link_libraries(packet PUBLIC rtype_game_element)
 
 # Include directories
 target_include_directories(packet PUBLIC include)

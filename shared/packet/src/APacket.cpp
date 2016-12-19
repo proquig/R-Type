@@ -120,7 +120,7 @@ bool APacket::unserialize(const std::string &data)
   i += sizeof(_header._game_id);
   this->_header._packet_id = *(uint8_t *) &data[i];
   i += sizeof(_header._packet_id);
-  this->_type = *(APacket::PACKET_TYPE *) &data[i];
+  this->_type = (PACKET_TYPE) APacket::getFirstOpCodePart(data);
   this->_header._opCode = *(uint8_t *) &data[i];
   i += sizeof(_header._opCode);
   this->_header._size = htonl(*(uint32_t *) &data[i]);
