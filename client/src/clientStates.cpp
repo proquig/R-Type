@@ -122,6 +122,7 @@ bool		ClientStates::gameState(void)
             MAGIC, this->game_id,
             this->packet_id, 4242, 0
         );
+		std::cout << "[EVENT] " << event->name << std::endl;
         eventPacket.putInput(event->type);
         serializedEvent = eventPacket.serialize();
         if (_socket)

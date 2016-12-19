@@ -17,8 +17,8 @@
 # define Y_SPEED	10
 # define X_SPEED	10
 # define RTYPE_PORT_CLIENT 6554
-# define RTYPE_PORT_SERVER 5454
-# define RTYPE_IP_SERVER "localhost"
+# define RTYPE_PORT_SERVER 8181
+# define RTYPE_IP_SERVER "10.29.126.43"
 
 class ICondVar;
 class IMutex;
