@@ -18,8 +18,8 @@ private:
 	IGame*			_game;
 	File*			_file;
 	int				_clock;
-  ISocket *_socket;
-  ITimer *_timer;
+  	ISocket 		*_socket;
+  	ITimer 			*_timer;
 
 public:
 	GameController(IGame*, ISocket* = nullptr, ITimer* = nullptr);
