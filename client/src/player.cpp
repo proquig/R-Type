@@ -26,9 +26,10 @@ void	Player::print(void * window)
 	this->sprite->print(window);
 }
 
-void	Player::move(Coords *to)
+void	Player::move(int x, int y)
 {
-	this->coords = to;
+	this->coords->x = x;
+	this->coords->y = y;
 }
 
 void	Player::destroy()

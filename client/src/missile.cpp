@@ -26,9 +26,10 @@ void	Missile::print(void * window)
 	this->sprite->print(window);
 }
 
-void	Missile::move(Coords *to)
+void	Missile::move(int x, int y)
 {
-	this->coords = to;
+	this->coords->x = x;
+	this->coords->y = y;
 }
 
 void	Missile::destroy()

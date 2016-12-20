@@ -146,12 +146,14 @@ bool		ClientStates::gameState(void)
 			  GameDataPacket* pak = (GameDataPacket*)packet;
 			  for (uint8_t i = 0; i < pak->getGameElements().size(); ++i)
 			  {
-				  std::cout << "I = " << (int)i << std::endl;
-				  std::cout << pak->getGameElements()[i]->getId() << std::endl;
-				  std::cout << pak->getGameElements()[i]->getX() << std::endl;
-				  std::cout << pak->getGameElements()[i]->getY() << std::endl;
-				  std::cout << pak->getGameElements()[i]->getAngle() << std::endl;
-				  std::cout << pak->getGameElements()[i]->getSpeed() << std::endl;
+				  this->controller->elementAction(
+					  pak->getGameElements()[i]->getId(),
+					  PLAYER,
+					  pak->getGameElements()[i]->getX(),
+					  pak->getGameElements()[i]->getY()
+					  , 50, 50);
+				  // pak->getGameElements()[i]->getAngle()
+				  // pak->getGameElements()[i]->getSpeed()
 			  }
 			}
         delete packet;
@@ -191,15 +193,6 @@ bool	ClientStates::testState(void)
 	this->controller = new GraphicalController(SFML, windowSize->x, windowSize->y, "R-type - Graphical tests");
 	this->controller->initAction();
 
-	/*
-	this->controller->elementAction(
-		ElementFactory::create(
-			1, SET, "WASTE_LAND",
-			0, 0, windowSize->x, windowSize->y
-		)
-	);
-	*/
-
 	while (!event || event->type != Event::QUIT) {
 		if (event = this->controller->eventAction()) {
 			switch (event->type) {
@@ -211,23 +204,7 @@ bool	ClientStates::testState(void)
 				default: break;
 			}
 
-			/*
-			if (player->x < 0)
-				player->x = 0;
-			if (player->x > windowSize->x)
-				player->x = windowSize->x;
-			if (player->y < 0)
-				player->y = 0;
-			if (player->y > windowSize->y)
-				player->y = windowSize->y;
-
-				*/
-			this->controller->elementAction(
-				ElementFactory::create(
-					1, PLAYER, "CYAN_STAY",// + std::string(event->name),
-					player->x, player->y, 300, 200
-				)
-			);
+			this->controller->elementAction(1, PLAYER, player->x, player->y, 50, 50);
 
 			// Required for the threads
 			#ifdef __linux__ 

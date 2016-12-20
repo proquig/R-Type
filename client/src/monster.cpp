@@ -26,9 +26,10 @@ void	Monster::print(void * window)
 	this->sprite->print(window);
 }
 
-void	Monster::move(Coords *to)
+void	Monster::move(int x, int y)
 {
-	this->coords = to;
+	this->coords->x = x;
+	this->coords->y = y;
 }
 
 void	Monster::destroy()

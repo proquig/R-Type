@@ -30,6 +30,7 @@ void											SFMLWindow::renderScene(void)
 	std::vector<AElement *>::const_iterator		element;
 	std::vector<AElement *>::const_iterator		elem;
 	bool										match = false;
+	Coords										*position;
 
 	elements = this->elementQueue->popAll();
 	if (!elements->size())
@@ -37,7 +38,8 @@ void											SFMLWindow::renderScene(void)
 	for (element = elements->begin(); element != elements->end(); ++element) {
 		for (elem = this->scene.begin(); elem != this->scene.end(); ++elem) {
 			if ((*elem)->getId() == (*element)->getId()) {
-				(*elem)->move((*element)->getCoords());
+				position = (*element)->getCoords();
+				(*elem)->move(position->x, position->y);
 				(*elem)->setSize((*element)->getSize());
 				(*elem)->setAnimation((*element)->getAnimation());
 				match = true;
