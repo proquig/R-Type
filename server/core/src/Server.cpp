@@ -160,8 +160,8 @@ void Server::handleSocket(struct sockaddr *addr, APacket* packet)
 {
   InputPacket*		pak;
   int8_t t[][2] = {
-		  {0, 1},
 		  {0, -1},
+		  {0, 1},
 		  {-1, 0},
 		  {1, 0}
   };
@@ -193,8 +193,8 @@ void Server::handleSocket(struct sockaddr *addr, APacket* packet)
 	pak = (InputPacket*)packet;
 	if (pak->getInputs().size())
 	{
-	  player->setX(player->getX() + t[pak->getInputs()[0] - 3][0]);
-	  player->setY(player->getY() + t[pak->getInputs()[0] - 3][1]);
+	  player->setX(player->getX() + (t[pak->getInputs()[0] - 3][0] * player->getSpeed()));
+	  player->setY(player->getY() + (t[pak->getInputs()[0] - 3][1] * player->getSpeed()));
 	  this->_rooms.back()->sendNotification(_test);
 	}
   }
