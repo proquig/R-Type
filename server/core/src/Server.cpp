@@ -139,15 +139,14 @@ void Server::update(IObservable *o, int status)
       {
         APacket *packet;
         std::string data(ref.begin(), ref.end());
-        std::cout << "SIZE = " << data.size() << std::endl;
+        //std::cout << "SIZE = " << data.size() << std::endl;
         if ((packet = APacket::create(data)) != nullptr)
           if (packet->getType() == APacket::INPUT_DATA)
-          {
             this->handleSocket(addr, packet);
-            for (int i = 0; i < ((InputPacket *) packet)->getInputs().size(); ++i)
-              std::cout << "INPUT[" << i << "]=" << (int) ((InputPacket *) packet)->getInputs()[i] << std::endl;
-          }
+            //for (int i = 0; i < ((InputPacket *) packet)->getInputs().size(); ++i)
+            //  std::cout << "INPUT[" << i << "]=" << (int) ((InputPacket *) packet)->getInputs()[i] << std::endl;
         ref.erase(ref.begin(), ref.end());
+		delete packet;
       }
     }
     if (status == ISocket::CLOSE)
@@ -156,6 +155,7 @@ void Server::update(IObservable *o, int status)
   }
 }
 
+/*
 void Server::handleSocket(struct sockaddr *addr, APacket* packet)
 {
   InputPacket*		pak;
@@ -189,13 +189,73 @@ void Server::handleSocket(struct sockaddr *addr, APacket* packet)
   }
   else
   {
+	std::cout << "ROOM NO " << i << "WITH " << this->_rooms[i]->getPlayers().size() << std::endl;
+	std::cout << " --- START DEBUG --- " << std::endl;
+	for (std::map<struct sockaddr*, Player*>::iterator it = this->_rooms[i]->getPlayers().begin(); it != this->_rooms[i]->getPlayers().end(); ++it)
+	{
+	  std::cout << "  --- START PLAYER ---  " << std::endl;
+	  std::cout << "PTR = " << &it << std::endl;
+	  std::cout << "PTR SOCK = " << it->first << std::endl;
+	  std::cout << "PTR PLAYER = " << it->second << std::endl;
+	  std::cout << "PLAYER ID = " << it->second->getId() << std::endl;
+	  std::cout << "  --- START PLAYER ---  " << std::endl;
+	}
+	std::cout << " --- END DEBUG --- " << std::endl;
 	player = this->_rooms[i]->getPlayerFromSock(addr);
 	pak = (InputPacket*)packet;
 	if (pak->getInputs().size())
 	{
+	  std::cout << "YEP" << std::endl;
 	  player->setX(player->getX() + (t[pak->getInputs()[0] - 3][0] * player->getSpeed()));
 	  player->setY(player->getY() + (t[pak->getInputs()[0] - 3][1] * player->getSpeed()));
 	  this->_rooms.back()->sendNotification(_test);
 	}
   }
+}
+*/
+
+void Server::handleSocket(struct sockaddr *addr, APacket* packet)
+{
+  InputPacket*		pak;
+  int8_t t[][2] = {
+		  {0, -1},
+		  {0, 1},
+		  {-1, 0},
+		  {1, 0}
+  };
+  Player  *player = nullptr;
+  int16_t i = -1;
+  while (++i < this->_rooms.size() && !this->_rooms[i]->socketIsPresent(addr));
+	if (i == this->_rooms.size())
+	{
+	  if (!i || this->_rooms.back()->isFull())
+	  {
+		//std::cout << "NEW ROOM" << std::endl;
+		this->_rooms.push_back(new Room(new Player, addr));
+		this->_rooms.back()->sendNotification(_test);
+	  }
+	  else
+	  {
+		//std::cout << "NEW PLAYER" << std::endl;
+		this->_rooms.back()->addPlayer(new Player, addr);
+		this->_rooms.back()->sendNotification(_test);
+	  }
+	}
+	else
+	{
+	  //std::cout << "PLAYER" << std::endl;
+	  if ((player = this->_rooms[i]->getPlayerFromSock(addr)))
+	  {
+		pak = (InputPacket*)packet;
+		if (pak && pak->getInputs().size())
+		{
+		  player->setX(player->getX() + (t[pak->getInputs()[0] - 3][0] * player->getSpeed()));
+		  player->setY(player->getY() + (t[pak->getInputs()[0] - 3][1] * player->getSpeed()));
+		  this->_rooms[i]->sendNotification(_test);
+		}
+	  }
+	  else
+		for (int i = 0; i < 30; ++i)
+		  std::cout << "ERROR" << std::endl;
+	}
 }

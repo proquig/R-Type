@@ -18,7 +18,7 @@ Room::Room(Player *player, struct sockaddr* sock)
   player->setX(this->_players.size() * 100);
   player->setY(this->_players.size() * 100);
   player->setAngle(0);
-  player->setSpeed(1);
+  player->setSpeed(10);
   player->setId(this->_players.size());
 }
 
@@ -48,7 +48,7 @@ bool 					Room::addPlayer(Player* player, struct sockaddr* sock)
   player->setX(this->_players.size() * 100);
   player->setY(this->_players.size() * 100);
   player->setAngle(0);
-  player->setSpeed(1);
+  player->setSpeed(10);
   player->setId(this->_players.size());
   return (true);
 }
