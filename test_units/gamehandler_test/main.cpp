@@ -55,7 +55,7 @@ void loadPool()
 
 int main(int ac, char *av[])
 {
-	File *file = new File("./map.txt");
+	File *file = new File("../../ressources/map.txt");
 
 	ControllerFactory cf;
 	GameController* gc = cf.create(file);
