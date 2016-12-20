@@ -163,7 +163,7 @@ void Server::handleSocket(struct sockaddr *addr, APacket* packet)
 		  {0, 1},
 		  {0, -1},
 		  {-1, 0},
-		  {0, -1}
+		  {1, 0}
   };
 
   Player  *player = nullptr;
