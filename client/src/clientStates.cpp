@@ -6,6 +6,7 @@
 #include "ISocket.hpp"
 #include "ISocketFactory.hpp"
 #include "IThreadPool.hh"
+#include "ITimer.hpp"
 
 ClientStates::ClientStates()
     : _init(false), _stop(false), _waiting(false),
@@ -15,6 +16,7 @@ ClientStates::ClientStates()
   memset(&_sockaddr, '0', sizeof(_sockaddr));
   _dlManager.add(0, "threadpool", "");
   _dlManager.add(0, "rtype_network", "");
+  _dlManager.add(0, "rtype_timer", "");
 }
 
 ClientStates::~ClientStates()
@@ -99,6 +101,7 @@ bool		ClientStates::gameState(void)
   IPacket *packet;
 
   _mutex->lock();
+  _ref = _clock.now();
   while (!_stop)
   {
     _waiting = true;
@@ -114,7 +117,12 @@ bool		ClientStates::gameState(void)
           _stop = true;
           break;
         }
-        //PACKET EMISSION
+        if (std::find(_input.begin(), _input.end(), event->type) == _input.end())
+          _input.push_back(event->type);
+      }
+      //PACKET EMISSION
+      if (std::chrono::duration_cast<std::chrono::milliseconds>(_clock.now() - _ref).count() > 100)
+      {
         InputPacket eventPacket;
         std::string serializedEvent;
         eventPacket.setHeader(
@@ -122,15 +130,33 @@ bool		ClientStates::gameState(void)
             MAGIC, this->game_id,
             this->packet_id, 4242, 0
         );
-		std::cout << "[EVENT] " << event->name << std::endl;
-        eventPacket.putInput(event->type);
+        eventPacket.setInputs(_input);
+        if (_input.size() != 0)
+          _input.erase(_input.begin(), _input.end());
         serializedEvent = eventPacket.serialize();
         if (_socket)
           this->_socket->write(std::vector<unsigned char>(serializedEvent.begin(), serializedEvent.end()), &_sockaddr);
+        _ref = _clock.now();
       }
       //PACKET RECEPTION
       while ((packet = _paquetQueue.pop()) != nullptr)
       {
+		  if (packet->getType() == APacket::GAME_ELEM_INFO)
+		  {
+			  GameDataPacket* pak = (GameDataPacket*)packet;
+			  for (uint8_t i = 0; i < pak->getGameElements().size(); ++i)
+			  {
+				  this->controller->elementAction(
+					  pak->getGameElements()[i]->getId(),
+					  PLAYER,
+					  pak->getGameElements()[i]->getX(),
+					  pak->getGameElements()[i]->getY()
+					  , 50, 50);
+				  // pak->getGameElements()[i]->getAngle()
+				  // pak->getGameElements()[i]->getSpeed()
+			  }
+			}
+        delete packet;
       }
     }
   }
@@ -167,15 +193,6 @@ bool	ClientStates::testState(void)
 	this->controller = new GraphicalController(SFML, windowSize->x, windowSize->y, "R-type - Graphical tests");
 	this->controller->initAction();
 
-	/*
-	this->controller->elementAction(
-		ElementFactory::create(
-			1, SET, "WASTE_LAND",
-			0, 0, windowSize->x, windowSize->y
-		)
-	);
-	*/
-
 	while (!event || event->type != Event::QUIT) {
 		if (event = this->controller->eventAction()) {
 			switch (event->type) {
@@ -187,23 +204,7 @@ bool	ClientStates::testState(void)
 				default: break;
 			}
 
-			/*
-			if (player->x < 0)
-				player->x = 0;
-			if (player->x > windowSize->x)
-				player->x = windowSize->x;
-			if (player->y < 0)
-				player->y = 0;
-			if (player->y > windowSize->y)
-				player->y = windowSize->y;
-
-				*/
-			this->controller->elementAction(
-				ElementFactory::create(
-					1, PLAYER, "CYAN_STAY",// + std::string(event->name),
-					player->x, player->y, 300, 200
-				)
-			);
+			this->controller->elementAction(1, PLAYER, player->x, player->y, 50, 50);
 
 			// Required for the threads
 			#ifdef __linux__ 
@@ -235,17 +236,21 @@ void ClientStates::update(IObservable *o, int status)
         std::string data(ref.begin(), ref.end());
         IPacket* packet;
         if ((packet = APacket::create(data)) != nullptr)
-          std::cout << "Valid packet received" << std::endl;
-        //TODO CHECK SOURCE
-        _paquetQueue.push(packet);
-        ref.erase(ref.begin(), ref.end());
-        if (_waiting)
-          _cond->signal();
+        {
+          //TODO CHECK SOURCE
+          _paquetQueue.push(packet);
+          ref.erase(ref.begin(), ref.end());
+          if (_waiting)
+            _cond->signal();
+        }
       }
     }
     if (status & ISocket::CLOSE)
     {
     }
+  }
+  if (_timer && o == _timer)
+  {
   }
 }
 
@@ -272,6 +277,12 @@ bool ClientStates::init()
       && !(*_dic.insert(_dic.end(), dic))->empty()
       && (_socketFactory = reinterpret_cast<ISocketFactory *(*)(IThreadPool*)>(_dic.back()->at("instantiate"))(_pool)) != nullptr)
     std::cout << "_socketFactory spawned" << std::endl;
+  else
+    return false;
+  if ((dic = _dlManager.handler.getDictionaryByName("rtype_timer")) != NULL
+      && !(*_dic.insert(_dic.end(), dic))->empty()
+      && (_timer = reinterpret_cast<ITimer *(*)(IThreadPool*)>(_dic.back()->at("instantiate"))(_pool)) != nullptr)
+    std::cout << "timer spawned" << std::endl;
   else
     return false;
   if ((_socket = _socketFactory->createSocketUDP(this, RTYPE_PORT_CLIENT)) == nullptr)

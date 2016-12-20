@@ -26,9 +26,10 @@ void	Set::print(void * window)
 	this->sprite->print(window);
 }
 
-void	Set::move(Coords *to)
+void	Set::move(int x, int y)
 {
-	this->coords = to;
+	this->coords->x = x;
+	this->coords->y = y;
 }
 
 void	Set::destroy()

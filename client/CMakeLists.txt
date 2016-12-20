@@ -32,6 +32,7 @@ target_include_directories(rtype_client PRIVATE ${SFML_INCLUDE_DIR})
 target_include_directories(rtype_client PRIVATE ${CMAKE_SOURCE_DIR}/shared/packet/include)
 target_include_directories(rtype_client PRIVATE ${CMAKE_SOURCE_DIR}/shared/threadpool/include)
 target_include_directories(rtype_client PRIVATE ${CMAKE_SOURCE_DIR}/shared/network/include)
+target_include_directories(rtype_client PRIVATE ${CMAKE_SOURCE_DIR}/shared/timer/include)
 
 target_link_libraries(rtype_client PRIVATE packet)
 

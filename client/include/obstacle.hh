@@ -10,7 +10,7 @@ public:
 
 	void	loadSprites(GLib);
 	void	print(void *);
-	void	move(Coords *);
+	void	move(int x, int y);
 	void	destroy();
 
 	//////////////////////////////////////////////

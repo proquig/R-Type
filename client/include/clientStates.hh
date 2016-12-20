@@ -7,16 +7,17 @@
 # elif _WIN32
 #  include <windows.h>
 # endif
+# include <chrono>
 # include <iostream>
 # include <vector>
 # include "graphicalController.hh"
 # include "element.hh"
 # include "DLManager.hh"
-#include "IObserver.hpp"
+# include "IObserver.hpp"
 
 # define Y_SPEED	10
 # define X_SPEED	10
-# define RTYPE_PORT_CLIENT 6554
+# define RTYPE_PORT_CLIENT 0
 # define RTYPE_PORT_SERVER 8181
 # define RTYPE_IP_SERVER "10.29.126.43"
 
@@ -25,6 +26,7 @@ class IMutex;
 class ISocketFactory;
 class ISocket;
 class IThreadPool;
+class ITimer;
 
 class ClientStates : public IObserver
 {
@@ -52,6 +54,8 @@ private:
 	bool _init;
 	bool _waiting;
 	bool _stop;
+	//Input
+	std::vector<uint16_t> _input;
 	//DLLoader
 	std::vector<Dictionary> _dic;
 	DLManager _dlManager;
@@ -66,6 +70,11 @@ private:
 	struct sockaddr _sockaddr;
 	ISocketFactory *_socketFactory;
 	ISocket *_socket;
+	//Timer
+	std::chrono::high_resolution_clock _clock;
+	std::chrono::high_resolution_clock::time_point _ref;
+	ITimer *_timer;
+
 
 public:
 	ClientStates();

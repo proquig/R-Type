@@ -26,9 +26,10 @@ void	Obstacle::print(void * window)
 	this->sprite->print(window);
 }
 
-void	Obstacle::move(Coords *to)
+void	Obstacle::move(int x, int y)
 {
-	this->coords = to;
+	this->coords->x = x;
+	this->coords->y = y;
 }
 
 void	Obstacle::destroy()

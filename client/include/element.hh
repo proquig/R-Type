@@ -21,7 +21,7 @@ public:
 
 	virtual void	loadSprites(GLib) = 0;
 	virtual void	print(void *) = 0;
-	virtual void	move(Coords *) = 0;
+	virtual void	move(int x, int y) = 0;
 	virtual void	destroy() = 0;
 
 	//////////////////////////////////////////////
@@ -53,6 +53,10 @@ protected:
 	ASprite			*sprite;
 	std::string		animation;
 
+public:
+
+	AElement() : coords(new Coords(0, 0)) {}
+
 };
 
 enum ElementType {
@@ -65,7 +69,7 @@ enum ElementType {
 
 class ElementFactory {
 public:
-	static AElement *	create(unsigned int, ElementType, std::string, unsigned int, unsigned int, unsigned int, unsigned int);
+	static AElement *	create(unsigned int, ElementType, std::string, int, int, unsigned int, unsigned int);
 };
 
 #endif /* !ELEMENT_HH__ */
