@@ -15,26 +15,27 @@
 class Room
 {
 private:
-  std::map<struct sockaddr*, Player*>	_players;
+  std::vector<Player*>  _players;
+  //std::map<struct sockaddr*, Player*>	_players;
   //std::vector<std::pair<struct sockaddr*, Player*>>	_players;
 
 public:
   Room();
-  Room(Player* player, struct sockaddr* sock);
+  Room(Player* player);
   ~Room();
-  bool 					setPlayers(std::map<struct sockaddr*, Player*> players);
-  std::map<struct sockaddr*, Player*>	getPlayers() const;
-  bool 					addPlayer(Player* player, struct sockaddr* sock);
-  bool 					deletePlayer(Player *player, struct sockaddr* sock);
+  bool 					setPlayers(std::vector<Player*> players);
+  std::vector<Player*>	getPlayers() const;
+  bool 					addPlayer(Player* player);
+  bool 					deletePlayer(Player *player);
   void 					clearPlayers();
   bool					playerIsPresent(Player* player);
   bool					socketIsPresent(struct sockaddr* sock);
-  struct sockaddr*		getSockFromPlayer(Player* player);
+  //struct sockaddr*		getSockFromPlayer(Player* player);
   Player*				getPlayerFromSock(struct sockaddr* sock);
 //  void 					sendNotificationFromPlayer(Player* player);
 //  void 					sendNotificationFromSock(struct sockaddr* sock);
   bool					isFull();
-  void					sendNotification(ISocket *sock, const std::string &data);
+  //void					sendNotification(ISocket *sock, const std::string &data);
   void					sendNotification(ISocket *sock);
 };
 

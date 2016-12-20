@@ -231,13 +231,13 @@ void Server::handleSocket(struct sockaddr *addr, APacket* packet)
 	  if (!i || this->_rooms.back()->isFull())
 	  {
 		//std::cout << "NEW ROOM" << std::endl;
-		this->_rooms.push_back(new Room(new Player, addr));
+		this->_rooms.push_back(new Room(new Player(addr)));
 		this->_rooms.back()->sendNotification(_test);
 	  }
 	  else
 	  {
 		//std::cout << "NEW PLAYER" << std::endl;
-		this->_rooms.back()->addPlayer(new Player, addr);
+		this->_rooms.back()->addPlayer(new Player(addr));
 		this->_rooms.back()->sendNotification(_test);
 	  }
 	}
@@ -252,10 +252,21 @@ void Server::handleSocket(struct sockaddr *addr, APacket* packet)
 		  player->setX(player->getX() + (t[pak->getInputs()[0] - 3][0] * player->getSpeed()));
 		  player->setY(player->getY() + (t[pak->getInputs()[0] - 3][1] * player->getSpeed()));
 		  this->_rooms[i]->sendNotification(_test);
+
+		  for (uint8_t j = 0; j < this->_rooms[i]->getPlayers().size(); ++j)
+			if (player != this->_rooms[i]->getPlayers()[j])
+			{
+			  //std::cout << "Player X = " << player->getX() << " & Y = " << player->getY() << std::endl;
+			  //std::cout << "Player2 X = " << this->_rooms[i]->getPlayers()[j]->getX() << " & Y = " << this->_rooms[i]->getPlayers()[j]->getY() << std::endl;
+			  //std::cout << this->_rooms[i]->getPlayers()[j]->getX() - player->getX() << std::endl;
+			  //std::cout << this->_rooms[i]->getPlayers()[j]->getY() - player->getY() << std::endl;
+			  if (((this->_rooms[i]->getPlayers()[j]->getX() - player->getX() <= 30) && (this->_rooms[i]->getPlayers()[j]->getX() - player->getX() >= -30))
+				  && ((this->_rooms[i]->getPlayers()[j]->getY() - player->getY() <= 15) && (this->_rooms[i]->getPlayers()[j]->getY() - player->getY() >= -15)))
+				std::cout << "COLLISION" << std::endl;
+			}
 		}
 	  }
 	  else
-		for (int i = 0; i < 30; ++i)
 		  std::cout << "ERROR" << std::endl;
 	}
 }

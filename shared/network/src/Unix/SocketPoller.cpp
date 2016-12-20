@@ -75,7 +75,7 @@ void SocketPoller::run()
   {
     pollfd = _pollfds.begin();
     socketPoll = _socketPolls.begin();
-    poll(&_pollfds.front(), _pollfds.size(), 1000);
+    poll(&_pollfds.front(), _pollfds.size(), 1);
     while (socketPoll != _socketPolls.end())
     {
       status = 0;
@@ -104,9 +104,9 @@ void SocketPoller::run()
     }
   }
   else
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(1));
   _mutex->unlock();
-  std::this_thread::sleep_for(std::chrono::milliseconds(10));
+  std::this_thread::sleep_for(std::chrono::milliseconds(1));
   _pool->addTask(_pool->createTask(std::bind(&SocketPoller::run, this)));
 }
 

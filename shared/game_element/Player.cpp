@@ -9,6 +9,11 @@ Player::Player(uint32_t idFrom, uint32_t id, uint16_t type, uint16_t x, uint16_t
 	_alive = true;
 }
 
+Player::Player(struct sockaddr *addr)
+{
+  this->_addr = addr;
+}
+
 Player::~Player()
 {
 }
@@ -31,4 +36,14 @@ std::vector<IElement*>					Player::collideWith(IElement* elem)
 		_hp = 0;
 	}
 	return std::vector<IElement*>();
+}
+
+struct sockaddr* Player::getAddr()
+{
+  return (this->_addr);
+}
+
+void Player::setAddr(struct sockaddr* addr)
+{
+  this->_addr = addr;
 }
