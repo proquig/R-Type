@@ -108,7 +108,6 @@ void SocketPoller::run()
   else
     std::this_thread::sleep_for(std::chrono::milliseconds(1));
   _mutex->unlock();
-  std::this_thread::sleep_for(std::chrono::milliseconds(1));
   if (!_stop)
     _pool->addTask(_pool->createTask(std::bind(&SocketPoller::run, this)));
 }
