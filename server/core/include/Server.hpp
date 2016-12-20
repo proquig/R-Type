@@ -38,7 +38,7 @@ public:
   virtual bool run();
   virtual void stop(unsigned int);
   virtual void update(IObservable *, int status);
-  virtual void handleSocket(struct sockaddr *addr);
+  virtual void handleSocket(sockaddr *addr, APacket *packet);
 };
 
 #endif //R_TYPE_SERVER_HPP_

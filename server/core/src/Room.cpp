@@ -42,14 +42,14 @@ std::map<struct sockaddr*, Player*>	Room::getPlayers() const
 
 bool 					Room::addPlayer(Player* player, struct sockaddr* sock)
 {
+  if (this->_players.size() == MAX_PLAYERS)
+	return (false);
+  this->_players.insert(std::pair<struct sockaddr*, Player*>(sock, player));
   player->setX(this->_players.size() * 100);
   player->setY(this->_players.size() * 100);
   player->setAngle(0);
   player->setSpeed(1);
   player->setId(this->_players.size());
-  if (this->_players.size() == MAX_PLAYERS)
-	return (false);
-  this->_players.insert(std::pair<struct sockaddr*, Player*>(sock, player));
   return (true);
 }
 
@@ -114,6 +114,7 @@ void Room::sendNotification(ISocket *sock)
   for (std::map<struct sockaddr*, Player*>::iterator it = this->_players.begin(); it != this->_players.end(); ++it)
 	vec.push_back((GameElement *&&) it->second);
   GameDataPacket packet(vec);
+  packet.setHeader(APacket::GAME_ELEM_INFO, APacket::ACK_DONE, MAGIC, 4, 42, 100, 12);
   std::string	str = packet.serialize();
   for (std::map<struct sockaddr*, Player*>::iterator it = this->_players.begin(); it != this->_players.end(); ++it)
 	sock->write(std::vector<unsigned char>(str.begin(), str.end()), it->first);

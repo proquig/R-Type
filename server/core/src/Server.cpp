@@ -137,18 +137,16 @@ void Server::update(IObservable *o, int status)
       std::vector<unsigned char> &ref = _test->read(&addr);
       if (ref.size() != 0)
       {
-        IPacket *packet;
+        APacket *packet;
         std::string data(ref.begin(), ref.end());
         std::cout << "SIZE = " << data.size() << std::endl;
         if ((packet = APacket::create(data)) != nullptr)
           if (packet->getType() == APacket::INPUT_DATA)
           {
-            this->handleSocket(addr);
+            this->handleSocket(addr, packet);
             for (int i = 0; i < ((InputPacket *) packet)->getInputs().size(); ++i)
               std::cout << "INPUT[" << i << "]=" << (int) ((InputPacket *) packet)->getInputs()[i] << std::endl;
           }
-        //_test->write(ref, addr);
-        //std::cout << ref.size() << std::endl;
         ref.erase(ref.begin(), ref.end());
       }
     }
@@ -158,8 +156,16 @@ void Server::update(IObservable *o, int status)
   }
 }
 
-void Server::handleSocket(struct sockaddr *addr)
+void Server::handleSocket(struct sockaddr *addr, APacket* packet)
 {
+  InputPacket*		pak;
+  int8_t t[][2] = {
+		  {0, 1},
+		  {0, -1},
+		  {-1, 0},
+		  {0, -1}
+  };
+
   Player  *player = nullptr;
   int16_t i = -1;
   while (++i < this->_rooms.size()
@@ -182,5 +188,14 @@ void Server::handleSocket(struct sockaddr *addr)
     this->_rooms.back()->sendNotification(_test);
   }
   else
-    this->_rooms.back()->sendNotification(_test);
+  {
+	player = this->_rooms[i]->getPlayerFromSock(addr);
+	pak = (InputPacket*)packet;
+	if (pak->getInputs().size())
+	{
+	  player->setX(player->getX() + t[pak->getInputs()[0] - 3][0]);
+	  player->setY(player->getY() + t[pak->getInputs()[0] - 3][1]);
+	  this->_rooms.back()->sendNotification(_test);
+	}
+  }
 }
