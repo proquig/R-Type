@@ -152,7 +152,10 @@ bool		ClientStates::gameState(void)
 					  pak->getGameElements()[i]->getX(),
 					  pak->getGameElements()[i]->getY()
 					  , 50, 50);
-				  // pak->getGameElements()[i]->getAngle()
+
+                  std::cout << pak->getGameElements()[i]->getX() << ":" << pak->getGameElements()[i]->getY() << std::endl;
+
+                  // pak->getGameElements()[i]->getAngle()
 				  // pak->getGameElements()[i]->getSpeed()
 			  }
 			}

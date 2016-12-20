@@ -36,6 +36,7 @@ void	GraphicalController::elementAction(unsigned int id, ElementType type, int x
 	std::vector<AElement *>::const_iterator		elem;
 	bool										match = false;
 
+    /*std::cerr << "id=" << id << std::endl;
 	if (this->scene.size()) {
 		for (elem = this->scene.begin(); elem != this->scene.end(); ++elem) {
 			if ((*elem)->getId() == id) {
@@ -46,13 +47,16 @@ void	GraphicalController::elementAction(unsigned int id, ElementType type, int x
 		}
 	}
 	if (!match) {
+    FRAICHEUR DE VIVRE HOLLYWOOD CHEWING-GUM*/
+        //std::cout << "JEPASSEICI=JESUISNEW" << std::endl;
+        this->scene.clear();
 		element = ElementFactory::create(
 			id, type, "CYAN_STAY",
 			x, y, w, h
 		);
 		this->scene.push_back(element);
 		this->windowQueue->push(element);
-	}
+	//}
 }
 
 Event *		GraphicalController::eventAction(void)
