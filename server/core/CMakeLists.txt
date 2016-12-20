@@ -9,6 +9,7 @@ source_group(Sources FILES ${LIBRTYPE_SERVER_CORE_SRCS})
 
 # Executable
 add_executable(rtype_server
+    include/workQueue.hh
     ${LIBRTYPE_SERVER_CORE_SRCS}
     ${LIBRTYPE_SERVER_CORE_INCS}
     )

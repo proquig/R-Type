@@ -97,12 +97,28 @@ bool Server::init()
 
 bool Server::run()
 {
+  std::vector<std::pair<std::string, struct sockaddr*>> *vector;
+  APacket *packet;
+
   _mutex->lock();
   while (!_stop)
   {
     _waiting = true;
     _cond->wait(_mutex);
     _waiting = false;
+    if (!_stop)
+    {
+      //PACKET RECEPTION
+      if ((vector = _packets.popAll()) != nullptr && vector->size() != 0)
+        while (vector->size() != 0)
+        {
+          std::pair<std::string, struct sockaddr*> pair = vector->back();
+          if ((packet = APacket::create(pair.first)) != nullptr)
+            if (packet->getType() == APacket::INPUT_DATA)
+              this->handleSocket(pair.second, packet);
+          vector->pop_back();
+        }
+    }
   }
   _mutex->unlock();
   return true;
@@ -137,16 +153,11 @@ void Server::update(IObservable *o, int status)
       std::vector<unsigned char> &ref = _test->read(&addr);
       if (ref.size() != 0)
       {
-        APacket *packet;
         std::string data(ref.begin(), ref.end());
-        //std::cout << "SIZE = " << data.size() << std::endl;
-        if ((packet = APacket::create(data)) != nullptr)
-          if (packet->getType() == APacket::INPUT_DATA)
-            this->handleSocket(addr, packet);
-            //for (int i = 0; i < ((InputPacket *) packet)->getInputs().size(); ++i)
-            //  std::cout << "INPUT[" << i << "]=" << (int) ((InputPacket *) packet)->getInputs()[i] << std::endl;
+        _packets.push(std::make_pair(std::string(ref.begin(), ref.end()), addr));
         ref.erase(ref.begin(), ref.end());
-		delete packet;
+        if (_waiting)
+          _cond->signal();
       }
     }
     if (status == ISocket::CLOSE)
