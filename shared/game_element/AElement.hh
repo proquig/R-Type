@@ -14,7 +14,8 @@ public:
 		BONUS,
 		DECOR,
 		PLAYER,
-		BULLET
+		BULLET,
+		MONSTER
 	};
 
 protected:

@@ -20,7 +20,7 @@ int main(int ac, char *av[])
                   << elem->getX() << ":"
                   << elem->getY() << "\n\t}\n\t{\n\t"
                   << elem->getSizeX() << ":"
-        << elem->getSizeY() << "\n\t}\n" << std::endl;
+        << elem->getSizeY() << "\n\t}" << std::endl;
         std::cout << "};\n";
 
     }

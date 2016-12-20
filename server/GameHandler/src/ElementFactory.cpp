@@ -18,6 +18,9 @@ AElement*		ElementFactory::create(uint32_t idFrom, uint32_t id, uint16_t type, u
 			return createShot(idFrom, x, y, sizex, sizey, damage, angle, speed);
 		case AElement::DECOR :
 			return createDecor(x, y, sizex, sizey);
+		case AElement::MONSTER :
+			return createMonster(x, y, hp, sizex, sizey, damage, angle, speed);
+
 	}
 }
 
@@ -37,4 +40,10 @@ Decor*			ElementFactory::createDecor(uint16_t x, uint16_t y, uint16_t sizex, uin
 {
 	Decor*		decor = new Decor(-1, _elementId++, AElement::DECOR, x, y, 100000, sizex, sizey, 0, 0, 0);
 	return decor;
+}
+
+Monster*		ElementFactory::createMonster(uint16_t x, uint16_t y, uint16_t hp, uint16_t sizex, uint16_t sizey, uint16_t damage, float angle, char speed)
+{
+	Monster*		monster = new Monster(-1, _elementId++, AElement::MONSTER, x, y, hp, sizex, sizey, damage, angle, speed);
+	return monster;
 }

@@ -13,6 +13,8 @@ add_library(rtype_game_element
 	Player.cpp
 	Shot.cpp
 	Shot.hh
+	Monster.cpp
+	Monster.hh
     )
 
 target_include_directories(rtype_game_element PUBLIC .)

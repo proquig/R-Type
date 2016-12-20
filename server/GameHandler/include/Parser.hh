@@ -14,6 +14,7 @@ private:
 	std::string              	        data;
 	void 						        parseTitle();
 	void        				        parsePlayer();
+	void        				        parseMonster();
 	void             			        parseElement();
     bool                                _end;
     std::vector<AElement *>::iterator   it;
