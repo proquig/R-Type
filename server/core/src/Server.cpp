@@ -49,9 +49,6 @@ Server::~Server()
 
 bool Server::game_test(unsigned short port, unsigned short time)
 {
-  File *file = new File("./map.txt");
-
-  GameController* gc = _controllerFactory.create(file);
   if (port != 0)
     _test = _socketFactory->createSocketUDP(this, port);
   if (time != 0)
@@ -92,7 +89,7 @@ bool Server::init()
     return false;
   _network = NetworkHandler(_socketFactory);
   _network.addObserver(this);
-  _timer->setTimer(25);
+  _timer->setTimer(50);
   _timer->addObserver(this);
   return (_network.getState() == NetworkHandler::RUNNING);
 }
