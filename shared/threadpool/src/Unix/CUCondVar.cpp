@@ -42,7 +42,7 @@ void CUCondVar::wait(IMutex *mutex, unsigned long time)
     {
       struct timespec spec;
 
-      clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &spec);
+      clock_gettime(CLOCK_REALTIME, &spec);
       spec.tv_sec += time / 1000;
       spec.tv_nsec += (time % 1000) * 1000000;
       if (spec.tv_nsec >= 1000000000L)
