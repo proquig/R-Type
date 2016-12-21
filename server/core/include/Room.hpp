@@ -7,6 +7,8 @@
 
 # include	<algorithm>
 # include	<map>
+# include   "GameController.hh"
+# include   "ControllerFactory.hh"
 # include	"APacket.hh"
 # include	"Player.hh"
 
@@ -16,13 +18,14 @@ class Room
 {
 private:
   std::vector<Player*>  _players;
-  //std::map<struct sockaddr*, Player*>	_players;
-  //std::vector<std::pair<struct sockaddr*, Player*>>	_players;
+  ControllerFactory     _cf;
+  GameController*       _gameController;
 
 public:
   Room();
   Room(Player* player);
   ~Room();
+  GameController*       getGameController() const;
   bool 					setPlayers(std::vector<Player*> players);
   std::vector<Player*>	getPlayers() const;
   bool 					addPlayer(Player* player);

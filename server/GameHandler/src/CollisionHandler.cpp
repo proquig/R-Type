@@ -57,6 +57,7 @@ std::vector<IElement*> 														CollisionHandler::foundCollisions(std::vect
 		{
 			if (isCollision((*vit), (*mit).second))
 			{
+			  std::cout << "COLLISION" << std::endl;
 				if ((*mit).first && collisionId) {
 					tmp = handleCollision((*vit).getId(), (*mit).first->getId(), entitys, collisionId);
 					while (tmp.size() != 0) {

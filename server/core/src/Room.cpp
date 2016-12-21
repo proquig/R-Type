@@ -8,16 +8,19 @@
 
 Room::Room()
 {
-
+  this->_gameController = this->_cf.create(new File(""));
 }
 
 Room::Room(Player *player)
 {
+  this->_gameController = this->_cf.create(new File(""));
   this->_players.push_back(player);
   //this->_players.insert(std::pair<struct sockaddr*, Player*>(sock, player));
   // 800 x 600
   player->setX(this->_players.size() * 100);
   player->setY(this->_players.size() * 100);
+  player->setSizeX(8);
+  player->setSizeY(16);
   player->setAngle(0);
   player->setSpeed(10);
   player->setId(this->_players.size());
@@ -26,6 +29,11 @@ Room::Room(Player *player)
 Room::~Room()
 {
 
+}
+
+GameController *Room::getGameController() const
+{
+  return (this->_gameController);
 }
 
 bool 					Room::setPlayers(std::vector<Player*> players)
@@ -47,8 +55,10 @@ bool 					Room::addPlayer(Player* player)
 	return (false);
   //this->_players.insert(std::pair<struct sockaddr*, Player*>(sock, player));
   this->_players.push_back(player);
-  player->setX(this->_players.size() * 100);
+  player->setX(100);
   player->setY(this->_players.size() * 100);
+  player->setSizeX(16);
+  player->setSizeY(30);
   player->setAngle(0);
   player->setSpeed(10);
   player->setId(this->_players.size());

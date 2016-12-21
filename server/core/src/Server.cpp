@@ -49,6 +49,9 @@ Server::~Server()
 
 bool Server::game_test(unsigned short port, unsigned short time)
 {
+  //File *file = new File("./map.txt");
+
+  //GameController* gc = _controllerFactory.create(file);
   if (port != 0)
     _test = _socketFactory->createSocketUDP(this, port);
   if (time != 0)
@@ -171,120 +174,63 @@ void Server::update(IObservable *o, int status)
   }
 }
 
-/*
 void Server::handleSocket(struct sockaddr *addr, APacket* packet)
 {
-  InputPacket*		pak;
-  int8_t t[][2] = {
-		  {0, -1},
-		  {0, 1},
-		  {-1, 0},
-		  {1, 0}
-  };
-
-  Player  *player = nullptr;
-  int16_t i = -1;
-  while (++i < this->_rooms.size()
-		 && !this->_rooms[i]->socketIsPresent(addr)
-		 && this->_rooms[i]->isFull());
-  if (i == this->_rooms.size() ||
-	  (!this->_rooms[i]->socketIsPresent(addr)
-	   && this->_rooms[i]->isFull()))
-  {
-	std::cout << "NEW ROOM" << std::endl;
-    player = new Player;
-	this->_rooms.push_back(new Room(player, addr));
-    this->_rooms.back()->sendNotification(_test);
-  }
-  else if (!this->_rooms[i]->socketIsPresent(addr))
-  {
-	std::cout << "NEW PLAYER" << std::endl;
-    player = new Player;
-    this->_rooms[i]->addPlayer(player, addr);
-    this->_rooms.back()->sendNotification(_test);
-  }
-  else
-  {
-	std::cout << "ROOM NO " << i << "WITH " << this->_rooms[i]->getPlayers().size() << std::endl;
-	std::cout << " --- START DEBUG --- " << std::endl;
-	for (std::map<struct sockaddr*, Player*>::iterator it = this->_rooms[i]->getPlayers().begin(); it != this->_rooms[i]->getPlayers().end(); ++it)
-	{
-	  std::cout << "  --- START PLAYER ---  " << std::endl;
-	  std::cout << "PTR = " << &it << std::endl;
-	  std::cout << "PTR SOCK = " << it->first << std::endl;
-	  std::cout << "PTR PLAYER = " << it->second << std::endl;
-	  std::cout << "PLAYER ID = " << it->second->getId() << std::endl;
-	  std::cout << "  --- START PLAYER ---  " << std::endl;
-	}
-	std::cout << " --- END DEBUG --- " << std::endl;
-	player = this->_rooms[i]->getPlayerFromSock(addr);
-	pak = (InputPacket*)packet;
-	if (pak->getInputs().size())
-	{
-	  std::cout << "YEP" << std::endl;
-	  player->setX(player->getX() + (t[pak->getInputs()[0] - 3][0] * player->getSpeed()));
-	  player->setY(player->getY() + (t[pak->getInputs()[0] - 3][1] * player->getSpeed()));
-	  this->_rooms.back()->sendNotification(_test);
-	}
-  }
-}
-*/
-
-void Server::handleSocket(struct sockaddr *addr, APacket* packet)
-{
-  InputPacket*		pak;
-  int8_t t[][2] = {
-		  {0, -1},
-		  {0, 1},
-		  {-1, 0},
-		  {1, 0}
-  };
   Player  *player = nullptr;
   int16_t i = -1;
   while (++i < this->_rooms.size() && !this->_rooms[i]->socketIsPresent(addr));
 	if (i == this->_rooms.size())
 	{
 	  if (!i || this->_rooms.back()->isFull())
-	  {
-		//std::cout << "NEW ROOM" << std::endl;
-		this->_rooms.push_back(new Room(new Player(addr)));
-		this->_rooms.back()->sendNotification(_test);
-	  }
+		this->createRoom(addr);
 	  else
-	  {
-		//std::cout << "NEW PLAYER" << std::endl;
-		this->_rooms.back()->addPlayer(new Player(addr));
-		this->_rooms.back()->sendNotification(_test);
-	  }
+		this->addPlayer(addr);
 	}
 	else
 	{
-	  //std::cout << "PLAYER" << std::endl;
 	  if ((player = this->_rooms[i]->getPlayerFromSock(addr)))
 	  {
-		pak = (InputPacket*)packet;
-		if (pak && pak->getInputs().size())
-		{
-      for (uint16_t input : pak->getInputs())
-      {
-        player->setX(player->getX() + (t[input - 3][0] * player->getSpeed()));
-        player->setY(player->getY() + (t[input - 3][1] * player->getSpeed()));
-      }
-
-		  for (uint8_t j = 0; j < this->_rooms[i]->getPlayers().size(); ++j)
-			if (player != this->_rooms[i]->getPlayers()[j])
-			{
-			  //std::cout << "Player X = " << player->getX() << " & Y = " << player->getY() << std::endl;
-			  //std::cout << "Player2 X = " << this->_rooms[i]->getPlayers()[j]->getX() << " & Y = " << this->_rooms[i]->getPlayers()[j]->getY() << std::endl;
-			  //std::cout << this->_rooms[i]->getPlayers()[j]->getX() - player->getX() << std::endl;
-			  //std::cout << this->_rooms[i]->getPlayers()[j]->getY() - player->getY() << std::endl;
-			  if (((this->_rooms[i]->getPlayers()[j]->getX() - player->getX() <= 30) && (this->_rooms[i]->getPlayers()[j]->getX() - player->getX() >= -30))
-				  && ((this->_rooms[i]->getPlayers()[j]->getY() - player->getY() <= 15) && (this->_rooms[i]->getPlayers()[j]->getY() - player->getY() >= -15)))
-				std::cout << "COLLISION" << std::endl;
-			}
-		}
+		this->handleMovement(this->_rooms[i], player, (InputPacket*)packet);
+		this->handleCollision(this->_rooms[i], player);
 	  }
 	  else
 		  std::cout << "ERROR" << std::endl;
 	}
+}
+
+void Server::createRoom(struct sockaddr *sock)
+{
+  Room*		room = new Room;
+  Player*	player = new Player(sock);
+
+  room->addPlayer(player);
+  room->getGameController()->getGame()->addPlayer(player);
+  this->_rooms.push_back(room);
+  this->_rooms.back()->sendNotification(_test);
+}
+
+void Server::addPlayer(struct sockaddr *sock)
+{
+  Player*	player = new Player(sock);
+
+  this->_rooms.back()->addPlayer(player);
+  this->_rooms.back()->getGameController()->getGame()->addPlayer(player);
+  this->_rooms.back()->sendNotification(_test);
+}
+
+void Server::handleMovement(Room* room, Player* player, InputPacket* packet)
+{
+  if (packet && packet->getInputs().size())
+	for (uint16_t input : packet->getInputs())
+	{
+	  player->setX(player->getX() + (mov[input - 3][0] * player->getSpeed()));
+	  player->setY(player->getY() + (mov[input - 3][1] * player->getSpeed()));
+	}
+}
+
+void Server::handleCollision(Room* room, Player* player)
+{
+  for (uint8_t i = 0; i < room->getPlayers().size(); ++i)
+	if (player != room->getPlayers()[i])
+	  room->getGameController()->handleCollisions();
 }

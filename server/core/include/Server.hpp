@@ -1,6 +1,7 @@
 #ifndef R_TYPE_SERVER_HPP_
 #define R_TYPE_SERVER_HPP_
 
+#include "InputPacket.hh"
 #include "ControllerFactory.hh"
 #include "DLManager.hh"
 #include "NetworkHandler.hpp"
@@ -16,11 +17,18 @@ class ITimer;
 class Server : public IObserver
 {
 protected:
+  int8_t mov[4][2] = {
+          {0, -1},
+          {0, 1},
+          {-1, 0},
+          {1, 0}
+  };
+
   ICondVar *_cond;
   std::vector<Dictionary> _dic;
   DLManager _dlManager;
   ISocketFactory *_socketFactory;
-  ControllerFactory _controllerFactory;
+  //ControllerFactory _controllerFactory;
   IMutex *_mutex;
   NetworkHandler _network;
   WorkQueue<std::pair<std::string, struct sockaddr*>> _packets;
@@ -40,7 +48,11 @@ public:
   virtual bool run();
   virtual void stop(unsigned int);
   virtual void update(IObservable *, int status);
+  virtual void createRoom(struct sockaddr* sock);
+  virtual void addPlayer(struct sockaddr* sock);
   virtual void handleSocket(sockaddr *addr, APacket *packet);
+  virtual void handleMovement(Room* room, Player* player, InputPacket* packet);
+  virtual void handleCollision(Room* room, Player* player);
 };
 
 #endif //R_TYPE_SERVER_HPP_
