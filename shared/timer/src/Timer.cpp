@@ -1,17 +1,20 @@
 #include <thread>
 #include "Timer.hpp"
+#include "ICondVar.hh"
+#include "IMutex.hh"
 #include "IThreadPool.hh"
 
 Timer::Timer(IThreadPool *pool)
-    : _pool(pool), _stop(false)
+    : _cond(nullptr), _mutex(nullptr), _pool(pool),
+    _stop(true), _timer(10), _thread(nullptr)
 {
-}
-
-void Timer::addObserver(IObserver *o)
-{
-  Observable::addObserver(o);
-  if (_collectionObserver.size() == 1 && _pool)
-    _pool->addTask(_pool->createTask(std::bind(&Timer::update, this, _timer)));
+  if (_pool)
+  {
+    _cond = _pool->createCondVar();
+    _mutex = _pool->createMutex();
+    _thread = new std::thread(&Timer::run, this);
+    _stop = false;
+  }
 }
 
 void Timer::setTimer(unsigned int timer)
@@ -22,15 +25,21 @@ void Timer::setTimer(unsigned int timer)
 
 void Timer::stop()
 {
-  _stop = true;
+  if (!_stop)
+  {
+    _stop = true;
+    _thread->join();
+  }
 }
 
-void Timer::update(unsigned int timer)
+void Timer::run()
 {
-  if (_stop)
-    return;
-  std::this_thread::sleep_for(std::chrono::milliseconds(timer));
-  notify(timer);
-  if (_collectionObserver.size() >= 1 && _pool)
-    _pool->addTask(_pool->createTask(std::bind(&Timer::update, this, _timer)));
+  _mutex->lock();
+  while (!_stop)
+  {
+    _cond->wait(_mutex, _timer);
+    if (_collectionObserver.size() != 0)
+      notify(_timer);
+  }
+  _mutex->unlock();
 }
