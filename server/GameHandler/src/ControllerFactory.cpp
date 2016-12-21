@@ -15,10 +15,10 @@ ControllerFactory::~ControllerFactory()
 GameController* ControllerFactory::create(File *file, ISocket* socket, ITimer* timer)
 {
 	
-	Parser parser = (*new Parser(file));
 	IGame*	game = new Game(_gameId++);
 	GameController* controller = new GameController(game, socket, timer);
-	
+	controller->initGame(file);
+	std::cout << "End of ControllerFactory::create" << std::endl;	
 //	parser.parseTitle();
 //	parser.parsePlayer();
 //	for (IElement* elem : parser.getLine())

@@ -4,6 +4,7 @@
 #include <vector>
 #include "File.hh"
 #include "AElement.hh"
+#include "ElementFactory.hh"
 
 class Parser
 {
@@ -18,16 +19,17 @@ private:
 	void             			        parseElement();
     bool                                _end;
     std::vector<AElement *>::iterator   it;
+	ElementFactory*						_factory;
 
 public:
-	Parser();
-	Parser(File *);
+	Parser(ElementFactory* factory);
 	~Parser();
 
 	IElement					*parse();
 
 	const std::vector<AElement*> &	getLine() const;
-	AElement *get_map() const;
+	AElement							*get_map() const;
+	void								setFile(File*);
 };
 
 #endif

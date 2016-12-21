@@ -6,6 +6,7 @@
 #include			"IGame.hh"
 #include			"File.hh"
 #include			"ElementFactory.hh"
+#include			"Parser.hh"
 
 class ISocket;
 class ITimer;
@@ -36,10 +37,10 @@ public:
 	int					getDelta() const;
 	void				setDelta(int);
 	int					getTick() const;
-	virtual void update(int);
-	virtual void update(IObservable*, int);
+	virtual void		update(int);
+	virtual void		update(IObservable*, int);
 	ElementFactory&		getElementFactory();
-  virtual ISocket* getSocket();
+  virtual ISocket*		getSocket();
 	IGame*				getGame() const;
 };
 

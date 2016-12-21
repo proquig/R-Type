@@ -11,6 +11,7 @@ private:
 	GameScene*					_gameScene;
 	std::vector<Player*>		_players;
 	int							_id;
+	bool						_running;
 
 public:
 	Game(int);
@@ -21,7 +22,8 @@ public:
 	virtual bool end();
 	virtual void addPlayer(Player*);
 	virtual GameScene* getScene() const;
-	virtual bool isReady() const;
+	virtual int isReady() const;
+	virtual bool isRunning() const;
 };
 
 #endif

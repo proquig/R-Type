@@ -5,12 +5,14 @@
 #include "GameHandler.hh"
 #include "ControllerFactory.hh"
 #include "Parser.hh"
+#include "ElementFactory.hh"
 
 int main(int ac, char *av[])
 {
     File *file = new File(ac > 0 ? "../../ressources/map.txt" : "../../ressources/map2.txt");
 
-    Parser parser(file);
+    Parser parser(new ElementFactory());
+	parser.setFile(file);
     IElement *elem;
 	std::cout <<  "Test sur le parsing de la carte : '" << file->getName() << "'" << std::endl;
 
