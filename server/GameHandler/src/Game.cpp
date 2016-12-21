@@ -58,3 +58,11 @@ int				Game::isReady() const
 		return _players.size();
 	return -1;
 }
+
+void			Game::display() const
+{
+	for (IElement* elem : _gameScene->getMap())
+	{
+		std::cout << elem->getId() << "(" << elem->getType() << ")" << ":" << elem->getX() << "/" << elem->getY() << "/" << elem->getSizeX() << "/" << elem->getSizeY() << "|||" << std::endl;
+	}
+}

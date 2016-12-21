@@ -55,10 +55,24 @@ void loadPool()
 
 int main(int ac, char *av[])
 {
-	File *file = new File("../../ressources/map.txt");
+	File *file = new File("../../ressources/samtest.txt");
 
 	ControllerFactory cf;
 	GameController* gc = cf.create(file);
+	gc->startGame();
+	int i = 10;
+//	while (i < 500)
+//	{
+	gc->update(i++);
+	gc->update(i++);
+	gc->update(i++);
+	gc->update(i++);
+	//	}
+
+
+
+
+
 	//loadPool();
 //	Game* game = (Game*)gc->getGame();
 
@@ -68,7 +82,6 @@ int main(int ac, char *av[])
 //	game->addPlayer(gc->getElementFactory().createPlayer(25, 25, 50, 50, 50, 10, 0, 2));
 //	game->getScene()->addElem(gc->getElementFactory().createDecor(0, 0, 1920, 1));
 //	game->getScene()->addElem(gc->getElementFactory().createDecor(0, 1079, 1920, 1));
-	gc->handleCollisions();
 
 //	GameFactory             gf;
 //	ControllerFactory       controllerFactory;

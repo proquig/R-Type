@@ -21,6 +21,8 @@ private:
     std::vector<AElement *>::iterator   it;
 	ElementFactory*						_factory;
 
+	int									decal(int, int);
+
 public:
 	Parser(ElementFactory* factory);
 	~Parser();

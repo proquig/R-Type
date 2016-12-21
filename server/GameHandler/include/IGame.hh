@@ -15,6 +15,7 @@ class IGame
 	virtual GameScene* getScene() const = 0;
 	virtual void addPlayer(Player*) = 0;
 	virtual int isReady() const = 0;
+	virtual void display() const = 0;
 };
 
 #endif

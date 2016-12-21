@@ -12,6 +12,9 @@ Parser::~Parser()
 	delete _file;
 }
 
+int								Parser::decal(int x, int sizex)
+{ return x + (sizex / 2); }
+
 void							Parser::setFile(File* file)
 {
 	_end = false;
@@ -47,7 +50,7 @@ void    Parser::parsePlayer() {
 		catch (std::exception &e) {
 			std::cerr << e.what() << std::endl;
 		}
-		_line.push_back(_factory->create(-1, -1, AElement::PLAYER, value[0], value[1], value[4], value[2], value[3], value[5], value[6], value[7]));
+		_line.push_back(_factory->create(-1, -1, AElement::PLAYER, decal(value[0], value[2]), decal(value[1], value[3]), value[4], value[2], value[3], value[5], value[6], value[7]));
 		data.erase(pos, pos1 - pos);
 		data.erase(0, data.find('J') != std::string::npos ? data.find('J') : 1);
 		pos1 = 0;
@@ -78,7 +81,7 @@ void     Parser::parseElement()
 		catch (std::exception &e) {
 			std::cerr << e.what() << std::endl;
 		}
-		_line.push_back(_factory->create(0, 0, AElement::DECOR, (value[0] + value[2]) / 2, (value[1] + value[3]) / 2, 0, value[2], value[3], 0, 0, 0));
+		_line.push_back(_factory->create(0, 0, AElement::DECOR, decal(value[0], value[2]), decal(value[1], value[3]), 0, value[2], value[3], 0, 0, 0));
 		data.erase(pos, pos1 - pos);
 		data.erase(0, data.find('D') != std::string::npos ? data.find('D') : 1);
 		pos1 = 0;
@@ -109,7 +112,7 @@ void    Parser::parseMonster()
 		catch (std::exception &e) {
 			std::cerr << e.what() << std::endl;
 		}
-		_line.push_back(_factory->create(-1, -1, AElement::MONSTER, value[0], value[1], value[4], value[2], value[3], value[5], value[6], value[7]));
+		_line.push_back(_factory->create(-1, -1, AElement::MONSTER, decal(value[0], value[2]), decal(value[1], value[3]), value[4], value[2], value[3], value[5], value[6], value[7]));
 		data.erase(pos, pos1 - pos);
 		data.erase(0, data.find('M') != std::string::npos ? data.find('M') : 1);
 		pos1 = 0;

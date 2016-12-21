@@ -103,8 +103,8 @@ std::vector<IElement*>														CollisionHandler::handleCollision(int id, in
 	{
 		collisionId->push_back(entitys[iF]->getId());
 		addScore(entitys, entitys[iF]);
-		delete(entitys[iF]);
-		entitys.erase(entitys.begin() + iF);
+		//delete(entitys[iF]);
+		//entitys.erase(entitys.begin() + iF);
 		if (iF < iS)
 			iS--;
 	}
@@ -113,8 +113,8 @@ std::vector<IElement*>														CollisionHandler::handleCollision(int id, in
 		collisionId->push_back(entitys[iS]->getId());
 		if (entitys[iS])
 			addScore(entitys, entitys[iS]);
-		delete(entitys[iS]);
-		entitys.erase(entitys.begin() + iS);
+		//delete(entitys[iS]);
+		//entitys.erase(entitys.begin() + iS);
 	}
 	return (ret);
 }
@@ -145,12 +145,10 @@ bool																		CollisionHandler::isCollision(const Rectangle a, const Rec
 {
 	if (a.getId() == b.getId())
 		return (false);
-	if (a.getPosX() - (a.getSizeX() / 2) < b.getPosX() + (b.getSizeX() / 2) &&
-		a.getPosX() + (a.getSizeX() / 2) > b.getPosX() - (b.getSizeX() / 2) &&
-		a.getPosY() - (a.getSizeY() / 2) < b.getPosY() + (b.getSizeY() / 2) &&
-		(a.getSizeY() / 2) + a.getPosY() > b.getPosY() - (b.getSizeY() / 2))
-		return (true);
-	return (false);
+	return ((float)(a.getPosX() - (a.getSizeX() / 2)) <= (float)(b.getPosX() + (b.getSizeX() / 2)) &&
+		(float)(a.getPosX() + (a.getSizeX() / 2)) >= (float)(b.getPosX() - (b.getSizeX() / 2)) &&
+		(float)(a.getPosY() - (a.getSizeY() / 2)) <= (float)(b.getPosY() + (b.getSizeY() / 2)) &&
+		(float)((a.getSizeY() / 2) + a.getPosY()) >= (float)(b.getPosY() - (b.getSizeY() / 2)));
 }
 
 /*! \brief getRectangles of CollisionHandler

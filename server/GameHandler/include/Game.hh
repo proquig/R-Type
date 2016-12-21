@@ -24,6 +24,7 @@ public:
 	virtual GameScene* getScene() const;
 	virtual int isReady() const;
 	virtual bool isRunning() const;
+	virtual void display() const;
 };
 
 #endif

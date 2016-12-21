@@ -53,15 +53,16 @@ void			GameController::handleCollisions()
 	std::vector<IElement*>		aEntity;
 
 	aEntity = _collisionHandler.foundCollisions(_game->getScene()->getMap(), &destructElementId);
-	for (std::vector<IElement *>::iterator it = aEntity.begin(); it != aEntity.end(); ++it)
-	{
-		std::cout << "Collision on entity " << (*it)->getId() << std::endl;
-		_game->getScene()->getMap().push_back((*it));
-	}
-	for (std::vector<int>::iterator it = destructElementId.begin(); it != destructElementId.end(); ++it)
-	{
-		//sendDestructElement((*it));
-	}
+//	for (std::vector<IElement *>::iterator it = aEntity.begin(); it != aEntity.end(); ++it)
+//	{
+//		std::cout << "Collision on entity " << (*it)->getId() << std::endl;
+//		_game->getScene()->getMap().push_back((*it));
+//	}
+//	for (std::vector<int>::iterator it = destructElementId.begin(); it != destructElementId.end(); ++it)
+//	{
+//		std::cout << "sendDestructElement" << std::endl;
+//		//sendDestructElement((*it));
+//	}
 }
 
 void GameController::update(int timer)
@@ -69,8 +70,10 @@ void GameController::update(int timer)
 	_tick += timer;
 	if (_tick >= _delta)
 	{
+		_game->display();
+		std::cout << "Tick = " << _tick << "|GameSize=" << _game->getScene()->getMap().size() <<  std::endl;
 		_tick = 0;
-		std::cout << "Update here. Tick = " << _tick << std::endl;
+		handleCollisions();
 		//appel tes fonctions ici :D ça devrais marcher.
 		// Faire attention de bien set la variable _delta (en milisecondes entre chaque passage)
 	}
