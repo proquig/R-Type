@@ -14,7 +14,7 @@
 
 Server::Server(unsigned short port)
     : _socketFactory(nullptr), _pool(nullptr), _stop(false),
-    _timer(nullptr), _waiting(false)
+    _timer(nullptr), _test(nullptr), _waiting(false)
 {
   _dlManager.add(0, "threadpool", "");
   _dlManager.add(0, "rtype_network", "");
@@ -92,17 +92,38 @@ bool Server::init()
     return false;
   _network = NetworkHandler(_socketFactory);
   _network.addObserver(this);
+  _timer->setTimer(25);
+  _timer->addObserver(this);
   return (_network.getState() == NetworkHandler::RUNNING);
 }
 
 bool Server::run()
 {
+  std::vector<std::pair<std::string, struct sockaddr*>> *vector;
+  APacket *packet;
+
   _mutex->lock();
   while (!_stop)
   {
     _waiting = true;
     _cond->wait(_mutex);
     _waiting = false;
+    if (!_stop)
+    {
+      //PACKET EMISSION
+      if (_test && _rooms.size())
+        _rooms.front()->sendNotification(_test);
+      //PACKET RECEPTION
+      if ((vector = _packets.popAll()) != nullptr && vector->size() != 0)
+        while (vector->size() != 0)
+        {
+          std::pair<std::string, struct sockaddr*> pair = vector->back();
+          if ((packet = APacket::create(pair.first)) != nullptr)
+            if (packet->getType() == APacket::INPUT_DATA)
+              this->handleSocket(pair.second, packet);
+          vector->pop_back();
+        }
+    }
   }
   _mutex->unlock();
   return true;
@@ -126,9 +147,13 @@ void Server::update(IObservable *o, int status)
   {
     if (status == NetworkHandler::LISTENER_ERROR)
       stop(0);
-    return;
   }
-  if (_test)
+  if (o == _timer)
+  {
+    if (_waiting)
+      _cond->signal();
+  }
+  if (_test && o == _test)
   {
     //Gestion protocole 1 game
     if (status == ISocket::READ)
@@ -137,16 +162,10 @@ void Server::update(IObservable *o, int status)
       std::vector<unsigned char> &ref = _test->read(&addr);
       if (ref.size() != 0)
       {
-        APacket *packet;
-        std::string data(ref.begin(), ref.end());
-        //std::cout << "SIZE = " << data.size() << std::endl;
-        if ((packet = APacket::create(data)) != nullptr)
-          if (packet->getType() == APacket::INPUT_DATA)
-            this->handleSocket(addr, packet);
-            //for (int i = 0; i < ((InputPacket *) packet)->getInputs().size(); ++i)
-            //  std::cout << "INPUT[" << i << "]=" << (int) ((InputPacket *) packet)->getInputs()[i] << std::endl;
+        _packets.push(std::make_pair(std::string(ref.begin(), ref.end()), addr));
         ref.erase(ref.begin(), ref.end());
-		delete packet;
+        if (_waiting)
+          _cond->signal();
       }
     }
     if (status == ISocket::CLOSE)
@@ -249,9 +268,11 @@ void Server::handleSocket(struct sockaddr *addr, APacket* packet)
 		pak = (InputPacket*)packet;
 		if (pak && pak->getInputs().size())
 		{
-		  player->setX(player->getX() + (t[pak->getInputs()[0] - 3][0] * player->getSpeed()));
-		  player->setY(player->getY() + (t[pak->getInputs()[0] - 3][1] * player->getSpeed()));
-		  this->_rooms[i]->sendNotification(_test);
+      for (uint16_t input : pak->getInputs())
+      {
+        player->setX(player->getX() + (t[input - 3][0] * player->getSpeed()));
+        player->setY(player->getY() + (t[input - 3][1] * player->getSpeed()));
+      }
 
 		  for (uint8_t j = 0; j < this->_rooms[i]->getPlayers().size(); ++j)
 			if (player != this->_rooms[i]->getPlayers()[j])

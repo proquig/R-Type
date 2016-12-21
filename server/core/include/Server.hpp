@@ -5,6 +5,7 @@
 #include "DLManager.hh"
 #include "NetworkHandler.hpp"
 #include "Room.hpp"
+#include "workQueue.hh"
 
 class ICondVar;
 class IMutex;
@@ -22,6 +23,7 @@ protected:
   ControllerFactory _controllerFactory;
   IMutex *_mutex;
   NetworkHandler _network;
+  WorkQueue<std::pair<std::string, struct sockaddr*>> _packets;
   IThreadPool *_pool;
   ITimer *_timer;
   bool _stop;
