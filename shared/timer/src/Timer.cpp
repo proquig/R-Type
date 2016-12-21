@@ -1,3 +1,4 @@
+#include <iostream>
 #include <thread>
 #include "Timer.hpp"
 #include "ICondVar.hh"
@@ -12,8 +13,8 @@ Timer::Timer(IThreadPool *pool)
   {
     _cond = _pool->createCondVar();
     _mutex = _pool->createMutex();
-    _thread = new std::thread(&Timer::run, this);
     _stop = false;
+    _thread = new std::thread(&Timer::run, this);
   }
 }
 
