@@ -52,9 +52,9 @@ void			Game::addPlayer(Player* player)
 	_gameScene->addElem(player);
 }
 
-bool			Game::isReady() const
+int				Game::isReady() const
 {
-	if (_players.size() > 4 || _players.size() < 1)
-		return false;
-		return true;
+	if (_players.size() < 5 && _players.size() > 0 && _gameScene->getMap().size() >= _players.size())
+		return _players.size();
+	return -1;
 }

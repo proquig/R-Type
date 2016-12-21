@@ -36,8 +36,8 @@ bool			GameController::initGame(File* file)
 	parser.setFile(file);
 	while ((elem = parser.parse()) != NULL)
 	{
-		std::cout << "Element added to game : " << elem->getType() << "|" << elem->getId() << std::endl;
 		_game->getScene()->addElem(elem);
+		std::cout << "Element added to game : " << elem->getType() << "|" << elem->getId() << std::endl;
 	}
 }
 
@@ -70,6 +70,7 @@ void GameController::update(int timer)
 	if (_tick >= _delta)
 	{
 		_tick = 0;
+		std::cout << "Update here. Tick = " << _tick << std::endl;
 		//appel tes fonctions ici :D ça devrais marcher.
 		// Faire attention de bien set la variable _delta (en milisecondes entre chaque passage)
 	}

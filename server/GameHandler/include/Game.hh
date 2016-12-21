@@ -22,7 +22,7 @@ public:
 	virtual bool end();
 	virtual void addPlayer(Player*);
 	virtual GameScene* getScene() const;
-	virtual bool isReady() const;
+	virtual int isReady() const;
 	virtual bool isRunning() const;
 };
 

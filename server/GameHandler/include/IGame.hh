@@ -14,7 +14,7 @@ class IGame
 	virtual bool end() = 0;
 	virtual GameScene* getScene() const = 0;
 	virtual void addPlayer(Player*) = 0;
-	virtual bool isReady() const = 0;
+	virtual int isReady() const = 0;
 };
 
 #endif
