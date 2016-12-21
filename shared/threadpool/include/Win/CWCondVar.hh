@@ -13,7 +13,8 @@ public:
   CWCondVar();
   virtual ~CWCondVar();
 public:
-  virtual void wait(IMutex *);
+  virtual void wait(IMutex*);
+  virtual void wait(IMutex *, unsigned long);
   virtual void signal();
   virtual void broadcast();
 protected:

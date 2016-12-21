@@ -12,7 +12,8 @@ public:
   CUCondVar();
   virtual ~CUCondVar();
 public:
-  virtual void wait(IMutex *);
+  virtual void wait(IMutex*);
+  virtual void wait(IMutex *, unsigned long = 0);
   virtual void signal();
   virtual void broadcast();
 protected:

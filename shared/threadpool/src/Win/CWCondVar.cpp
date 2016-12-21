@@ -24,7 +24,20 @@ void CWCondVar::init()
 void CWCondVar::wait(IMutex *mutex)
 {
   if (mutex)
-    SleepConditionVariableCS(&_condVar, static_cast<CWMutex*>(mutex)->getMutex(), INFINITE);
+  {
+    SleepConditionVariableCS(&_condVar, static_cast<CWMutex *>(mutex)->getMutex(), INFINITE);
+  }
+}
+
+void CWCondVar::wait(IMutex *mutex, unsigned long time)
+{
+  if (mutex)
+  {
+    if (time == 0)
+      SleepConditionVariableCS(&_condVar, static_cast<CWMutex *>(mutex)->getMutex(), INFINITE);
+    else
+      SleepConditionVariableCS(&_condVar, static_cast<CWMutex *>(mutex)->getMutex(), time);
+  }
 }
 
 void CWCondVar::signal()
