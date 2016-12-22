@@ -37,6 +37,7 @@ protected:
   bool _stop;
   ISocket *_test;
   bool _waiting;
+  uint8_t 	_loop;
 // std::vector<struct sockaddr *>	_clients;
   std::vector<Room*>		_rooms;
 public:
@@ -53,6 +54,7 @@ public:
   virtual void handleSocket(sockaddr *addr, APacket *packet);
   virtual void handleMovement(Room* room, Player* player, InputPacket* packet);
   virtual void handleCollision(Room* room, Player* player);
+  virtual void loop();
 };
 
 #endif //R_TYPE_SERVER_HPP_

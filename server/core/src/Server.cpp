@@ -14,7 +14,7 @@
 
 Server::Server(unsigned short port)
     : _socketFactory(nullptr), _pool(nullptr), _stop(false),
-    _timer(nullptr), _test(nullptr), _waiting(false)
+    _timer(nullptr), _test(nullptr), _waiting(false), _loop(0)
 {
   _dlManager.add(0, "threadpool", "");
   _dlManager.add(0, "rtype_network", "");
@@ -99,9 +99,6 @@ bool Server::init()
 
 bool Server::run()
 {
-  std::vector<std::pair<std::string, struct sockaddr*>> *vector;
-  APacket *packet;
-
   _mutex->lock();
   while (!_stop)
   {
@@ -109,24 +106,41 @@ bool Server::run()
     _cond->wait(_mutex);
     _waiting = false;
     if (!_stop)
-    {
-      //PACKET EMISSION
-      if (_test && _rooms.size())
-        _rooms.front()->sendNotification(_test);
-      //PACKET RECEPTION
-      if ((vector = _packets.popAll()) != nullptr && vector->size() != 0)
-        while (vector->size() != 0)
-        {
-          std::pair<std::string, struct sockaddr*> pair = vector->back();
-          if ((packet = APacket::create(pair.first)) != nullptr)
-            if (packet->getType() == APacket::INPUT_DATA)
-              this->handleSocket(pair.second, packet);
-          vector->pop_back();
-        }
-    }
+	  this->loop();
   }
   _mutex->unlock();
   return true;
+}
+
+void Server::loop()
+{
+  std::vector<std::pair<std::string, struct sockaddr*>> *vector;
+  APacket *packet;
+
+  //UPDATE
+  if (this->_loop++ == 100)
+  {
+	for (uint8_t i = 0; i < this->_rooms.size(); ++i)
+	  for (uint8_t j = 0; j < this->_rooms[i]->getGameController()->getGame()->getScene()->getMap().size(); ++j)
+		if (this->_rooms[i]->getGameController()->getGame()->getScene()->getMap()[j]->getType() == AElement::BULLET)
+		  this->_rooms[i]->getGameController()->getGame()->getScene()->getMap()[j]->setX(
+				  this->_rooms[i]->getGameController()->getGame()->getScene()->getMap()[j]->getX() +
+				  1);//this->_rooms[i]->getGameController()->getGame()->getScene()->getMap()[j]->getSpeed());
+	this->_loop = 0;
+  }
+  //PACKET EMISSION
+  if (_test && _rooms.size())
+	_rooms.front()->sendNotification(_test);
+  //PACKET RECEPTION
+  if ((vector = _packets.popAll()) != nullptr && vector->size() != 0)
+	while (vector->size() != 0)
+	{
+	  std::pair<std::string, struct sockaddr*> pair = vector->back();
+	  if ((packet = APacket::create(pair.first)) != nullptr)
+		if (packet->getType() == APacket::INPUT_DATA)
+		  this->handleSocket(pair.second, packet);
+	  vector->pop_back();
+	}
 }
 
 void Server::stop(unsigned int delay)
@@ -164,8 +178,8 @@ void Server::update(IObservable *o, int status)
       {
         _packets.push(std::make_pair(std::string(ref.begin(), ref.end()), addr));
         ref.erase(ref.begin(), ref.end());
-        if (_waiting)
-          _cond->signal();
+        //if (_waiting)
+          //_cond->signal();
       }
     }
     if (status == ISocket::CLOSE)
@@ -223,8 +237,22 @@ void Server::handleMovement(Room* room, Player* player, InputPacket* packet)
   if (packet && packet->getInputs().size())
 	for (uint16_t input : packet->getInputs())
 	{
-	  player->setX(player->getX() + (mov[input - 3][0] * player->getSpeed()));
-	  player->setY(player->getY() + (mov[input - 3][1] * player->getSpeed()));
+	  if (input > 2 && input < 7)
+	  {
+		player->setX(player->getX() + (mov[input - 3][0] * player->getSpeed()));
+		player->setY(player->getY() + (mov[input - 3][1] * player->getSpeed()));
+	  }
+	  //std::cout << "input " << input << std::endl;
+	  else if (input == 2)
+	  {
+		//std::cout << "BULLET" << std::endl;
+		AElement *elem;
+		elem = room->getGameController()->getElementFactory().create(-1, -1, AElement::BULLET,
+															  player->getX() + (player->getSizeX() / 2) + 1,
+															  player->getY(), 100, 5, 5, 100, 0,
+															  player->getSpeed() + 1);
+		room->getGameController()->getGame()->getScene()->addElem(elem);
+	  }
 	}
 }
 

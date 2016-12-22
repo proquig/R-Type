@@ -17,10 +17,10 @@ Room::Room(Player *player)
   this->_players.push_back(player);
   //this->_players.insert(std::pair<struct sockaddr*, Player*>(sock, player));
   // 800 x 600
-  player->setX(this->_players.size() * 100);
+  player->setX(100);
   player->setY(this->_players.size() * 100);
-  player->setSizeX(8);
-  player->setSizeY(16);
+  player->setSizeX(30);
+  player->setSizeY(10);
   player->setAngle(0);
   player->setSpeed(10);
   player->setId(this->_players.size());
@@ -57,8 +57,8 @@ bool 					Room::addPlayer(Player* player)
   this->_players.push_back(player);
   player->setX(100);
   player->setY(this->_players.size() * 100);
-  player->setSizeX(16);
-  player->setSizeY(30);
+  player->setSizeX(30);
+  player->setSizeY(10);
   player->setAngle(0);
   player->setSpeed(10);
   player->setId(this->_players.size());
@@ -102,7 +102,7 @@ Player *Room::getPlayerFromSock(struct sockaddr *sock)
 {
   for (uint8_t i = 0; i < this->_players.size(); ++i)
 	if (this->_players[i]->getAddr() == sock)
-	return (this->_players[i]);
+	  return (this->_players[i]);
   return nullptr;
 }
 
@@ -117,8 +117,10 @@ void Room::sendNotification(ISocket *sock, const std::string& data)
 void Room::sendNotification(ISocket *sock)
 {
   std::vector<GameElement*>	vec;
-  for (uint8_t i = 0; i < this->_players.size(); ++i)
-	vec.push_back((GameElement *&&) this->_players[i]);
+  //for (uint8_t i = 0; i < this->_players.size(); ++i)
+	//vec.push_back((GameElement *&&) this->_players[i]);
+  for (uint8_t i = 0; i < this->_gameController->getGame()->getScene()->getMap().size(); ++i)
+	vec.push_back((GameElement *&&)this->_gameController->getGame()->getScene()->getMap()[i]);
   GameDataPacket packet(vec);
   packet.setHeader(APacket::GAME_ELEM_INFO, APacket::ACK_DONE, MAGIC, 4, 42, 100, 12);
   std::string	str = packet.serialize();
