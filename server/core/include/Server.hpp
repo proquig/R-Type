@@ -16,6 +16,20 @@ class ITimer;
 class Room;
 class Player;
 
+struct RType
+{
+	enum Key
+	{
+		NONE = 1 << 0,
+		ENTER = 1 << 1,
+		SPACE = 1 << 2,
+		UP = 1 << 3,
+		DOWN = 1 << 4,
+		LEFT = 1 << 5,
+		RIGHT = 1 << 6,
+	};
+};
+
 class Server : public IObserver
 {
 protected:
@@ -40,7 +54,7 @@ protected:
   ISocket *_test;
   bool _waiting;
   uint8_t 	_loop;
-// std::vector<struct sockaddr *>	_clients;
+  std::map<Player*, WorkQueue<uint16_t>> _inputs;
   std::vector<Room*>		_rooms;
 public:
   Server(unsigned short port = 4242);
@@ -55,6 +69,7 @@ public:
   virtual void addPlayer(struct sockaddr* sock);
   virtual void handleSocket(sockaddr *addr, APacket *packet);
   virtual void handleMovement(Room* room, Player* player, InputPacket* packet);
+  virtual void realizeMovement(Room* room, Player* player);
   virtual void handleCollision(Room* room, Player* player);
   virtual void loop();
 };

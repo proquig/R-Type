@@ -134,13 +134,17 @@ void Server::loop()
   //UPDATE
   if (this->_loop++ == 100)
   {
-	for (Room* room :  this->_rooms)
-	  for (IElement* elem : room->getGameController()->getGame()->getScene()->getMap())
-		if (elem->getType() == AElement::BULLET)
-		  elem->setX(elem->getX() + 1);//this->_rooms[i]->getGameController()->getGame()->getScene()->getMap()[j]->getSpeed());
-	for (Room* room : this->_rooms)
-	  for (Player* player : room->getPlayers())
-		this->handleCollision(room, player);
+    for (Room *room :  this->_rooms)
+      for (IElement *elem : room->getGameController()->getGame()->getMap())
+        if (elem->getType() == AElement::BULLET)
+          elem->setX(
+              elem->getX() + 1);//this->_rooms[i]->getGameController()->getGame()->getScene()->getMap()[j]->getSpeed());
+    for (Room *room : this->_rooms)
+      for (Player *player : room->getPlayers())
+      {
+        this->handleCollision(room, player);
+        this->realizeMovement(room, player);
+      }
 	this->_loop = 0;
   }
 }
@@ -237,23 +241,42 @@ void Server::addPlayer(struct sockaddr *sock)
 void Server::handleMovement(Room* room, Player* player, InputPacket* packet)
 {
   if (packet && packet->getInputs().size())
-	for (uint16_t input : packet->getInputs())
-	{
-	  if (input > 2 && input < 7)
-	  {
-		player->setX(player->getX() + (mov[input - 3][0] * player->getSpeed()));
-		player->setY(player->getY() + (mov[input - 3][1] * player->getSpeed()));
-	  }
-	  else if (input == 2)
-	  {
-		AElement *elem;
-		elem = room->getGameController()->getElementFactory().create(-1, -1, AElement::BULLET,
-															  player->getX() + (player->getSizeX() / 2) + 1,
-															  player->getY(), 100, 5, 5, 100, 0,
-															  player->getSpeed() + 1);
-		room->getGameController()->getGame()->addElem(elem);
-	  }
-	}
+  {
+    std::vector<uint16_t> inputs = packet->getInputs();
+    WorkQueue<uint16_t> &ref = _inputs[player];
+    ref.popAll();
+    for (uint16_t input : packet->getInputs())
+      ref.push(input);
+  }
+}
+
+void Server::realizeMovement(Room *room, Player *player)
+{
+  WorkQueue<uint16_t> &ref = _inputs[player];
+  uint16_t input = 0;
+
+  if (ref.size() == 0)
+    return;
+  input = ref.popLast();
+  if (!(input & RType::LEFT) != !(input & RType::RIGHT))
+  {
+    uint16_t dir = (input & RType::LEFT ? uint16_t(-1) : uint16_t(1));
+    player->setX(player->getX() + (dir * player->getSpeed()));
+  }
+  if (!(input & RType::UP) != !(input & RType::DOWN))
+  {
+    uint16_t dir = (input & RType::UP ? uint16_t(-1) : uint16_t(1));
+    player->setY(player->getY() + (dir * player->getSpeed()));
+  }
+  if (input & RType::SPACE)
+  {
+    AElement *elem;
+    elem = room->getGameController()->getElementFactory().create(-1, -1, AElement::BULLET,
+                                                                 player->getX() + (player->getSizeX() / 2) + 1,
+                                                                 player->getY(), 100, 5, 5, 100, 0,
+                                                                 player->getSpeed() + 1);
+    room->getGameController()->getGame()->addElem(elem);
+  }
 }
 
 void Server::handleCollision(Room* room, Player* player)

@@ -61,4 +61,12 @@ public:
 		this->queue.clear();
 		this->access.unlock();
 	}
+	size_t size(void)
+	{
+		size_t size;
+		this->access.lock();
+		size = this->queue.size();
+		this->access.unlock();
+		return size;
+	}
 };
