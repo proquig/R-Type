@@ -100,6 +100,7 @@ bool		ClientStates::gameState(void)
   IPacket *packet;
   std::vector<uint16_t>::iterator it;
 
+  _inputQueue.resize(10, 0);
   _mutex->lock();
   _ref = _clock.now();
   while (!_stop)
@@ -127,7 +128,7 @@ bool		ClientStates::gameState(void)
       if (std::chrono::duration_cast<std::chrono::milliseconds>(_clock.now() - _ref).count() > 100)
       {
         _inputQueue.push_back(_input);
-        if (_inputQueue.size() == 13)
+        if (_inputQueue.size() == 11)
           _inputQueue.erase(_inputQueue.begin());
         InputPacket eventPacket;
         std::string serializedEvent;
