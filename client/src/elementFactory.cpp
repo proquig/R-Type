@@ -39,7 +39,7 @@ AElement *					ElementFactory::create(unsigned int _id, ElementType type)
 		element = new Missile();
 		break;
 	case OBSTACLE:
-		element = new Obstacle();
+		element = new Obstacle(Obstacle::DEFAULT);
 		break;
 	case SET:
 		element = new Set();

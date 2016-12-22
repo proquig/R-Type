@@ -148,7 +148,7 @@ bool		ClientStates::gameState(void)
 			  {
 				  this->controller->elementAction(
 					  pak->getGameElements()[i]->getId(),
-					  PLAYER,
+					  PLAYER, // ADD ELEMENT TYPE TO PROTOCOL
 					  pak->getGameElements()[i]->getX(),
 					  pak->getGameElements()[i]->getY(),
 					  pak->getGameElements()[i]->getAngle(),
@@ -200,7 +200,7 @@ bool	ClientStates::testState(void)
 		this->controller->elementAction(2, PLAYER, 100, 50, 0, 0);
 		this->controller->elementAction(3, PLAYER, 150, 50, 0, 0);
 		this->controller->elementAction(4, PLAYER, 200, 50, 0, 0);
-		this->controller->elementAction(5, PLAYER, 250, 50, 0, 0);
+		this->controller->elementAction(5, OBSTACLE, 250, 50, 0, 0);
 
 		if (event = this->controller->eventAction()) {
 			std::cout << "[EVENT] " << event->name << std::endl;
