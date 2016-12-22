@@ -25,7 +25,7 @@ void				SFMLSprite::update()
 		_tex.loadFromImage(_img);
 		_spr = sf::Sprite(_tex);
 		_spr.setTextureRect(_anim[_name]->at(0));
-		sf::Vector2f scale = sf::Vector2f(1.2f, 1.2f);
+		sf::Vector2f scale = sf::Vector2f(_size.first, _size.second);
 		_spr.setScale(scale);
 	}
 	if (_isAnimated && !_isOver)
@@ -47,7 +47,7 @@ void				SFMLSprite::update()
 		}
 		_tex.loadFromImage(_img);
 		sf::IntRect rect = _currAnim->at(_cnt);
-		sf::Vector2f scale = sf::Vector2f(1.2f, 1.2f);
+		sf::Vector2f scale = sf::Vector2f(_size.first, _size.second);
 		_spr.setScale(scale);
 		_spr.setTextureRect(rect);
 	}
