@@ -61,6 +61,8 @@ bool GameDataPacket::unserialize(const std::string &data)
 	this->_gameElements.back()->setAngle(*(float *) &data[i + j]);
 	j += sizeof(float);
 	this->_gameElements.back()->setSpeed(data[i + j]);
+	j += sizeof(uint8_t);
+	this->_gameElements.back()->setType(htons(*(uint16_t *) &data[i + j]));
   }
   return (true);
 }
@@ -103,6 +105,7 @@ uint16_t GameDataPacket::getGameElementSize()
   i += sizeof(element.y);
   i += sizeof(element.angle);
   i += sizeof(element.speed);
+  i += sizeof(element.type);
   return (i);
 }
 
