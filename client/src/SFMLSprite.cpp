@@ -8,6 +8,10 @@ void				SFMLSprite::init()
 	//std::cout << "isAnimated = " << _isAnimated << std::endl;
 	//_isAnimated = false;
 	if (_tex.loadFromFile(_path));
+	if (_img.loadFromFile(_path))
+	{
+		_img.createMaskFromColor(sf::Color::Black);
+	}
 		//std::cout << "Texture loaded." << std::endl;
 	//Generation du sprite courrant a partir du path
 	return;
@@ -18,8 +22,11 @@ void				SFMLSprite::update()
 	_delta += _clock.restart();
 	if (!_isAnimated)
 	{
+		_tex.loadFromImage(_img);
 		_spr = sf::Sprite(_tex);
 		_spr.setTextureRect(_anim[_name]->at(0));
+		sf::Vector2f scale = sf::Vector2f(_size.first, _size.second);
+		_spr.setScale(scale);
 	}
 	if (_isAnimated && !_isOver)
 	{
@@ -38,8 +45,10 @@ void				SFMLSprite::update()
 				}
 			}
 		}
-		_spr.setTexture(_tex);
+		_tex.loadFromImage(_img);
 		sf::IntRect rect = _currAnim->at(_cnt);
+		sf::Vector2f scale = sf::Vector2f(_size.first, _size.second);
+		_spr.setScale(scale);
 		_spr.setTextureRect(rect);
 	}
 	return;

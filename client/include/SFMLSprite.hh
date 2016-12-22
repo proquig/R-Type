@@ -17,6 +17,7 @@ private:
 	std::pair<unsigned int, unsigned int>				_pos;
 	std::pair<unsigned int, unsigned int>				_size;
 	sf::Texture											_tex;
+	sf::Image											_img;
 	sf::Sprite											_spr;
 	//int													_cnt;
 	// Not usefull										_notUsed;

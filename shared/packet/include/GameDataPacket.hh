@@ -21,6 +21,7 @@ private:
 	uint16_t 		y;
 	float			angle;
 	uint8_t			speed;
+	uint16_t		type;
   }					t_element;
 
   std::vector<GameElement*>	_gameElements;
