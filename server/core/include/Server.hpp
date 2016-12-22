@@ -49,12 +49,11 @@ protected:
   NetworkHandler _network;
   WorkQueue<std::pair<std::string, struct sockaddr*>> _packets;
   IThreadPool *_pool;
-  ITimer *_timer;
   bool _stop;
   ISocket *_test;
   bool _waiting;
   uint8_t 	_loop;
-  std::map<Player*, WorkQueue<uint16_t>> _inputs;
+  std::map<Player*, std::vector<uint16_t>> _inputs;
   std::vector<Room*>		_rooms;
 public:
   Server(unsigned short port = 4242);

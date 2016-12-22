@@ -15,21 +15,15 @@
 
 Server::Server(unsigned short port)
     : _socketFactory(nullptr), _pool(nullptr), _stop(false),
-    _timer(nullptr), _test(nullptr), _waiting(false), _loop(0)
+    _test(nullptr), _waiting(false), _loop(0)
 {
   _dlManager.add(0, "threadpool", "");
   _dlManager.add(0, "rtype_network", "");
-  _dlManager.add(0, "rtype_timer", "");
 }
 
 Server::~Server()
 {
   _network.removeObserver(this);
-  if (_timer)
-  {
-    _timer->stop();
-    reinterpret_cast<void *(*)(ITimer *)>(_dic[1]->at("destroy"))(_timer);
-  }
   if (_socketFactory)
   {
     _network.stop();
@@ -85,16 +79,8 @@ bool Server::init()
     std::cout << "_socketFactory spawned" << std::endl;
   else
     return false;
-  if ((dic = _dlManager.handler.getDictionaryByName("rtype_timer")) != NULL
-      && !(*_dic.insert(_dic.end(), dic))->empty()
-      && (_timer = reinterpret_cast<ITimer *(*)(IThreadPool*)>(_dic.back()->at("instantiate"))(_pool)) != nullptr)
-    std::cout << "timer spawned" << std::endl;
-  else
-    return false;
   _network = NetworkHandler(_socketFactory);
   _network.addObserver(this);
-  _timer->setTimer(50);
-  _timer->addObserver(this);
   return (_network.getState() == NetworkHandler::RUNNING);
 }
 
@@ -104,7 +90,7 @@ bool Server::run()
   while (!_stop)
   {
     _waiting = true;
-    _cond->wait(_mutex);
+    _cond->wait(_mutex, 100);
     _waiting = false;
     if (!_stop)
 	  this->loop();
@@ -123,16 +109,12 @@ void Server::loop()
 	_rooms.front()->sendNotification(_test);
   //PACKET RECEPTION
   if ((vector = _packets.popAll()) != nullptr && vector->size() != 0)
-	while (vector->size() != 0)
-	{
-	  std::pair<std::string, struct sockaddr*> pair = vector->back();
-	  if ((packet = APacket::create(pair.first)) != nullptr)
-		if (packet->getType() == APacket::INPUT_DATA)
-		  this->handleSocket(pair.second, packet);
-	  vector->pop_back();
-	}
+    for (std::pair<std::string, struct sockaddr*> pair : (*vector))
+      if ((packet = APacket::create(pair.first)) != nullptr)
+        if (packet->getType() == APacket::INPUT_DATA)
+          this->handleSocket(pair.second, packet);
   //UPDATE
-  if (this->_loop++ == 100)
+  if (this->_loop++ == 1)
   {
     for (Room *room :  this->_rooms)
       for (IElement *elem : room->getGameController()->getGame()->getMap())
@@ -168,11 +150,6 @@ void Server::update(IObservable *o, int status)
     if (status == NetworkHandler::LISTENER_ERROR)
       stop(0);
   }
-  if (o == _timer)
-  {
-    if (_waiting)
-      _cond->signal();
-  }
   if (_test && o == _test)
   {
     //Gestion protocole 1 game
@@ -184,8 +161,6 @@ void Server::update(IObservable *o, int status)
       {
         _packets.push(std::make_pair(std::string(ref.begin(), ref.end()), addr));
         ref.erase(ref.begin(), ref.end());
-        //if (_waiting)
-          //_cond->signal();
       }
     }
     if (status == ISocket::CLOSE)
@@ -243,27 +218,27 @@ void Server::handleMovement(Room* room, Player* player, InputPacket* packet)
   if (packet && packet->getInputs().size())
   {
     std::vector<uint16_t> inputs = packet->getInputs();
-    WorkQueue<uint16_t> &ref = _inputs[player];
-    ref.popAll();
-    for (uint16_t input : packet->getInputs())
-      ref.push(input);
+    std::vector<uint16_t> &ref = _inputs[player];
+    ref.resize(0);
+    ref.insert(ref.end(), inputs.begin(), inputs.end());
   }
 }
 
 void Server::realizeMovement(Room *room, Player *player)
 {
-  WorkQueue<uint16_t> &ref = _inputs[player];
+  std::vector<uint16_t> &ref = _inputs[player];
   uint16_t input = 0;
 
   if (ref.size() == 0)
     return;
-  input = ref.popLast();
-  if (!(input & RType::LEFT) != !(input & RType::RIGHT))
+  input = ref.back();
+  ref.pop_back();
+  if ((input & RType::LEFT) != (input & RType::RIGHT))
   {
     uint16_t dir = (input & RType::LEFT ? uint16_t(-1) : uint16_t(1));
     player->setX(player->getX() + (dir * player->getSpeed()));
   }
-  if (!(input & RType::UP) != !(input & RType::DOWN))
+  if ((input & RType::UP) != (input & RType::DOWN))
   {
     uint16_t dir = (input & RType::UP ? uint16_t(-1) : uint16_t(1));
     player->setY(player->getY() + (dir * player->getSpeed()));
