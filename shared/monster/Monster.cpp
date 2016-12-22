@@ -3,7 +3,6 @@
 //
 
 #include "Monster.hh"
-#include "../dlloader/include/DLDictionary.hh"
 
 Monster::Monster(uint32_t idFrom, uint32_t id, uint16_t type, uint16_t x, uint16_t y, uint16_t hp, uint16_t sizex, uint16_t sizey, uint16_t damage, float angle, char speed, ElementFactory *factory)
         : GameElement::GameElement(idFrom, id, type, x, y, hp, sizex, sizey, damage, angle, speed)
@@ -61,16 +60,23 @@ void destroyMonster(IElement *element)
         delete element;
 }
 
-
 extern "C" {
-Dictionary getDictionary(void)
-/*#elif RT_WIN
+#ifdef RT_UNIX
+Dictionary getDictionary(void) {
+    Dictionary dict = new std::map<std::string, void *>;
+    (*dict)["new"] = (void *) &NewMonster;
+    (*dict)["destroy"] = (void *) &destroyMonster;
+    return (dict);
+}
+
+#elif RT_WIN
 __declspec(dllexport) Dictionary	__cdecl getDictionary(void)
-#endif*/
 {
     Dictionary dict = new std::map<std::string, void *>;
     (*dict)["new"] = (void *) &NewMonster;
     (*dict)["destroy"] = (void *) &destroyMonster;
     return (dict);
 }
+
+#endif
 }

@@ -7,6 +7,8 @@
 
 #include "Shot.hh"
 #include "ElementFactory.hh"
+#include <iostream>
+#include "../dlloader/include/DLDictionary.hh"
 
 class ElementFactory;
 

@@ -6,7 +6,6 @@
 #endif
 
 #include <iostream>
-#include <thread>
 #include <Monster.hh>
 
 #include "ADLibrary.hh"
@@ -45,7 +44,7 @@ int main(int ac, char **av)
                         std::cout << decor->getX() << ":" << decor->getY() << std::endl;
                         std::cout << "X=" << monster->getX() << ":" << "Y=" << monster->getY() << std::endl;
                         if (!monster->move()) {
-                           // monster->shot();
+                            monster->shot();
                             std::cout << "Shot at :" << monster->getX() << ":" << monster->getY() << std::endl;
                         }
                     }
