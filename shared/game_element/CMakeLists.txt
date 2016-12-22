@@ -15,6 +15,8 @@ add_library(rtype_game_element
 	Shot.hh
 	ElementFactory.hh
 	ElementFactory.cpp
+	Rectangle.cpp
+	Rectangle.hh
         ../monster/Monster.cpp
         ../monster/Monster.hh
     )
