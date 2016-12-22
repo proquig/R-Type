@@ -133,16 +133,14 @@ void Server::loop()
   //UPDATE
   if (this->_loop++ == 100)
   {
-	for (uint8_t i = 0; i < this->_rooms.size(); ++i)
-	  for (uint8_t j = 0; j < this->_rooms[i]->getGameController()->getGame()->getScene()->getMap().size(); ++j)
-		if (this->_rooms[i]->getGameController()->getGame()->getScene()->getMap()[j]->getType() == AElement::BULLET)
-		  this->_rooms[i]->getGameController()->getGame()->getScene()->getMap()[j]->setX(
-				  this->_rooms[i]->getGameController()->getGame()->getScene()->getMap()[j]->getX() +
-				  1);//this->_rooms[i]->getGameController()->getGame()->getScene()->getMap()[j]->getSpeed());
-	for (uint8_t i = 0; i < this->_rooms.size(); ++i)
-	  for (uint8_t j = 0; j < this->_rooms[i]->getPlayers().size(); ++j)
-		this->handleCollision(this->_rooms[i], this->_rooms[i]->getPlayers()[j]);
-	  this->_loop = 0;
+	for (Room* room :  this->_rooms)
+	  for (IElement* elem : room->getGameController()->getGame()->getScene()->getMap())
+		if (elem->getType() == AElement::BULLET)
+		  elem->setX(elem->getX() + 1);//this->_rooms[i]->getGameController()->getGame()->getScene()->getMap()[j]->getSpeed());
+	for (Room* room : this->_rooms)
+	  for (Player* player : room->getPlayers())
+		this->handleCollision(room, player);
+	this->_loop = 0;
   }
 }
 
@@ -259,7 +257,7 @@ void Server::handleMovement(Room* room, Player* player, InputPacket* packet)
 
 void Server::handleCollision(Room* room, Player* player)
 {
-  for (uint8_t i = 0; i < room->getPlayers().size(); ++i)
-	if (player != room->getPlayers()[i])
+  for (Player* pl : room->getPlayers())
+	if (player != pl)
 	  room->getGameController()->handleCollisions();
 }
