@@ -1,4 +1,5 @@
 #include "Game.hh"
+#include "Rectangle.hh"
 
 
 Game::Game(int id, const Rectangle& bounds) : _cadre(bounds)
