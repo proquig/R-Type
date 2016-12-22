@@ -150,11 +150,10 @@ bool		ClientStates::gameState(void)
 					  pak->getGameElements()[i]->getId(),
 					  PLAYER,
 					  pak->getGameElements()[i]->getX(),
-					  pak->getGameElements()[i]->getY()
-					  , 50, 50);
-
-                  // pak->getGameElements()[i]->getAngle()
-				  // pak->getGameElements()[i]->getSpeed()
+					  pak->getGameElements()[i]->getY(),
+					  pak->getGameElements()[i]->getAngle(),
+					  pak->getGameElements()[i]->getSpeed()
+				  );
 			  }
 			}
         delete packet;
@@ -162,7 +161,7 @@ bool		ClientStates::gameState(void)
     }
   }
   _mutex->unlock();
-  return true;
+  return this->run(END);
 }
 
 bool	ClientStates::scoreState(void)
@@ -184,7 +183,8 @@ bool	ClientStates::endState(void)
 bool	ClientStates::testState(void)
 {
 	Event			*event = NULL;
-	Coords			*player = new Coords(200, 20);
+	Coords			*player = new Coords(50, 50);
+	float			angle = 0;
 	Coords			*windowSize = new Coords(800, 450);
 
 	std::cout << "=================================" << std::endl;
@@ -195,27 +195,31 @@ bool	ClientStates::testState(void)
 	this->controller->initAction();
 
 	while (!event || event->type != Event::QUIT) {
+
+		this->controller->elementAction(1, PLAYER, player->x, player->y, angle, 0);
+		this->controller->elementAction(2, PLAYER, 100, 50, 0, 0);
+		this->controller->elementAction(3, PLAYER, 150, 50, 0, 0);
+		this->controller->elementAction(4, PLAYER, 200, 50, 0, 0);
+		this->controller->elementAction(5, PLAYER, 250, 50, 0, 0);
+
 		if (event = this->controller->eventAction()) {
+			std::cout << "[EVENT] " << event->name << std::endl;
 			switch (event->type) {
-				case Event::UP: player->y -= Y_SPEED; break;
-				case Event::DOWN: player->y += Y_SPEED; break;
-				case Event::RIGHT: player->x += X_SPEED; break;
-				case Event::LEFT: player->x -= X_SPEED; break;
+				case Event::UP: player->y -= Y_SPEED; angle = -90; break;
+				case Event::DOWN: player->y += Y_SPEED; angle = 90; break;
+				case Event::RIGHT: player->x += X_SPEED; angle = 0; break;
+				case Event::LEFT: player->x -= X_SPEED; angle = 0; break;
 				case Event::RESIZE: windowSize = event->size; break;
 				default: break;
 			}
-
-			this->controller->elementAction(1, PLAYER, player->x, player->y, 50, 50);
-
-			// Required for the threads
-			#ifdef __linux__ 
-				sleep(20);
-			#elif _WIN32
-				Sleep(20);
-			#endif
 		}
+		#ifdef __linux__ 
+				sleep(20);
+		#elif _WIN32
+				Sleep(20);
+		#endif
 	}
-	return true;
+	return this->run(END);
 }
 
 

@@ -22,14 +22,19 @@ void	Monster::loadSprites(GLib lib)
 
 void	Monster::print(void * window)
 {
+	this->animation = "CYAN_STAY";
+	this->size->x = 50;
+	this->size->y = 50;
 	this->sprite->setAnimation(this->animation, this->coords, this->size);
 	this->sprite->print(window);
 }
 
-void	Monster::move(int x, int y)
+void	Monster::move(int _x, int _y, float _angle, int _speed)
 {
-	this->coords->x = x;
-	this->coords->y = y;
+	this->coords->x = _x;
+	this->coords->y = _y;
+	this->angle = _angle;
+	this->speed = _speed;
 }
 
 void	Monster::destroy()
@@ -54,28 +59,4 @@ void	Monster::setAnimation(std::string _animation)
 void	Monster::setSize(Coords *_size)
 {
 	this->size = _size;
-}
-
-/////////////////////////////////////////////////////////////////
-// GETTERS
-/////////////////////////////////////////////////////////////////
-
-unsigned int	Monster::getId(void) const
-{
-	return (this->id);
-}
-
-Coords *		Monster::getCoords(void) const
-{
-	return (this->coords);
-}
-
-Coords *	Monster::getSize(void) const
-{
-	return (this->size);
-}
-
-std::string		Monster::getAnimation(void) const
-{
-	return (this->animation);
 }

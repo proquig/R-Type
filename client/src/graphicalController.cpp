@@ -20,7 +20,7 @@ GraphicalController::GraphicalController(GLib lib, int _w, int _h, std::string _
 
 bool	GraphicalController::initAction(void)
 {
-	this->scene.clear();
+	this->scene = std::vector<AElement *>();
 	this->windowThread = new std::thread(&GraphicalController::windowAction, this);
 	return (true);
 }
@@ -30,33 +30,27 @@ void	GraphicalController::windowAction(void)
 	this->window->run(this->windowQueue, this->eventQueue, this);
 }
 
-void	GraphicalController::elementAction(unsigned int id, ElementType type, int x, int y, int w, int h)
+void	GraphicalController::elementAction(unsigned int id, ElementType type, int x, int y, float angle, int speed)
 {
 	AElement									*element;
 	std::vector<AElement *>::const_iterator		elem;
 	bool										match = false;
 
-    /*std::cerr << "id=" << id << std::endl;
 	if (this->scene.size()) {
 		for (elem = this->scene.begin(); elem != this->scene.end(); ++elem) {
 			if ((*elem)->getId() == id) {
-				(*elem)->move(x, y);
+				(*elem)->move(x, y, angle, speed);
 				this->windowQueue->push(*elem);
 				match = true;
 			}
 		}
 	}
 	if (!match) {
-    FRAICHEUR DE VIVRE HOLLYWOOD CHEWING-GUM*/
-        //std::cout << "JEPASSEICI=JESUISNEW" << std::endl;
-        this->scene.clear();
-		element = ElementFactory::create(
-			id, type, "CYAN_STAY",
-			x, y, w, h
-		);
+		element = ElementFactory::create(id, type);
+		element->move(x, y, angle, speed);
 		this->scene.push_back(element);
 		this->windowQueue->push(element);
-	//}
+	}
 }
 
 Event *		GraphicalController::eventAction(void)

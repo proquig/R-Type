@@ -15,7 +15,7 @@ struct Cut
 	Coords	end;
 
 	Cut(unsigned int b_x, unsigned int b_y, unsigned int e_x, unsigned int e_y)
-		: begin(Coords(b_x, b_x)), end(Coords(e_x, e_y)) {}
+		: begin(Coords(b_x, b_y)), end(Coords(e_x, e_y)) {}
 
 };
 

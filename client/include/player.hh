@@ -6,29 +6,25 @@
 class Player : public AElement
 {
 
+	std::string		skin;
+
 public:
+
+	enum Color
+	{
+		CYAN = 0,
+		VIOLET,
+		GREEN,
+		RED,
+		BLUE
+	};
+
+	Player(Color);
 
 	void	loadSprites(GLib);
 	void	print(void *);
-	void	move(int x, int y);
+	void	move(int, int, float, int);
 	void	destroy();
-
-	//////////////////////////////////////////////
-	// SETTERS
-	//////////////////////////////////////////////
-
-	void			setId(unsigned int);
-	void			setAnimation(std::string);
-	void			setSize(Coords *);
-
-	//////////////////////////////////////////////
-	// GETTERS
-	//////////////////////////////////////////////
-
-	unsigned int	getId() const;
-	Coords *		getCoords(void) const;
-	Coords *		getSize(void) const;
-	std::string		getAnimation(void) const;
 
 };
 

@@ -19,7 +19,7 @@ void	SFMLWindow::run(WorkQueue<AElement *> *_elemqueue, WorkQueue<Event *> *_eve
 		this->pollEvent();
 		this->renderScene();
 		this->render();
-    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+		std::this_thread::sleep_for(std::chrono::milliseconds(10));
 	}
 }
 
@@ -39,9 +39,7 @@ void											SFMLWindow::renderScene(void)
 		for (elem = this->scene.begin(); elem != this->scene.end(); ++elem) {
 			if ((*elem)->getId() == (*element)->getId()) {
 				position = (*element)->getCoords();
-				(*elem)->move(position->x, position->y);
-				(*elem)->setSize((*element)->getSize());
-				(*elem)->setAnimation((*element)->getAnimation());
+				(*elem)->move(position->x, position->y, (*element)->getAngle(), (*element)->getSpeed());
 				match = true;
 			}
 		}
@@ -50,7 +48,6 @@ void											SFMLWindow::renderScene(void)
 			this->scene.push_back(*element);
 		}
 	}
-
 }
 
 void											SFMLWindow::render(void)
@@ -58,10 +55,10 @@ void											SFMLWindow::render(void)
 	std::vector<AElement *>::const_iterator		element;
 
 	this->handler->clear();
-	if (!this->scene.size())
-		return;
-	for (element = this->scene.begin(); element != this->scene.end(); ++element)
-		(*element)->print((void *)this->handler);
+	if (this->scene.size()) {
+		for (element = this->scene.begin(); element != this->scene.end(); ++element)
+			(*element)->print((void *)this->handler);
+	}
 	this->handler->display();
 }
 

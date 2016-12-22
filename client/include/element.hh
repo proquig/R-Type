@@ -21,7 +21,7 @@ public:
 
 	virtual void	loadSprites(GLib) = 0;
 	virtual void	print(void *) = 0;
-	virtual void	move(int x, int y) = 0;
+	virtual void	move(int, int, float, int) = 0;
 	virtual void	destroy() = 0;
 
 	//////////////////////////////////////////////
@@ -40,6 +40,8 @@ public:
 	virtual Coords *		getCoords(void) const = 0;
 	virtual Coords *		getSize(void) const = 0;
 	virtual std::string		getAnimation(void) const = 0;
+	virtual float			getAngle(void) const = 0;
+	virtual int				getSpeed(void) const = 0;
 
 };
 
@@ -52,11 +54,32 @@ protected:
 	Coords			*size;
 	ASprite			*sprite;
 	std::string		animation;
+	float			angle;
+	int				speed;
 
 public:
 
-	AElement() : coords(new Coords(0, 0)) {}
+	AElement() : coords(new Coords(0, 0)), size(new Coords(0, 0)) {}
 
+	///////////////////////////////////////////////////////////////
+	// GETTERS
+	///////////////////////////////////////////////////////////////
+
+	float			getAngle(void) const { return this->angle; }
+	int				getSpeed(void) const { return this->speed; }
+	unsigned int	getId(void) const { return (this->id); }
+	Coords *		getCoords(void) const { return (this->coords); }
+	Coords *		getSize(void) const { return (this->size); }
+	std::string		getAnimation(void) const { return (this->animation);}
+
+
+	/////////////////////////////////////////////////////////////////
+	// SETTERS
+	/////////////////////////////////////////////////////////////////
+
+	void	setId(unsigned int _id) { this->id = _id; }
+	void	setAnimation(std::string _animation) { this->animation = _animation; }
+	void	setSize(Coords *_size) { this->size = _size; }
 };
 
 enum ElementType {
@@ -67,9 +90,10 @@ enum ElementType {
 	SET
 };
 
-class ElementFactory {
+class				ElementFactory {
 public:
-	static AElement *	create(unsigned int, ElementType, std::string, int, int, unsigned int, unsigned int);
+
+	static AElement *	create(unsigned int, ElementType);
 };
 
 #endif /* !ELEMENT_HH__ */
