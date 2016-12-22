@@ -10,7 +10,7 @@
  * - CHECK SERIALIZATION & DESERIALIZATION GAMEELEMENT
  * - UPDATE SIZE
  * - TIMER
- * - ObstacleS
+ * - PLAYERS
  *
  */
 
@@ -29,7 +29,7 @@ GameDataPacket::~GameDataPacket()
 
 std::string GameDataPacket::serialize()
 {
-  // TODO: ADD UP TO 4 Obstacle & OTHER ELEMENTS
+  // TODO: ADD UP TO 4 PLAYER & OTHER ELEMENTS
   // TODO: ADD TIMER !!!
   APacket::serialize();
   for (uint8_t i = 0; i < this->_gameElements.size(); ++i)
@@ -38,7 +38,8 @@ std::string GameDataPacket::serialize()
 			  << this->_gameElements[i]->getX()
 			  << this->_gameElements[i]->getY()
 			  << this->_gameElements[i]->getAngle()
-			  << this->_gameElements[i]->getSpeed();
+			  << this->_gameElements[i]->getSpeed()
+			  << this->_gameElements[i]->getType();
   return (this->_content.str());
 }
 
@@ -60,6 +61,8 @@ bool GameDataPacket::unserialize(const std::string &data)
 	this->_gameElements.back()->setAngle(*(float *) &data[i + j]);
 	j += sizeof(float);
 	this->_gameElements.back()->setSpeed(data[i + j]);
+	j += sizeof(uint8_t);
+	this->_gameElements.back()->setType(htons(*(uint16_t *) &data[i + j]));
   }
   return (true);
 }
@@ -102,6 +105,7 @@ uint16_t GameDataPacket::getGameElementSize()
   i += sizeof(element.y);
   i += sizeof(element.angle);
   i += sizeof(element.speed);
+  i += sizeof(element.type);
   return (i);
 }
 
