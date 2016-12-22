@@ -92,6 +92,7 @@ bool	ClientStates::launchState(void)
 bool	ClientStates::menuState(void)
 {
 	std::cout << "Menu ..." << std::endl;
+
 	return this->run(GAME);
 }
 
