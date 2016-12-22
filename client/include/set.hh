@@ -6,30 +6,20 @@
 class Set : public AElement
 {
 
+	std::string	land;
+
 public:
+
+	enum Land {
+		WASTE
+	};
+
+	Set(Land);
 
 	void	loadSprites(GLib);
 	void	print(void *);
 	void	move(int, int, float, int);
 	void	destroy();
-
-	//////////////////////////////////////////////
-	// SETTERS
-	//////////////////////////////////////////////
-
-	void			setId(unsigned int);
-	void			setAnimation(std::string);
-	void			setSize(Coords *);
-
-	//////////////////////////////////////////////
-	// GETTERS
-	//////////////////////////////////////////////
-
-	unsigned int	getId() const;
-	Coords *		getCoords(void) const;
-	Coords *		getSize(void) const;
-	std::string		getAnimation(void) const;
-
 };
 
 #endif /* !SET_HH__ */

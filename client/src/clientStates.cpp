@@ -202,6 +202,8 @@ bool	ClientStates::testState(void)
 		this->controller->elementAction(4, PLAYER, 200, 50, 0, 0);
 		this->controller->elementAction(5, OBSTACLE, 250, 50, 0, 0);
 
+		this->controller->elementAction(99999, SET, 0, 0, 0, 10);
+
 		if (event = this->controller->eventAction()) {
 			std::cout << "[EVENT] " << event->name << std::endl;
 			switch (event->type) {

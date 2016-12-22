@@ -10,6 +10,14 @@
 # define PTC_OBSTACLE	(char)8
 # define PTC_SET		(char)16
 
+enum ElementType {
+	PLAYER,
+	MONSTER,
+	MISSILE,
+	OBSTACLE,
+	SET
+};
+
 enum GLib
 {
 	SFML
@@ -31,6 +39,7 @@ public:
 	virtual void	setId(unsigned int) = 0;
 	virtual void	setAnimation(std::string) = 0;
 	virtual void	setSize(Coords *) = 0;
+	virtual void	setType(ElementType _type) = 0;
 
 	//////////////////////////////////////////////
 	// GETTERS
@@ -42,12 +51,15 @@ public:
 	virtual std::string		getAnimation(void) const = 0;
 	virtual float			getAngle(void) const = 0;
 	virtual int				getSpeed(void) const = 0;
+	virtual ElementType		getType(void) const = 0;
 
 };
 
 class AElement : public IElement
 {
 protected:
+
+	ElementType		type;
 
 	unsigned int	id;
 	Coords			*coords;
@@ -71,6 +83,7 @@ public:
 	Coords *		getCoords(void) const { return (this->coords); }
 	Coords *		getSize(void) const { return (this->size); }
 	std::string		getAnimation(void) const { return (this->animation);}
+	ElementType		getType(void) const { return (this->type); }
 
 
 	/////////////////////////////////////////////////////////////////
@@ -80,14 +93,7 @@ public:
 	void	setId(unsigned int _id) { this->id = _id; }
 	void	setAnimation(std::string _animation) { this->animation = _animation; }
 	void	setSize(Coords *_size) { this->size = _size; }
-};
-
-enum ElementType {
-	PLAYER,
-	MONSTER,
-	MISSILE,
-	OBSTACLE,
-	SET
+	void	setType(ElementType _type) { this->type = _type; }
 };
 
 class				ElementFactory {

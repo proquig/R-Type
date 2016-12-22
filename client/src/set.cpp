@@ -1,31 +1,36 @@
 #include "set.hh"
 #include "SFMLSprite.hh"
 
+Set::Set(Land land)
+{
+	switch (land) {
+	case WASTE:
+		this->land = "WASTE_LAND";
+		break;
+	default :
+		this->land = "WASTE_LAND";
+		break;
+	}
+}
+
 void	Set::loadSprites(GLib lib)
 {
 	switch (lib)
 	{
 	case SFML:
-		this->sprite = new SFMLSprite("./../../client/media/GAME-Assets/r-typesheet42.gif");
+		this->sprite = new SFMLSprite("./../../client/media/GAME-Assets/WASTE_LAND.png");
 		break;
 	}
 
-	this->sprite->addRessource("CYAN_STAY", std::vector<Cut *>{new Cut(66, 0, 33, 19), new Cut(33, 0, 33, 19), new Cut(0, 0, 33, 19)});
-
-	// Init on cyan_stay
-	this->sprite->setAnimation("CYAN_STAY", new Coords(0, 0), new Coords(50, 50));
-
-	this->sprite->setAnimated(true);
+	this->sprite->addRessource("WASTE_LAND", std::vector<Cut *>{new Cut(0, 0, 1000, 300)});
+	this->sprite->setAnimated(false);
 	this->sprite->setAnimTime(500);
-	this->sprite->setLoop(true);
+	this->sprite->setLoop(false);
 }
 
 void	Set::print(void * window)
 {
-	this->animation = "CYAN_STAY";
-	this->size->x = 50;
-	this->size->y = 50;
-	this->sprite->setAnimation(this->animation, this->coords, this->size);
+	this->sprite->setAnimation(this->land, this->coords, this->size);
 	this->sprite->print(window);
 }
 
@@ -40,47 +45,4 @@ void	Set::move(int _x, int _y, float _angle, int _speed)
 void	Set::destroy()
 {
 
-}
-
-/////////////////////////////////////////////////////////////////
-// SETTERS
-/////////////////////////////////////////////////////////////////
-
-void	Set::setId(unsigned int _id)
-{
-	this->id = _id;
-}
-
-void	Set::setAnimation(std::string _animation)
-{
-	this->animation = _animation;
-}
-
-void	Set::setSize(Coords *_size)
-{
-	this->size = _size;
-}
-
-/////////////////////////////////////////////////////////////////
-// GETTERS
-/////////////////////////////////////////////////////////////////
-
-unsigned int	Set::getId(void) const
-{
-	return (this->id);
-}
-
-Coords *		Set::getCoords(void) const
-{
-	return (this->coords);
-}
-
-Coords *	Set::getSize(void) const
-{
-	return (this->size);
-}
-
-std::string		Set::getAnimation(void) const
-{
-	return (this->animation);
 }
