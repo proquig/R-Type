@@ -22,14 +22,19 @@ void	Obstacle::loadSprites(GLib lib)
 
 void	Obstacle::print(void * window)
 {
+	this->animation = "CYAN_STAY";
+	this->size->x = 50;
+	this->size->y = 50;
 	this->sprite->setAnimation(this->animation, this->coords, this->size);
 	this->sprite->print(window);
 }
 
-void	Obstacle::move(int x, int y)
+void	Obstacle::move(int _x, int _y, float _angle, int _speed)
 {
-	this->coords->x = x;
-	this->coords->y = y;
+	this->coords->x = _x;
+	this->coords->y = _y;
+	this->angle = _angle;
+	this->speed = _speed;
 }
 
 void	Obstacle::destroy()

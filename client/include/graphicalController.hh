@@ -1,6 +1,11 @@
 #ifndef GRAPHICAL_CONTROLLER_HH__
 # define GRAPHICAL_CONTROLLER_HH__
 
+# ifdef __linux__ 
+#  include <unistd.h>
+# elif _WIN32
+#  include <windows.h>
+# endif
 # include "Observable.hpp"
 # include "workQueue.hh"
 # include "window.hh"
@@ -35,7 +40,7 @@ public:
 
 	bool	initAction(void);
 	void	windowAction(void);
-	void	elementAction(unsigned int, ElementType, int, int, int, int);
+	void	elementAction(unsigned int, ElementType, int, int, float, int);
 	Event	*eventAction(void);
 
 };
