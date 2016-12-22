@@ -38,7 +38,8 @@ std::string GameDataPacket::serialize()
 			  << this->_gameElements[i]->getX()
 			  << this->_gameElements[i]->getY()
 			  << this->_gameElements[i]->getAngle()
-			  << this->_gameElements[i]->getSpeed();
+			  << this->_gameElements[i]->getSpeed()
+			  << this->_gameElements[i]->getType();
   return (this->_content.str());
 }
 
