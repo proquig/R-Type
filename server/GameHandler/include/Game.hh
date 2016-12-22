@@ -3,8 +3,8 @@
 
 #include "IGame.hh"
 #include "File.hh"
-#include "Rectangle.hh"
 
+class Rectangle;
 
 class Game : public IGame {
 
