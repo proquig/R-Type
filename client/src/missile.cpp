@@ -60,27 +60,3 @@ void	Missile::setSize(Coords *_size)
 {
 	this->size = _size;
 }
-
-/////////////////////////////////////////////////////////////////
-// GETTERS
-/////////////////////////////////////////////////////////////////
-
-unsigned int	Missile::getId(void) const
-{
-	return (this->id);
-}
-
-Coords *		Missile::getCoords(void) const
-{
-	return (this->coords);
-}
-
-Coords *	Missile::getSize(void) const
-{
-	return (this->size);
-}
-
-std::string		Missile::getAnimation(void) const
-{
-	return (this->animation);
-}

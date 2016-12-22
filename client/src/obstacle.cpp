@@ -60,27 +60,3 @@ void	Obstacle::setSize(Coords *_size)
 {
 	this->size = _size;
 }
-
-/////////////////////////////////////////////////////////////////
-// GETTERS
-/////////////////////////////////////////////////////////////////
-
-unsigned int	Obstacle::getId(void) const
-{
-	return (this->id);
-}
-
-Coords *		Obstacle::getCoords(void) const
-{
-	return (this->coords);
-}
-
-Coords *	Obstacle::getSize(void) const
-{
-	return (this->size);
-}
-
-std::string		Obstacle::getAnimation(void) const
-{
-	return (this->animation);
-}

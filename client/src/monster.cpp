@@ -60,27 +60,3 @@ void	Monster::setSize(Coords *_size)
 {
 	this->size = _size;
 }
-
-/////////////////////////////////////////////////////////////////
-// GETTERS
-/////////////////////////////////////////////////////////////////
-
-unsigned int	Monster::getId(void) const
-{
-	return (this->id);
-}
-
-Coords *		Monster::getCoords(void) const
-{
-	return (this->coords);
-}
-
-Coords *	Monster::getSize(void) const
-{
-	return (this->size);
-}
-
-std::string		Monster::getAnimation(void) const
-{
-	return (this->animation);
-}

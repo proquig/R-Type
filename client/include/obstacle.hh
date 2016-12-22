@@ -21,15 +21,6 @@ public:
 	void			setAnimation(std::string);
 	void			setSize(Coords *);
 
-	//////////////////////////////////////////////
-	// GETTERS
-	//////////////////////////////////////////////
-
-	unsigned int	getId() const;
-	Coords *		getCoords(void) const;
-	Coords *		getSize(void) const;
-	std::string		getAnimation(void) const;
-
 };
 
 #endif /* !OBSTACLE_HH__ */
