@@ -2,9 +2,9 @@
 // Created by proqui_g on 12/19/16.
 //
 
-#include <ISocket.hpp>
-#include <GameDataPacket.hh>
 #include "Room.hpp"
+#include "ISocket.hpp"
+#include "GameDataPacket.hh"
 
 Room::Room()
 {

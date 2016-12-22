@@ -7,12 +7,14 @@
 
 # include	<algorithm>
 # include	<map>
-# include   "GameController.hh"
-# include   "ControllerFactory.hh"
+# include "GameController.hh"
+# include "ControllerFactory.hh"
 # include	"APacket.hh"
 # include	"Player.hh"
 
 # define	MAX_PLAYERS	4
+
+class GameController;
 
 class Room
 {

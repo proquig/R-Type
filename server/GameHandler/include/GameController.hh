@@ -1,8 +1,8 @@
 #ifndef GAMEHANDLER_GAMECONTROLLER_HH
 #define GAMEHANDLER_GAMECONTROLLER_HH
 
-#include			"IObserver.hpp"
 #include			"CollisionHandler.hh"
+#include			"IObserver.hpp"
 #include			"IGame.hh"
 #include			"File.hh"
 #include			"ElementFactory.hh"

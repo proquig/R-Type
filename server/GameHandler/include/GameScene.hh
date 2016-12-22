@@ -2,8 +2,8 @@
 #define GAMEHANDLER_GAMESCENE_HH
 
 #include 	<vector>
-#include	"GameElement.hpp"
-#include	"Rectangle.hh"
+#include "CollisionHandler.hh"
+#include "GameElement.hpp"
 
 class GameScene
 {
