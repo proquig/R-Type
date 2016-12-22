@@ -28,7 +28,7 @@ std::vector<IElement*>			 Monster::collideWith(IElement* elem)
 {
     if (elem->getType() == AElement::DECOR)
         if (elem->getX() == this->_x && elem->getY() == this->_y ||
-                this->_x && this->_y)
+                this->_x == 0 && this->_y == 0)
         _direction = !_direction;
     return std::vector<IElement*>();
 }
