@@ -7,20 +7,9 @@
 
 #include <iostream>
 #include <thread>
+#include <Monster.hh>
 
-#include "IThreadPool.hh"
 #include "ADLibrary.hh"
-
-void sleep_and_end(IThreadPool *pool)
-{
-#ifdef RT_UNIX
-    sleep(2);
-#elif RT_WIN
-    Sleep(2000);
-#endif
-    if (pool)
-        pool->stop();
-}
 
 void splash(void)
 {
@@ -30,9 +19,12 @@ void splash(void)
 int main(int ac, char **av)
 {
     Dictionary dic;
-    IThreadPool *pool;
+    Monster *monster;
+    ElementFactory *elementFactory = new ElementFactory;
+    IElement *decor = elementFactory->createDecor(0, 5, 1, 1);
+
 #ifdef RT_UNIX
-    IDLibrary *lib = ADLibrary::createLibrary(0, "monster", "./monster.so");
+    IDLibrary *lib = ADLibrary::createLibrary(0, "monster", "./libmonster.so");
 #elif RT_WIN
     IDLibrary *lib = ADLibrary::createLibrary(0, "monster", "monster.dll");
 #endif
@@ -45,13 +37,18 @@ int main(int ac, char **av)
             {
                 for (std::map<std::string, void *>::iterator sit = dic->begin(); sit != dic->end(); sit++)
                     std::cout << "key=" << sit->first.c_str() << std::endl;
-                if ((pool = reinterpret_cast<IThreadPool *(*)(int)>(dic->at("instantiate"))(4)) != nullptr)
+                if ((monster = reinterpret_cast<Monster *(*)(int, int, int, void *)>(dic->at("new"))(4,0,0, elementFactory)) != nullptr)
                 {
-                    std::cout << "Init=" << pool->init() << std::endl;
-                    std::this_thread::sleep_for(std::chrono::milliseconds(100));
-                    pool->addTask(pool->createTask(std::bind(splash)));
-                    pool->addTask(pool->createTask(std::bind(sleep_and_end, pool)));
-                    reinterpret_cast<void *(*)(IThreadPool *)>(dic->at("destroy"))(pool);
+                    for (int i = 0; i < 20; i++)
+                    {
+                        monster->collideWith(decor);
+                        std::cout << decor->getX() << ":" << decor->getY() << std::endl;
+                        std::cout << "X=" << monster->getX() << ":" << "Y=" << monster->getY() << std::endl;
+                        if (!monster->move()) {
+                           // monster->shot();
+                            std::cout << "Shot at :" << monster->getX() << ":" << monster->getY() << std::endl;
+                        }
+                    }
                 }
             } else
                 std::cout << "dic empty" << std::endl;

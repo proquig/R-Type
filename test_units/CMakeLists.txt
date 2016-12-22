@@ -15,3 +15,6 @@ add_subdirectory(server_test)
 
 #Parser
 add_subdirectory(parser_test)
+
+#Monster
+add_subdirectory(monster_test)

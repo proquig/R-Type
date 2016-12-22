@@ -42,8 +42,8 @@ Decor*			ElementFactory::createDecor(uint16_t x, uint16_t y, uint16_t sizex, uin
 	return decor;
 }
 
-Monster*		ElementFactory::createMonster(uint16_t x, uint16_t y, uint16_t hp, uint16_t sizex, uint16_t sizey, uint16_t damage, float angle, char speed)
+AElement*		ElementFactory::createMonster(uint16_t x, uint16_t y, uint16_t hp, uint16_t sizex, uint16_t sizey, uint16_t damage, float angle, char speed)
 {
-	Monster*		monster = new Monster(-1, _elementId++, AElement::MONSTER, x, y, hp, sizex, sizey, damage, angle, speed);
+	Monster*		monster = new Monster(-1, _elementId++, AElement::MONSTER, x, y, hp, sizex, sizey, damage, angle, speed, this);
 	return monster;
 }

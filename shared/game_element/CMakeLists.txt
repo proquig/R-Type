@@ -13,13 +13,13 @@ add_library(rtype_game_element
 	Player.cpp
 	Shot.cpp
 	Shot.hh
-	Monster.cpp
-	Monster.hh
 	ElementFactory.hh
 	ElementFactory.cpp
+        ../monster/Monster.cpp
+        ../monster/Monster.hh
     )
 
-target_include_directories(rtype_game_element PUBLIC .)
+target_include_directories(rtype_game_element PUBLIC . ../monster)
 
 set_property(TARGET rtype_game_element PROPERTY CXX_STANDARD 11)
 set_property(TARGET rtype_game_element PROPERTY CXX_STANDARD_REQUIRED ON)

@@ -18,3 +18,6 @@ add_subdirectory(network)
 
 #Packet
 add_subdirectory(packet)
+
+#Monster
+add_subdirectory(monster)
