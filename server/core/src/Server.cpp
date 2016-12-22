@@ -117,17 +117,6 @@ void Server::loop()
   std::vector<std::pair<std::string, struct sockaddr*>> *vector;
   APacket *packet;
 
-  //UPDATE
-  if (this->_loop++ == 100)
-  {
-	for (uint8_t i = 0; i < this->_rooms.size(); ++i)
-	  for (uint8_t j = 0; j < this->_rooms[i]->getGameController()->getGame()->getScene()->getMap().size(); ++j)
-		if (this->_rooms[i]->getGameController()->getGame()->getScene()->getMap()[j]->getType() == AElement::BULLET)
-		  this->_rooms[i]->getGameController()->getGame()->getScene()->getMap()[j]->setX(
-				  this->_rooms[i]->getGameController()->getGame()->getScene()->getMap()[j]->getX() +
-				  1);//this->_rooms[i]->getGameController()->getGame()->getScene()->getMap()[j]->getSpeed());
-	this->_loop = 0;
-  }
   //PACKET EMISSION
   if (_test && _rooms.size())
 	_rooms.front()->sendNotification(_test);
@@ -141,6 +130,20 @@ void Server::loop()
 		  this->handleSocket(pair.second, packet);
 	  vector->pop_back();
 	}
+  //UPDATE
+  if (this->_loop++ == 100)
+  {
+	for (uint8_t i = 0; i < this->_rooms.size(); ++i)
+	  for (uint8_t j = 0; j < this->_rooms[i]->getGameController()->getGame()->getScene()->getMap().size(); ++j)
+		if (this->_rooms[i]->getGameController()->getGame()->getScene()->getMap()[j]->getType() == AElement::BULLET)
+		  this->_rooms[i]->getGameController()->getGame()->getScene()->getMap()[j]->setX(
+				  this->_rooms[i]->getGameController()->getGame()->getScene()->getMap()[j]->getX() +
+				  1);//this->_rooms[i]->getGameController()->getGame()->getScene()->getMap()[j]->getSpeed());
+	for (uint8_t i = 0; i < this->_rooms.size(); ++i)
+	  for (uint8_t j = 0; j < this->_rooms[i]->getPlayers().size(); ++j)
+		this->handleCollision(this->_rooms[i], this->_rooms[i]->getPlayers()[j]);
+	  this->_loop = 0;
+  }
 }
 
 void Server::stop(unsigned int delay)
@@ -242,10 +245,8 @@ void Server::handleMovement(Room* room, Player* player, InputPacket* packet)
 		player->setX(player->getX() + (mov[input - 3][0] * player->getSpeed()));
 		player->setY(player->getY() + (mov[input - 3][1] * player->getSpeed()));
 	  }
-	  //std::cout << "input " << input << std::endl;
 	  else if (input == 2)
 	  {
-		//std::cout << "BULLET" << std::endl;
 		AElement *elem;
 		elem = room->getGameController()->getElementFactory().create(-1, -1, AElement::BULLET,
 															  player->getX() + (player->getSizeX() / 2) + 1,
