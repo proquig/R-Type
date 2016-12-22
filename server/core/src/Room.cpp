@@ -2,9 +2,9 @@
 // Created by proqui_g on 12/19/16.
 //
 
-#include <ISocket.hpp>
-#include <GameDataPacket.hh>
 #include "Room.hpp"
+#include "ISocket.hpp"
+#include "GameDataPacket.hh"
 
 Room::Room()
 {
@@ -119,8 +119,8 @@ void Room::sendNotification(ISocket *sock)
   std::vector<GameElement*>	vec;
   //for (uint8_t i = 0; i < this->_players.size(); ++i)
 	//vec.push_back((GameElement *&&) this->_players[i]);
-  for (uint8_t i = 0; i < this->_gameController->getGame()->getScene()->getMap().size(); ++i)
-	vec.push_back((GameElement *&&)this->_gameController->getGame()->getScene()->getMap()[i]);
+  for (uint8_t i = 0; i < this->_gameController->getGame()->getMap().size(); ++i)
+	vec.push_back((GameElement *&&)this->_gameController->getGame()->getMap()[i]);
   GameDataPacket packet(vec);
   packet.setHeader(APacket::GAME_ELEM_INFO, APacket::ACK_DONE, MAGIC, 4, 42, 100, 12);
   std::string	str = packet.serialize();

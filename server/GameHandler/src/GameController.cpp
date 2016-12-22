@@ -36,7 +36,7 @@ bool			GameController::initGame(File* file)
 	parser.setFile(file);
 	while ((elem = parser.parse()) != NULL)
 	{
-		_game->getScene()->addElem(elem);
+		_game->addElem(elem);
 		std::cout << "Element added to game : " << elem->getType() << "|" << elem->getId() << std::endl;
 	}
 }
@@ -52,7 +52,7 @@ void			GameController::handleCollisions()
 	std::vector<int>			destructElementId;
 	std::vector<IElement*>		aEntity;
 
-	aEntity = _collisionHandler.foundCollisions(_game->getScene()->getMap(), &destructElementId);
+	aEntity = _collisionHandler.foundCollisions(_game->getMap(), &destructElementId);
 //	for (std::vector<IElement *>::iterator it = aEntity.begin(); it != aEntity.end(); ++it)
 //	{
 //		std::cout << "Collision on entity " << (*it)->getId() << std::endl;
@@ -71,7 +71,7 @@ void GameController::update(int timer)
 	if (_tick >= _delta)
 	{
 		_game->display();
-		std::cout << "Tick = " << _tick << "|GameSize=" << _game->getScene()->getMap().size() <<  std::endl;
+		std::cout << "Tick = " << _tick << "|GameSize=" << _game->getMap().size() <<  std::endl;
 		_tick = 0;
 		handleCollisions();
 		//appel tes fonctions ici :D ça devrais marcher.

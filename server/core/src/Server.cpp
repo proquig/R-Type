@@ -1,8 +1,7 @@
 #include <iostream>
 #include <thread>
-#include <InputPacket.hh>
-#include <GameDataPacket.hh>
 #include "Server.hpp"
+#include "Room.hpp"
 #include "APacket.hh"
 #include "ICondVar.hh"
 #include "IMutex.hh"
@@ -11,6 +10,8 @@
 #include "IThreadPool.hh"
 #include "ITimer.hpp"
 #include "File.hh"
+#include "InputPacket.hh"
+#include "GameDataPacket.hh"
 
 Server::Server(unsigned short port)
     : _socketFactory(nullptr), _pool(nullptr), _stop(false),
@@ -250,7 +251,7 @@ void Server::handleMovement(Room* room, Player* player, InputPacket* packet)
 															  player->getX() + (player->getSizeX() / 2) + 1,
 															  player->getY(), 100, 5, 5, 100, 0,
 															  player->getSpeed() + 1);
-		room->getGameController()->getGame()->getScene()->addElem(elem);
+		room->getGameController()->getGame()->addElem(elem);
 	  }
 	}
 }

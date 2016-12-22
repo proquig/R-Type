@@ -2,6 +2,7 @@
 // Created by cloque_b on 08/12/16.
 //
 
+#include "GameController.hh"
 #include "GameHandler.hh"
 #include "ControllerFactory.hh"
 #include "File.hh"

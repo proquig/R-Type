@@ -1,11 +1,11 @@
 #ifndef R_TYPE_SERVER_HPP_
 #define R_TYPE_SERVER_HPP_
 
+#include "GameController.hh"
 #include "InputPacket.hh"
 #include "ControllerFactory.hh"
 #include "DLManager.hh"
 #include "NetworkHandler.hpp"
-#include "Room.hpp"
 #include "workQueue.hh"
 
 class ICondVar;
@@ -13,6 +13,8 @@ class IMutex;
 class IThreadPool;
 class ISocketFactory;
 class ITimer;
+class Room;
+class Player;
 
 class Server : public IObserver
 {
