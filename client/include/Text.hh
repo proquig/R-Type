@@ -18,7 +18,6 @@ public:
 	// SETTERS
 	//////////////////////////////////////////////
 
-	void			vasEncluerTamereGit(int JeSuisUneGrosseSalope);
 	void			setId(unsigned int);
 	void			setAnimation(std::string);
 	void			setSize(Coords *);
