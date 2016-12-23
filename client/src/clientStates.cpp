@@ -9,14 +9,13 @@
 #include "ITimer.hpp"
 
 ClientStates::ClientStates()
-    : _init(false), _stop(false), _waiting(false),
+    : _init(false), _stop(false), _waiting(false), _input(0),
     _cond(nullptr), _mutex(nullptr), _pool(nullptr),
     _socketFactory(nullptr), _socket(nullptr)
 {
   memset(&_sockaddr, '0', sizeof(_sockaddr));
   _dlManager.add(0, "threadpool", "");
   _dlManager.add(0, "rtype_network", "");
-  _dlManager.add(0, "rtype_timer", "");
 }
 
 ClientStates::~ClientStates()
@@ -100,13 +99,15 @@ bool		ClientStates::gameState(void)
 {
   Event *event = nullptr;
   IPacket *packet;
+  std::vector<uint16_t>::iterator it;
 
+  _inputQueue.resize(10, 0);
   _mutex->lock();
   _ref = _clock.now();
   while (!_stop)
   {
     _waiting = true;
-    _cond->wait(_mutex);
+    _cond->wait(_mutex, 50);
     _waiting = false;
     if (!_stop)
     {
@@ -118,12 +119,18 @@ bool		ClientStates::gameState(void)
           _stop = true;
           break;
         }
-        if (std::find(_input.begin(), _input.end(), event->type) == _input.end())
-          _input.push_back(event->type);
+        if (event->type == Event::KEYPRESS)
+          _input |= event->key;
+        if (event->type == Event::KEYRELEASE)
+          _input  &= ~(event->key);
+        delete event;
       }
       //PACKET EMISSION
       if (std::chrono::duration_cast<std::chrono::milliseconds>(_clock.now() - _ref).count() > 100)
       {
+        _inputQueue.push_back(_input);
+        if (_inputQueue.size() == 11)
+          _inputQueue.erase(_inputQueue.begin());
         InputPacket eventPacket;
         std::string serializedEvent;
         eventPacket.setHeader(
@@ -131,9 +138,7 @@ bool		ClientStates::gameState(void)
             MAGIC, this->game_id,
             this->packet_id, 4242, 0
         );
-        eventPacket.setInputs(_input);
-        if (_input.size() != 0)
-          _input.erase(_input.begin(), _input.end());
+        eventPacket.setInputs(_inputQueue);
         serializedEvent = eventPacket.serialize();
         if (_socket)
           this->_socket->write(std::vector<unsigned char>(serializedEvent.begin(), serializedEvent.end()), &_sockaddr);
@@ -208,10 +213,15 @@ bool	ClientStates::testState(void)
 		if (event = this->controller->eventAction()) {
 			std::cout << "[EVENT] " << event->name << std::endl;
 			switch (event->type) {
-				case Event::UP: player->y -= Y_SPEED; angle = -90; break;
-				case Event::DOWN: player->y += Y_SPEED; angle = 90; break;
-				case Event::RIGHT: player->x += X_SPEED; angle = 0; break;
-				case Event::LEFT: player->x -= X_SPEED; angle = 0; break;
+        case Event::KEYPRESS:
+          switch (event->key)
+          {
+				case RType::UP: player->y -= Y_SPEED; angle = -90; break;
+				case RType::DOWN: player->y += Y_SPEED; angle = 90; break;
+				case RType::RIGHT: player->x += X_SPEED; angle = 0; break;
+				case RType::LEFT: player->x -= X_SPEED; angle = 0; break;
+          }
+          break;
 				case Event::RESIZE: windowSize = event->size; break;
 				default: break;
 			}
@@ -257,9 +267,6 @@ void ClientStates::update(IObservable *o, int status)
     {
     }
   }
-  if (_timer && o == _timer)
-  {
-  }
 }
 
 bool ClientStates::init()
@@ -285,12 +292,6 @@ bool ClientStates::init()
       && !(*_dic.insert(_dic.end(), dic))->empty()
       && (_socketFactory = reinterpret_cast<ISocketFactory *(*)(IThreadPool*)>(_dic.back()->at("instantiate"))(_pool)) != nullptr)
     std::cout << "_socketFactory spawned" << std::endl;
-  else
-    return false;
-  if ((dic = _dlManager.handler.getDictionaryByName("rtype_timer")) != NULL
-      && !(*_dic.insert(_dic.end(), dic))->empty()
-      && (_timer = reinterpret_cast<ITimer *(*)(IThreadPool*)>(_dic.back()->at("instantiate"))(_pool)) != nullptr)
-    std::cout << "timer spawned" << std::endl;
   else
     return false;
   if ((_socket = _socketFactory->createSocketUDP(this, RTYPE_PORT_CLIENT)) == nullptr)

@@ -19,7 +19,7 @@ void	SFMLWindow::run(WorkQueue<AElement *> *_elemqueue, WorkQueue<Event *> *_eve
 		this->pollEvent();
 		this->renderScene();
 		this->render();
-		std::this_thread::sleep_for(std::chrono::milliseconds(10));
+		std::this_thread::sleep_for(std::chrono::milliseconds(16));
 	}
 }
 
@@ -70,47 +70,70 @@ void	SFMLWindow::pollEvent(void)
 {
 	while (this->handler->pollEvent(this->event))
 	{
-		sf::Vector2i	mouse = sf::Mouse::getPosition();
-		sf::Vector2u	size = this->handler->getSize();
-		unsigned int	_x = mouse.x;
-		unsigned int	_y = mouse.y;
-		unsigned int	_w = size.x;
-		unsigned int	_h = size.y;
-		
+		sf::Vector2i mouse = sf::Mouse::getPosition();
+		sf::Vector2u size = this->handler->getSize();
+		unsigned int _x = mouse.x;
+		unsigned int _y = mouse.y;
+		unsigned int _w = size.x;
+		unsigned int _h = size.y;
+
 		switch (event.type)
 		{
-		case sf::Event::Closed:
-			this->eventQueue->push(new Event(Event::QUIT, "QUIT", _x, _y, _w, _h));
-			this->handler->close();
-			break;
-		case sf::Event::Resized:
-			this->eventQueue->push(new Event(Event::RESIZE, "RESIZE", _x, _y, _w, _h));
-			break;
-		case sf::Event::KeyPressed:
-			switch (event.key.code) {
-			case sf::Keyboard::Up:
-				this->eventQueue->push(new Event(Event::UP, "UP", _x, _y, _w, _h));
+			case sf::Event::Closed:
+				this->eventQueue->push(new Event(Event::QUIT, RType::NONE, "QUIT", _x, _y, _w, _h));
+				this->handler->close();
 				break;
-			case sf::Keyboard::Down:
-				this->eventQueue->push(new Event(Event::DOWN, "DOWN", _x, _y, _w, _h));
+			case sf::Event::Resized:
+				this->eventQueue->push(new Event(Event::RESIZE, RType::NONE, "RESIZE", _x, _y, _w, _h));
 				break;
-			case sf::Keyboard::Left:
-				this->eventQueue->push(new Event(Event::LEFT, "LEFT", _x, _y, _w, _h));
+			case sf::Event::KeyPressed:
+				switch (event.key.code)
+				{
+					case sf::Keyboard::Up:
+						this->eventQueue->push(new Event(Event::KEYPRESS, RType::UP, "UP", _x, _y, _w, _h));
+						break;
+					case sf::Keyboard::Down:
+						this->eventQueue->push(new Event(Event::KEYPRESS, RType::DOWN, "DOWN", _x, _y, _w, _h));
+						break;
+					case sf::Keyboard::Left:
+						this->eventQueue->push(new Event(Event::KEYPRESS, RType::LEFT, "LEFT", _x, _y, _w, _h));
+						break;
+					case sf::Keyboard::Right:
+						this->eventQueue->push(new Event(Event::KEYPRESS, RType::RIGHT, "RIGHT", _x, _y, _w, _h));
+						break;
+					case sf::Keyboard::Return:
+						this->eventQueue->push(new Event(Event::KEYPRESS, RType::ENTER, "ENTER", _x, _y, _w, _h));
+						break;
+					default:
+						break;
+				}
 				break;
-			case sf::Keyboard::Right:
-				this->eventQueue->push(new Event(Event::RIGHT, "RIGHT", _x, _y, _w, _h));
-				break;
-			case sf::Keyboard::Return:
-				this->eventQueue->push(new Event(Event::ENTER, "ENTER", _x, _y, _w, _h));
+			case sf::Event::KeyReleased:
+				switch (event.key.code)
+				{
+					case sf::Keyboard::Up:
+						this->eventQueue->push(new Event(Event::KEYRELEASE, RType::UP, "UP", _x, _y, _w, _h));
+						break;
+					case sf::Keyboard::Down:
+						this->eventQueue->push(new Event(Event::KEYRELEASE, RType::DOWN, "DOWN", _x, _y, _w, _h));
+						break;
+					case sf::Keyboard::Left:
+						this->eventQueue->push(new Event(Event::KEYRELEASE, RType::LEFT, "LEFT", _x, _y, _w, _h));
+						break;
+					case sf::Keyboard::Right:
+						this->eventQueue->push(new Event(Event::KEYRELEASE, RType::RIGHT, "RIGHT", _x, _y, _w, _h));
+						break;
+					case sf::Keyboard::Return:
+						this->eventQueue->push(new Event(Event::KEYRELEASE, RType::ENTER, "ENTER", _x, _y, _w, _h));
+						break;
+					default:
+						break;
+				}
 				break;
 			default:
-				return;
-			}
-			break;
-		default:
-			return;
+				break;
 		}
-		if (obs)
+		if (obs && !this->eventQueue->empty())
 			obs->notify(0);
 	}
 }

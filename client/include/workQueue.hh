@@ -13,6 +13,14 @@ class WorkQueue
 
 public:
 
+	bool empty(void)
+	{
+		bool cond;
+		this->access.lock();
+		cond = this->queue.empty();
+		this->access.unlock();
+		return cond;
+	}
 	void	push(T obj) {
 		this->access.lock();
 		this->queue.push_back(obj);
