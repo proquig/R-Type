@@ -36,7 +36,6 @@ void	Obstacle::loadSprites(GLib lib)
 
 void	Obstacle::print(void * window)
 {
-
 	this->animation = this->skin;
 	this->size->x = 50;
 	this->size->y = 50;
