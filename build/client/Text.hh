@@ -18,6 +18,7 @@ public:
 	// SETTERS
 	//////////////////////////////////////////////
 
+	void			vasEncluerTamereGit();
 	void			setId(unsigned int);
 	void			setAnimation(std::string);
 	void			setSize(Coords *);
