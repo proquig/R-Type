@@ -25,35 +25,3 @@ void	Missile::print(void * window)
 	this->sprite->setAnimation(this->animation, this->coords, 1);
 	this->sprite->print(window);
 }
-
-void	Missile::move(int _x, int _y, float _angle, int _speed)
-{
-	this->coords->x = _x;
-	this->coords->y = _y;
-	this->angle = _angle;
-	this->speed = _speed;
-}
-
-void	Missile::destroy()
-{
-
-}
-
-/////////////////////////////////////////////////////////////////
-// SETTERS
-/////////////////////////////////////////////////////////////////
-
-void	Missile::setId(unsigned int _id)
-{
-	this->id = _id;
-}
-
-void	Missile::setAnimation(std::string _animation)
-{
-	this->animation = _animation;
-}
-
-void	Missile::setSize(Coords *_size)
-{
-	this->size = _size;
-}

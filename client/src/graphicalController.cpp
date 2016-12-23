@@ -40,7 +40,7 @@ void	GraphicalController::elementAction(unsigned int id, ElementType type, int x
 	if (this->scene.size()) {
 		for (elem = this->scene.begin(); elem != this->scene.end(); ++elem) {
 			if ((*elem)->getId() == id) {
-				(*elem)->move(x, y, angle, speed);
+				(*elem)->move(x, y, angle, std::chrono::milliseconds(speed));
 				this->windowQueue->push(*elem);
 				match = true;
 			}
@@ -48,7 +48,7 @@ void	GraphicalController::elementAction(unsigned int id, ElementType type, int x
 	}
 	if (!match) {
 		element = ElementFactory::create(id, type);
-		element->move(x, y, angle, speed);
+		element->move(x, y, angle, std::chrono::milliseconds(speed));
 		if (element->getType() == SET) {
 			scale = (float)this->windowSize->y / 300;
 			element->setScale(scale);

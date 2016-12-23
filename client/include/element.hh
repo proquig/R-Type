@@ -1,6 +1,7 @@
 #ifndef ELEMENT_HH__
 # define ELEMENT_HH__
 
+# include <chrono>
 # include <iostream>
 # include "sprite.hh"
 
@@ -29,7 +30,7 @@ public:
 
 	virtual void	loadSprites(GLib) = 0;
 	virtual void	print(void *) = 0;
-	virtual void	move(int, int, float, int) = 0;
+	virtual void	move(int, int, float, std::chrono::milliseconds) = 0;
 	virtual void	destroy() = 0;
 
 	//////////////////////////////////////////////
@@ -45,13 +46,13 @@ public:
 	// GETTERS
 	//////////////////////////////////////////////
 
-	virtual unsigned int	getId(void) const = 0;
-	virtual Coords *		getCoords(void) const = 0;
-	virtual Coords *		getSize(void) const = 0;
-	virtual std::string		getAnimation(void) const = 0;
-	virtual float			getAngle(void) const = 0;
-	virtual int				getSpeed(void) const = 0;
-	virtual ElementType		getType(void) const = 0;
+	virtual unsigned int				getId(void) const = 0;
+	virtual Coords *					getCoords(void) const = 0;
+	virtual Coords *					getSize(void) const = 0;
+	virtual std::string					getAnimation(void) const = 0;
+	virtual float						getAngle(void) const = 0;
+	virtual std::chrono::milliseconds	getSpeed(void) const = 0;
+	virtual ElementType					getType(void) const = 0;
 
 };
 
@@ -59,33 +60,36 @@ class AElement : public IElement
 {
 protected:
 
-	ElementType		type;
+	ElementType					type;
 
-	unsigned int	id;
-	Coords			*coords;
-	Coords			*size;
-	float			scale;
-	ASprite			*sprite;
-	std::string		animation;
-	float			angle;
-	int				speed;
+	unsigned int				id;
+	Coords						*coords;
+	Coords						*size;
+	float						scale;
+	ASprite						*sprite;
+	std::string					animation;
+	float						angle;
+	std::chrono::milliseconds	speed;
 
 public:
 
 	AElement() : coords(new Coords(0, 0)), size(new Coords(0, 0)) {}
 
+	void	move(int _x, int _y, float _angle, std::chrono::milliseconds _speed) {this->coords->x = _x;this->coords->y = _y;this->angle = _angle;this->speed = _speed;};
+	void	destroy() {};
+
 	///////////////////////////////////////////////////////////////
 	// GETTERS
 	///////////////////////////////////////////////////////////////
 
-	float			getAngle(void) const { return this->angle; }
-	int				getSpeed(void) const { return this->speed; }
-	unsigned int	getId(void) const { return (this->id); }
-	Coords *		getCoords(void) const { return (this->coords); }
-	Coords *		getSize(void) const { return (this->size); }
-	std::string		getAnimation(void) const { return (this->animation);}
-	ElementType		getType(void) const { return (this->type); }
-	float			getScale(void) const { return (this->scale); }
+	float						getAngle(void) const { return this->angle; }
+	std::chrono::milliseconds	getSpeed(void) const { return this->speed; }
+	unsigned int				getId(void) const { return (this->id); }
+	Coords *					getCoords(void) const { return (this->coords); }
+	Coords *					getSize(void) const { return (this->size); }
+	std::string					getAnimation(void) const { return (this->animation);}
+	ElementType					getType(void) const { return (this->type); }
+	float						getScale(void) const { return (this->scale); }
 
 
 	/////////////////////////////////////////////////////////////////

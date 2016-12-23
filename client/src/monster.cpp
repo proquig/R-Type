@@ -25,35 +25,3 @@ void	Monster::print(void * window)
 	this->sprite->setAnimation(this->animation, this->coords, 1);
 	this->sprite->print(window);
 }
-
-void	Monster::move(int _x, int _y, float _angle, int _speed)
-{
-	this->coords->x = _x;
-	this->coords->y = _y;
-	this->angle = _angle;
-	this->speed = _speed;
-}
-
-void	Monster::destroy()
-{
-
-}
-
-/////////////////////////////////////////////////////////////////
-// SETTERS
-/////////////////////////////////////////////////////////////////
-
-void	Monster::setId(unsigned int _id)
-{
-	this->id = _id;
-}
-
-void	Monster::setAnimation(std::string _animation)
-{
-	this->animation = _animation;
-}
-
-void	Monster::setSize(Coords *_size)
-{
-	this->size = _size;
-}
