@@ -1,9 +1,9 @@
 #include "obstacle.hh"
 #include "SFMLSprite.hh"
 
-Obstacle::Obstacle(Skin skin)
+Obstacle::Obstacle(Skin _skin)
 {
-	switch (skin) {
+	switch (_skin) {
 	default:
 		this->skin = "DEFAULT";
 		break;
@@ -36,12 +36,13 @@ void	Obstacle::loadSprites(GLib lib)
 
 void	Obstacle::print(void * window)
 {
+
 	this->animation = this->skin;
 	this->size->x = 50;
 	this->size->y = 50;
-	this->sprite->setAnimation(this->animation, this->coords, this->size);
 	this->sprite->setAnimated(true);
 	this->sprite->setLoop(true);
+	this->sprite->setAnimation(this->animation, this->coords, 1);
 	this->sprite->print(window);
 }
 

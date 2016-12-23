@@ -15,7 +15,7 @@ private:
 	std::map<std::string, std::vector<sf::IntRect> *>	_anim;
 	std::vector<sf::IntRect>							*_currAnim;
 	std::pair<unsigned int, unsigned int>				_pos;
-	std::pair<unsigned int, unsigned int>				_size;
+	std::pair<float, float>								_size;
 	sf::Texture											_tex;
 	sf::Image											_img;
 	sf::Sprite											_spr;
@@ -28,14 +28,14 @@ public:
 	SFMLSprite(std::string _path) : ASprite(_path) {}
 	void	addRessource(std::string, const std::vector<Cut *>);
 	void	print(void *);
-	void	setAnimation(std::string, Coords *, Coords *);
+	void	setAnimation(std::string, Coords *, float);
 	bool	isOver(void) const;
 	bool	getLoop() const;
 	void	setLoop(bool);
 	void	setAnimTime(float);
 	bool	getAnimated() const;
 	void	setAnimated(bool);
-	void	setScale(Coords *);
+	void	setScale(float);
 
 	//Private Functions
 private:

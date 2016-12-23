@@ -60,16 +60,16 @@ void	Player::print(void * window)
 	this->animation = this->skin;
 	this->size->x = 50;
 	this->size->y = 50;
-	this->sprite->setAnimation(this->animation, this->coords, this->size);
+	this->sprite->setAnimation(this->animation, this->coords, 1);
 	this->sprite->setAnimated(false);
 	this->sprite->setLoop(false);
 	if (this->angle <= -45) {
-		this->sprite->setAnimation(this->animation + "_UP", this->coords, this->size);
+		this->sprite->setAnimation(this->animation + "_UP", this->coords, 1);
 		this->sprite->setAnimated(true);
 		this->sprite->setLoop(false);
 	}
 	if (this->angle >= 45) {
-		this->sprite->setAnimation(this->animation + "_DOWN", this->coords, this->size);
+		this->sprite->setAnimation(this->animation + "_DOWN", this->coords, 1);
 		this->sprite->setAnimated(true);
 		this->sprite->setLoop(false);
 	}

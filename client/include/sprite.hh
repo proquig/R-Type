@@ -30,7 +30,7 @@ public:
 	// ANIMATION
 	/////////////////////////////////////////////////////////////////////////////
 
-	virtual void	setAnimation(std::string, Coords *, Coords *) = 0;
+	virtual void	setAnimation(std::string, Coords *, float) = 0;
 	virtual bool	isOver(void) const = 0;
 	virtual bool	getAnimated() const = 0;
 	virtual void	setAnimated(bool) = 0;
