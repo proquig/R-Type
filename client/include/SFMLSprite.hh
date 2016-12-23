@@ -35,6 +35,7 @@ public:
 	void	setAnimTime(float);
 	bool	getAnimated() const;
 	void	setAnimated(bool);
+	void	setScale(Coords *);
 
 	//Private Functions
 private:

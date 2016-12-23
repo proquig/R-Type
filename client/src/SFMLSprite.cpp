@@ -91,6 +91,7 @@ void					SFMLSprite::print(void *_window)
 
 	update();
 	_spr.setPosition(sf::Vector2f(_pos.first, _pos.second));
+	_spr.setScale(sf::Vector2f(_size.first, _size.second));
 	if (_isAnimated == true)
 	{
 		window->draw(_spr);
@@ -150,4 +151,11 @@ void				SFMLSprite::setAnimated(bool val)
 	{
 		_isOver = true;
 	}
+	return;
+}
+
+void				SFMLSprite::setScale(Coords *scale)
+{
+	_size = std::make_pair(scale->x, scale->y);
+	return;
 }
