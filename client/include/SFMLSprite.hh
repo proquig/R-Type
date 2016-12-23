@@ -14,12 +14,12 @@ private:
 	sf::Clock											_clock;
 	std::map<std::string, std::vector<sf::IntRect> *>	_anim;
 	std::vector<sf::IntRect>							*_currAnim;
-	std::pair<unsigned int, unsigned int>				_pos;
+	std::pair<int, int>									_pos;
 	std::pair<float, float>								_size;
 	sf::Texture											_tex;
 	sf::Image											_img;
 	sf::Sprite											_spr;
-	//int													_cnt;
+	//int												_cnt;
 	// Not usefull										_notUsed;
 	sf::Vertex											_vert[4];
 	std::string											_name;
