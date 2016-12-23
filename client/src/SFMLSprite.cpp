@@ -46,6 +46,7 @@ void				SFMLSprite::update()
 			}
 		}
 		_tex.loadFromImage(_img);
+		_spr = sf::Sprite(_tex);
 		sf::IntRect rect = _currAnim->at(_cnt);
 		sf::Vector2f scale = sf::Vector2f(_size.first, _size.second);
 		_spr.setScale(scale);
@@ -56,14 +57,7 @@ void				SFMLSprite::update()
 
 void				SFMLSprite::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	if (_isAnimated == true)
-	{
-		target.draw(_spr, states);
-	}
-	else
-	{
-		target.draw(_spr, states);
-	}
+	target.draw(_spr, states);
 	return;
 }
 
