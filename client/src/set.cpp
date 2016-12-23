@@ -30,7 +30,7 @@ void	Set::loadSprites(GLib lib)
 
 void	Set::print(void * window)
 {
-	this->sprite->setAnimation(this->land, this->coords, this->size);
+	this->sprite->setAnimation(this->land, this->coords, new Coords(this->scale, this->scale));
 	this->sprite->print(window);
 }
 

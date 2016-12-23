@@ -64,6 +64,7 @@ protected:
 	unsigned int	id;
 	Coords			*coords;
 	Coords			*size;
+	float			scale;
 	ASprite			*sprite;
 	std::string		animation;
 	float			angle;
@@ -84,6 +85,7 @@ public:
 	Coords *		getSize(void) const { return (this->size); }
 	std::string		getAnimation(void) const { return (this->animation);}
 	ElementType		getType(void) const { return (this->type); }
+	float			getScale(void) const { return (this->scale); }
 
 
 	/////////////////////////////////////////////////////////////////
@@ -93,6 +95,7 @@ public:
 	void	setId(unsigned int _id) { this->id = _id; }
 	void	setAnimation(std::string _animation) { this->animation = _animation; }
 	void	setSize(Coords *_size) { this->size = _size; }
+	void	setScale(float _scale) { this->scale = _scale; }
 	void	setType(ElementType _type) { this->type = _type; }
 };
 

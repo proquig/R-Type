@@ -56,11 +56,8 @@ void											SFMLWindow::render(void)
 
 	this->handler->clear();
 	if (this->scene.size()) {
-		for (element = this->scene.begin(); element != this->scene.end(); ++element) {
-			if ((*element)->getType() == SET)
-				(*element)->setSize(new Coords(this->width, this->height));
+		for (element = this->scene.begin(); element != this->scene.end(); ++element)
 			(*element)->print((void *)this->handler);
-		}
 	}
 	this->handler->display();
 }
