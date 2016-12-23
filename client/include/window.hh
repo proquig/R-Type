@@ -12,26 +12,38 @@
 
 class IObservable;
 
+struct RType
+{
+	enum Key
+	{
+		NONE = 1 << 0,
+		ENTER = 1 << 1,
+		SPACE = 1 << 2,
+		UP = 1 << 3,
+		DOWN = 1 << 4,
+		LEFT = 1 << 5,
+		RIGHT = 1 << 6,
+	};
+};
+
 struct Event
 {
 	enum Type {
 		QUIT = 0,
 		RESIZE,
-		ENTER,
-		UP,
-		DOWN,
-		LEFT,
-		RIGHT,
+		KEYPRESS,
+		KEYRELEASE,
 		CLICK
 	};
 
 	char	*name;
+	RType::Key key;
 	Type	type;
 	Coords	*mouse;
 	Coords	*size;
 
-	Event(Type _type, char *_name, int _x, int _y, int _w, int _h)
-		: type(_type), name(_name), mouse(new Coords(_x, _y)), size(new Coords(_w, _h)) {}
+	Event(Type _type, RType::Key _key, char *_name, int _x, int _y, int _w, int _h)
+		: type(_type), key(_key), name(_name), mouse(new Coords(_x, _y)), size(new Coords(_w, _h)) {}
 };
 
 class IWindow

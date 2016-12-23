@@ -55,7 +55,8 @@ private:
 	bool _waiting;
 	bool _stop;
 	//Input
-	std::vector<uint16_t> _input;
+	uint16_t _input;
+  std::vector<uint16_t> _inputQueue;
 	//DLLoader
 	std::vector<Dictionary> _dic;
 	DLManager _dlManager;
@@ -73,7 +74,6 @@ private:
 	//Timer
 	std::chrono::high_resolution_clock _clock;
 	std::chrono::high_resolution_clock::time_point _ref;
-	ITimer *_timer;
 
 
 public:

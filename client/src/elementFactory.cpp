@@ -39,10 +39,10 @@ AElement *					ElementFactory::create(unsigned int _id, ElementType type)
 		element = new Missile();
 		break;
 	case OBSTACLE:
-		element = new Obstacle();
+		element = new Obstacle(Obstacle::DEFAULT);
 		break;
 	case SET:
-		element = new Set();
+		element = new Set(Set::WASTE);
 		break;
 
 	default:
@@ -50,5 +50,6 @@ AElement *					ElementFactory::create(unsigned int _id, ElementType type)
 		break;
 	}
 	element->setId(_id);
+	element->setType(type);
 	return (element);
 }

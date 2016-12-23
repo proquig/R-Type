@@ -3,7 +3,7 @@
 int main(int ac, char **av)
 {
 	ClientStates			client;
-	ClientStates::state		mode = ClientStates::LAUNCH;
+	ClientStates::state		mode = ClientStates::TEST;//LAUNCH;
 
 	for (int i = 0; i < ac - 1; ++i) {
 		if (std::string(av[i]) == "-m" && std::string(av[i + 1]) == "TEST")

@@ -35,6 +35,7 @@ void	GraphicalController::elementAction(unsigned int id, ElementType type, int x
 	AElement									*element;
 	std::vector<AElement *>::const_iterator		elem;
 	bool										match = false;
+	float										scale = 0.f;
 
 	if (this->scene.size()) {
 		for (elem = this->scene.begin(); elem != this->scene.end(); ++elem) {
@@ -48,6 +49,10 @@ void	GraphicalController::elementAction(unsigned int id, ElementType type, int x
 	if (!match) {
 		element = ElementFactory::create(id, type);
 		element->move(x, y, angle, speed);
+		if (element->getType() == SET) {
+			scale = (float)this->windowSize->y / 300;
+			element->setScale(scale);
+		}
 		this->scene.push_back(element);
 		this->windowQueue->push(element);
 	}
