@@ -35,16 +35,16 @@ void							Set::print(void * window)
 	std::chrono::milliseconds	now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
 	std::chrono::milliseconds	deltaTime = now - this->tic;
 
-	std::cout << this->coords->x << std::endl;
-	this->coords->x = -21;
 	if (deltaTime > this->speed) {
 		this->tic = now;
-		//this->coords->x -= 1;
-		if ((this->coords->x * -1) >= this->size->x)
-			;//this->coords->x = 0;
+		this->coords->x -= 2;
+		if ((this->coords->x * -1) >= this->size->x) {
+			std::cout << this->size->x << std::endl;
+			this->coords->x = 0;
+		}
 	}
-	this->sprite->setAnimation(this->land, new Coords(-1, 0), this->scale);
+	this->sprite->setAnimation(this->land, this->coords, this->scale);
 	this->sprite->print(window);
-	//this->sprite->setAnimation(this->land, new Coords(this->coords->x + this->size->x, 0), this->scale);
-	//this->sprite->print(window);
+	this->sprite->setAnimation(this->land, new Coords(this->coords->x + this->size->x, 0), this->scale);
+	this->sprite->print(window);
 }

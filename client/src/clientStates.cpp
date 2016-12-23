@@ -206,10 +206,10 @@ bool	ClientStates::testState(void)
 		this->controller->elementAction(1, PLAYER, player->x, player->y, angle, 0);
 		this->controller->elementAction(2, PLAYER, 100, 50, 0, 0);
 		this->controller->elementAction(3, PLAYER, 150, 50, 0, 0);
-		this->controller->elementAction(4, PLAYER, 200, 50, 0, 0);
+		this->controller->elementAction(4, MISSILE, 200, 50, 0, 0);
 		this->controller->elementAction(5, OBSTACLE, 250, 50, 0, 0);
 
-		this->controller->elementAction(99999, SET, 0, 0, 0, 200);
+		this->controller->elementAction(99999, SET, 0, 0, 0, 10);
 
 		if (event = this->controller->eventAction()) {
 			std::cout << "[EVENT] " << event->name << std::endl;

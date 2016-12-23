@@ -6,7 +6,15 @@
 class Missile : public AElement
 {
 
+	std::string		skin;
+
 public:
+
+	enum Type {
+		DEFAULT
+	};
+
+	Missile(Type);
 
 	void	loadSprites(GLib);
 	void	print(void *);
