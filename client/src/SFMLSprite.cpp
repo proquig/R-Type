@@ -103,12 +103,12 @@ void					SFMLSprite::print(void *_window)
 	return;
 }
 
-void				SFMLSprite::setAnimation(std::string name, Coords *pos, Coords *size)
+void				SFMLSprite::setAnimation(std::string name, Coords *pos, float scale)
 {
 	_name = name;
 	_currAnim = _anim[name];
 	_pos = std::make_pair(pos->x, pos->y);
-	_size = std::make_pair(size->x, size->y);
+	_size = std::make_pair(scale, scale);
 	init();
 	return;
 }
@@ -154,8 +154,8 @@ void				SFMLSprite::setAnimated(bool val)
 	return;
 }
 
-void				SFMLSprite::setScale(Coords *scale)
+void				SFMLSprite::setScale(float scale)
 {
-	_size = std::make_pair(scale->x, scale->y);
+	_size = std::make_pair(scale, scale);
 	return;
 }
