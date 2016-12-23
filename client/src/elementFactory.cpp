@@ -36,7 +36,7 @@ AElement *					ElementFactory::create(unsigned int _id, ElementType type)
 		element = new Monster();
 		break;
 	case MISSILE:
-		element = new Missile();
+		element = new Missile(Missile::DEFAULT);
 		break;
 	case OBSTACLE:
 		element = new Obstacle(Obstacle::DEFAULT);

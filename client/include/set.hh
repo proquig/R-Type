@@ -6,7 +6,8 @@
 class Set : public AElement
 {
 
-	std::string	land;
+	std::string					land;
+	std::chrono::milliseconds	tic;
 
 public:
 
@@ -18,8 +19,6 @@ public:
 
 	void	loadSprites(GLib);
 	void	print(void *);
-	void	move(int, int, float, int);
-	void	destroy();
 };
 
 #endif /* !SET_HH__ */

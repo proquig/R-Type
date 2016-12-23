@@ -23,8 +23,6 @@ public:
 
 	void	loadSprites(GLib);
 	void	print(void *);
-	void	move(int, int, float, int);
-	void	destroy();
 
 };
 

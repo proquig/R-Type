@@ -21,7 +21,7 @@ void	Text::move(int _x, int _y, float _angle, int _speed)
 	this->coords->x = _x;
 	this->coords->y = _y;
 	this->angle = _angle;
-	this->speed = _speed;
+	//this->speed = _speed;
 	return;
 }
 

@@ -75,16 +75,3 @@ void	Player::print(void * window)
 	}
 	this->sprite->print(window);
 }
-
-void	Player::move(int _x, int _y, float _angle, int _speed)
-{
-	this->coords->x = _x;
-	this->coords->y = _y;
-	this->angle = _angle;
-	this->speed = _speed;
-}
-
-void	Player::destroy()
-{
-
-}
