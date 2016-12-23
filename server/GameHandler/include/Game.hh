@@ -1,6 +1,7 @@
 #ifndef GAMEHANDLER_GAME_HH
 #define GAMEHANDLER_GAME_HH
 
+#include	<algorithm>
 #include "IGame.hh"
 #include "File.hh"
 
@@ -33,6 +34,7 @@ public:
 	virtual void						addElems(std::vector<IElement*>);
 	virtual void						addElem(IElement*);
 	virtual const Rectangle&			getCadre() const;
+  	virtual bool						deleteElem(IElement *element);
 };
 
 #endif

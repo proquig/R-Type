@@ -20,6 +20,7 @@ class IGame
 	virtual std::vector<IElement*>&		getMap() = 0;
 	virtual void						addElems(std::vector<IElement*>) = 0;
 	virtual void						addElem(IElement*) = 0;
+  	virtual bool						deleteElem(IElement *element) = 0;
 };
 
 #endif

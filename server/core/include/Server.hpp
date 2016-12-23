@@ -52,7 +52,7 @@ protected:
   bool _stop;
   ISocket *_test;
   bool _waiting;
-  uint8_t 	_loop;
+//  uint8_t 	_loop;
   std::map<Player*, std::vector<uint16_t>> _inputs;
   std::vector<Room*>		_rooms;
 public:
@@ -71,6 +71,7 @@ public:
   virtual void realizeMovement(Room* room, Player* player);
   virtual void handleCollision(Room* room, Player* player);
   virtual void loop();
+  void handleRoom(Room *room);
 };
 
 #endif //R_TYPE_SERVER_HPP_

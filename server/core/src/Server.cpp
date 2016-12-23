@@ -15,7 +15,7 @@
 
 Server::Server(unsigned short port)
     : _socketFactory(nullptr), _pool(nullptr), _stop(false),
-    _test(nullptr), _waiting(false), _loop(0)
+    _test(nullptr), _waiting(false)
 {
   _dlManager.add(0, "threadpool", "");
   _dlManager.add(0, "rtype_network", "");
@@ -104,6 +104,17 @@ void Server::loop()
   std::vector<std::pair<std::string, struct sockaddr*>> *vector;
   APacket *packet;
 
+  //UPDATE
+  //if (this->_loop++ == 1)
+  //{
+  for (Room* room :  this->_rooms)
+	this->handleRoom(room);
+  for (Room* room : this->_rooms)
+	for (Player* player : room->getPlayers())
+	  this->handleCollision(room, player);
+//	this->_loop = 0;
+  //}
+
   //PACKET EMISSION
   if (_test && _rooms.size())
 	_rooms.front()->sendNotification(_test);
@@ -113,22 +124,6 @@ void Server::loop()
       if ((packet = APacket::create(pair.first)) != nullptr)
         if (packet->getType() == APacket::INPUT_DATA)
           this->handleSocket(pair.second, packet);
-  //UPDATE
-  if (this->_loop++ == 1)
-  {
-    for (Room *room :  this->_rooms)
-      for (IElement *elem : room->getGameController()->getGame()->getMap())
-        if (elem->getType() == AElement::BULLET)
-          elem->setX(
-              elem->getX() + 1);//this->_rooms[i]->getGameController()->getGame()->getScene()->getMap()[j]->getSpeed());
-    for (Room *room : this->_rooms)
-      for (Player *player : room->getPlayers())
-      {
-        this->handleCollision(room, player);
-        this->realizeMovement(room, player);
-      }
-	this->_loop = 0;
-  }
 }
 
 void Server::stop(unsigned int delay)
@@ -186,6 +181,7 @@ void Server::handleSocket(struct sockaddr *addr, APacket* packet)
 	  if ((player = this->_rooms[i]->getPlayerFromSock(addr)))
 	  {
 		this->handleMovement(this->_rooms[i], player, (InputPacket*)packet);
+		this->realizeMovement(this->_rooms[i], player);
 		this->handleCollision(this->_rooms[i], player);
 	  }
 	  else
@@ -213,6 +209,21 @@ void Server::addPlayer(struct sockaddr *sock)
   this->_rooms.back()->sendNotification(_test);
 }
 
+void Server::handleRoom(Room* room)
+{
+ // std::cout << room->getGameController()->getGame()->getMap().size() << std::endl;
+  for (IElement* elem : room->getGameController()->getGame()->getMap())
+	if (elem->getType() == AElement::BULLET)
+	  if (elem->getX() > 799)
+	  {
+		room->getGameController()->getGame()->deleteElem(elem);
+		delete elem;
+		std::cout << "ELEM DELETED" << std::endl;
+	  }
+	  else
+		elem->setX(elem->getX() + 5);
+}
+
 void Server::handleMovement(Room* room, Player* player, InputPacket* packet)
 {
   if (packet && packet->getInputs().size())
@@ -235,16 +246,19 @@ void Server::realizeMovement(Room *room, Player *player)
   ref.pop_back();
   if ((input & RType::LEFT) != (input & RType::RIGHT))
   {
-    uint16_t dir = (input & RType::LEFT ? uint16_t(-1) : uint16_t(1));
-    player->setX(player->getX() + (dir * player->getSpeed()));
+	int16_t dir = (int16_t)((input & RType::LEFT) ? -1 : 1);
+	if (((player->getX() + (dir * player->getSpeed())) > 0 && ((player->getX() + (dir * player->getSpeed())) < 800)))
+	  player->setX(player->getX() + (dir * player->getSpeed()));
   }
   if ((input & RType::UP) != (input & RType::DOWN))
   {
-    uint16_t dir = (input & RType::UP ? uint16_t(-1) : uint16_t(1));
-    player->setY(player->getY() + (dir * player->getSpeed()));
+    int16_t dir = (int16_t)((input & RType::UP) ? -1 : 1);
+	if (((player->getY() + (dir * player->getSpeed())) > 0 && ((player->getY() + (dir * player->getSpeed())) < 450)))
+	  player->setY(player->getY() + (dir * player->getSpeed()));
   }
-  if (input & RType::SPACE)
+  if (input & RType::ENTER)
   {
+	std::cout << "BULLET" << std::endl;
     AElement *elem;
     elem = room->getGameController()->getElementFactory().create(-1, -1, AElement::BULLET,
                                                                  player->getX() + (player->getSizeX() / 2) + 1,

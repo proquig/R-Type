@@ -113,6 +113,16 @@ void				Game::addElem(IElement* elem)
 	_map.push_back(elem);
 }
 
+bool 				Game::deleteElem(IElement* element)
+{  std::vector<IElement*>::iterator	it;
+
+
+  if ((it = std::find(this->_map.begin(), this->_map.end(), element)) == this->_map.end())
+	return (false);
+  this->_map.erase(it);
+  return (true);
+}
+
 const Rectangle&				Game::getCadre() const
 {
 	return _cadre;
