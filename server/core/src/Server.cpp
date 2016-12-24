@@ -104,16 +104,14 @@ void Server::loop()
   std::vector<std::pair<std::string, struct sockaddr*>> *vector;
   APacket *packet;
 
-  //UPDATE
-  //if (this->_loop++ == 1)
-  //{
   for (Room* room :  this->_rooms)
 	this->handleRoom(room);
   for (Room* room : this->_rooms)
-	for (Player* player : room->getPlayers())
-	  this->handleCollision(room, player);
-//	this->_loop = 0;
-  //}
+    for (Player* player : room->getPlayers())
+      {
+        this->handleCollision(room, player);
+        this->realizeMovement(room, player);
+      }
 
   //PACKET EMISSION
   if (_test && _rooms.size())
@@ -179,13 +177,9 @@ void Server::handleSocket(struct sockaddr *addr, APacket* packet)
 	else
 	{
 	  if ((player = this->_rooms[i]->getPlayerFromSock(addr)))
-	  {
-		this->handleMovement(this->_rooms[i], player, (InputPacket*)packet);
-		this->realizeMovement(this->_rooms[i], player);
-		this->handleCollision(this->_rooms[i], player);
-	  }
+            this->handleMovement(this->_rooms[i], player, (InputPacket*)packet);
 	  else
-		  std::cout << "ERROR" << std::endl;
+            std::cout << "ERROR" << std::endl;
 	}
 }
 
@@ -246,13 +240,13 @@ void Server::realizeMovement(Room *room, Player *player)
   ref.pop_back();
   if ((input & RType::LEFT) != (input & RType::RIGHT))
   {
-	int16_t dir = (int16_t)((input & RType::LEFT) ? -1 : 1);
+    int dir = ((input & RType::LEFT) ? -1 : 1);
 	if (((player->getX() + (dir * player->getSpeed())) > 0 && ((player->getX() + (dir * player->getSpeed())) < 800)))
 	  player->setX(player->getX() + (dir * player->getSpeed()));
   }
   if ((input & RType::UP) != (input & RType::DOWN))
   {
-    int16_t dir = (int16_t)((input & RType::UP) ? -1 : 1);
+    int dir = ((input & RType::UP) ? -1 : 1);
 	if (((player->getY() + (dir * player->getSpeed())) > 0 && ((player->getY() + (dir * player->getSpeed())) < 450)))
 	  player->setY(player->getY() + (dir * player->getSpeed()));
   }
