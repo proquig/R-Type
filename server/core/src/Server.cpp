@@ -109,7 +109,7 @@ void Server::loop()
   for (Room* room : this->_rooms)
     for (Player* player : room->getPlayers())
       {
-        this->handleCollision(room, player);
+        //this->handleCollision(room, player);
         this->realizeMovement(room, player);
       }
 
@@ -206,12 +206,13 @@ void Server::addPlayer(struct sockaddr *sock)
 void Server::handleRoom(Room* room)
 {
  // std::cout << room->getGameController()->getGame()->getMap().size() << std::endl;
+  this->handleCollision(room);
   for (IElement* elem : room->getGameController()->getGame()->getMap())
 	if (elem->getType() == AElement::BULLET)
 	  if (elem->getX() > 799)
 	  {
 		room->getGameController()->getGame()->deleteElem(elem);
-		delete elem;
+		//delete elem;
 		std::cout << "ELEM DELETED" << std::endl;
 	  }
 	  else
@@ -240,13 +241,13 @@ void Server::realizeMovement(Room *room, Player *player)
   ref.pop_back();
   if ((input & RType::LEFT) != (input & RType::RIGHT))
   {
-    int dir = ((input & RType::LEFT) ? -1 : 1);
+	int16_t dir = (int16_t)((input & RType::LEFT) ? -1 : 1);
 	if (((player->getX() + (dir * player->getSpeed())) > 0 && ((player->getX() + (dir * player->getSpeed())) < 800)))
 	  player->setX(player->getX() + (dir * player->getSpeed()));
   }
   if ((input & RType::UP) != (input & RType::DOWN))
   {
-    int dir = ((input & RType::UP) ? -1 : 1);
+    int16_t dir = (int16_t)((input & RType::UP) ? -1 : 1);
 	if (((player->getY() + (dir * player->getSpeed())) > 0 && ((player->getY() + (dir * player->getSpeed())) < 450)))
 	  player->setY(player->getY() + (dir * player->getSpeed()));
   }
@@ -254,7 +255,7 @@ void Server::realizeMovement(Room *room, Player *player)
   {
 	std::cout << "BULLET" << std::endl;
     AElement *elem;
-    elem = room->getGameController()->getElementFactory().create(-1, -1, AElement::BULLET,
+    elem = room->getGameController()->getElementFactory().create(player->getId(), -1, AElement::BULLET,
                                                                  player->getX() + (player->getSizeX() / 2) + 1,
                                                                  player->getY(), 100, 5, 5, 100, 0,
                                                                  player->getSpeed() + 1);
@@ -262,9 +263,10 @@ void Server::realizeMovement(Room *room, Player *player)
   }
 }
 
-void Server::handleCollision(Room* room, Player* player)
+void Server::handleCollision(Room* room)
 {
+  //std::cout << "HANDLE COLLISION" << std::endl;
   for (Player* pl : room->getPlayers())
-	if (player != pl)
-	  room->getGameController()->handleCollisions();
+	//if (player != pl)
+	room->getGameController()->handleCollisions();
 }

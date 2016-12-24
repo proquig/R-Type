@@ -74,7 +74,7 @@ void GameController::update(int timer)
 		std::cout << "Tick = " << _tick << "|GameSize=" << _game->getMap().size() <<  std::endl;
 		_tick = 0;
 		handleCollisions();
-		//appel tes fonctions ici :D ça devrais marcher.
+		//appel tes fonctions ici :D ï¿½a devrais marcher.
 		// Faire attention de bien set la variable _delta (en milisecondes entre chaque passage)
 	}
 }

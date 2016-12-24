@@ -69,7 +69,7 @@ public:
   virtual void handleSocket(sockaddr *addr, APacket *packet);
   virtual void handleMovement(Room* room, Player* player, InputPacket* packet);
   virtual void realizeMovement(Room* room, Player* player);
-  virtual void handleCollision(Room* room, Player* player);
+  virtual void handleCollision(Room* room);
   virtual void loop();
   void handleRoom(Room *room);
 };

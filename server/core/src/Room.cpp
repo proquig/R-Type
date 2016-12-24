@@ -24,6 +24,7 @@ Room::Room(Player *player)
   player->setAngle(0);
   player->setSpeed(10);
   player->setId(this->_players.size());
+  player->setIdFrom(0);
 }
 
 Room::~Room()
@@ -62,6 +63,7 @@ bool 					Room::addPlayer(Player* player)
   player->setAngle(0);
   player->setSpeed(10);
   player->setId(this->_players.size());
+  player->setIdFrom(0);
   return (true);
 }
 

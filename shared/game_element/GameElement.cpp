@@ -11,4 +11,3 @@ GameElement::GameElement(uint32_t idFrom, uint32_t id, uint16_t type, uint16_t x
 GameElement::~GameElement()
 {
 }
-
