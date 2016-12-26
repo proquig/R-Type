@@ -12,7 +12,7 @@ namespace RType
 # define RTYPE_SERVER_PORT_TCP 5496
 # define RTYPE_SERVER_PORT_UDP 5497
 //Max sample input per packet
-#define MAX_INPUT 10
+#define MAX_INPUT 12
 //enum defining controls
 enum eKey
 {

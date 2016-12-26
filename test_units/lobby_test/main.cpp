@@ -7,7 +7,7 @@ int main(int ac, char **av)
   std::vector<unsigned char> data;
   std::string delim("\n");
   if (ac < 3)
-    return (-1);
+    return (0);
   std::string str(av[1] + delim + av[2] + delim);
   data.insert(data.end(), str.begin(), str.end());
   std::cout << "Result of unserialize(" << av[1] << "\\n" << av[2] << "\\n" << ") : " << msg.unserialize(data) << std::endl;
