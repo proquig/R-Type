@@ -17,8 +17,8 @@ struct RType
 	enum Key
 	{
 		NONE = 1 << 0,
-		ENTER = 1 << 1,
-		SPACE = 1 << 2,
+		SPACE = 1 << 1,
+		ENTER = 1 << 2,
 		UP = 1 << 3,
 		DOWN = 1 << 4,
 		LEFT = 1 << 5,

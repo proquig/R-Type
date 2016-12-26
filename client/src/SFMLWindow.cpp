@@ -101,6 +101,9 @@ void	SFMLWindow::pollEvent(void)
 					case sf::Keyboard::Right:
 						this->eventQueue->push(new Event(Event::KEYPRESS, RType::RIGHT, "RIGHT", _x, _y, _w, _h));
 						break;
+					case sf::Keyboard::Space:
+						this->eventQueue->push(new Event(Event::KEYPRESS, RType::SPACE, "SPACE", _x, _y, _w, _h));
+						break;
 					case sf::Keyboard::Return:
 						this->eventQueue->push(new Event(Event::KEYPRESS, RType::ENTER, "ENTER", _x, _y, _w, _h));
 						break;
@@ -122,6 +125,9 @@ void	SFMLWindow::pollEvent(void)
 						break;
 					case sf::Keyboard::Right:
 						this->eventQueue->push(new Event(Event::KEYRELEASE, RType::RIGHT, "RIGHT", _x, _y, _w, _h));
+						break;
+					case sf::Keyboard::Space:
+						this->eventQueue->push(new Event(Event::KEYRELEASE, RType::SPACE, "SPACE", _x, _y, _w, _h));
 						break;
 					case sf::Keyboard::Return:
 						this->eventQueue->push(new Event(Event::KEYRELEASE, RType::ENTER, "ENTER", _x, _y, _w, _h));
