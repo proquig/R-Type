@@ -14,7 +14,7 @@ private:
 	std::vector<Player*>		_players;
 	int							_id;
 	bool						_running;
-	std::vector<IElement*> 		_map;
+	std::vector<RType::IElement*> 		_map;
 
 public:
 	Game(int, const Rectangle&);
@@ -30,11 +30,11 @@ public:
 	virtual void						updateScene();
 	virtual void						drawNewElem();
 	virtual void						deleteElem(int);
-	virtual std::vector<IElement*>&		getMap();
-	virtual void						addElems(std::vector<IElement*>);
-	virtual void						addElem(IElement*);
+	virtual std::vector<RType::IElement*>&		getMap();
+	virtual void						addElems(std::vector<RType::IElement*>);
+	virtual void						addElem(RType::IElement*);
 	virtual const Rectangle&			getCadre() const;
-  	virtual bool						deleteElem(IElement *element);
+  	virtual bool						deleteElem(RType::IElement *element);
 };
 
 #endif

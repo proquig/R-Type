@@ -10,15 +10,15 @@ class Parser
 {
 private:
 	File*						        _file;
-	std::vector<AElement*> 		        _line;
-	AElement*	 	                    _map;
+	std::vector<RType::AElement*> 		        _line;
+	RType::AElement*	 	                    _map;
 	std::string              	        data;
 	void 						        parseTitle();
 	void        				        parsePlayer();
 	void        				        parseMonster();
 	void             			        parseElement();
     bool                                _end;
-    std::vector<AElement *>::iterator   it;
+    std::vector<RType::AElement *>::iterator   it;
 	ElementFactory*						_factory;
 
 	int									decal(int, int);
@@ -27,10 +27,10 @@ public:
 	Parser(ElementFactory* factory);
 	~Parser();
 
-	IElement					*parse();
+	RType::IElement					*parse();
 
-	const std::vector<AElement*> &	getLine() const;
-	AElement							*get_map() const;
+	const std::vector<RType::AElement*> &	getLine() const;
+	RType::AElement							*get_map() const;
 	void								setFile(File*);
 };
 

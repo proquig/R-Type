@@ -4,7 +4,7 @@
 #include <cstdint>
 #include "AElement.hh"
 
-class GameElement : public AElement
+class GameElement : public RType::AElement
 {
 public:
 	GameElement();

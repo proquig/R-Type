@@ -24,12 +24,12 @@ struct Event
 	};
 
 	char	*name;
-	RType::Key key;
+	RType::eKey key;
 	Type	type;
 	Coords	*mouse;
 	Coords	*size;
 
-	Event(Type _type, RType::Key _key, char *_name, int _x, int _y, int _w, int _h)
+	Event(Type _type, RType::eKey _key, char *_name, int _x, int _y, int _w, int _h)
 		: type(_type), key(_key), name(_name), mouse(new Coords(_x, _y)), size(new Coords(_w, _h)) {}
 };
 

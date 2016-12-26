@@ -207,8 +207,8 @@ void Server::handleRoom(Room* room)
 {
  // std::cout << room->getGameController()->getGame()->getMap().size() << std::endl;
   this->handleCollision(room);
-  for (IElement* elem : room->getGameController()->getGame()->getMap())
-	if (elem->getType() == AElement::BULLET)
+  for (RType::IElement* elem : room->getGameController()->getGame()->getMap())
+	if (elem->getType() == RType::BULLET)
 	  if (elem->getX() > 799)
 	  {
 		room->getGameController()->getGame()->deleteElem(elem);
@@ -216,7 +216,7 @@ void Server::handleRoom(Room* room)
 		std::cout << "ELEM DELETED" << std::endl;
 	  }
 	  else
-		elem->setX(elem->getX() + 5);
+		elem->setX(elem->getX() + uint16_t(10));
 }
 
 void Server::handleMovement(Room* room, Player* player, InputPacket* packet)
@@ -254,8 +254,8 @@ void Server::realizeMovement(Room *room, Player *player)
   if (input & RType::ENTER)
   {
 	std::cout << "BULLET" << std::endl;
-    AElement *elem;
-    elem = room->getGameController()->getElementFactory().create(player->getId(), -1, AElement::BULLET,
+    RType::AElement *elem;
+    elem = room->getGameController()->getElementFactory().create(player->getId(), -1, RType::BULLET,
                                                                  player->getX() + (player->getSizeX() / 2) + 1,
                                                                  player->getY(), 100, 5, 5, 100, 0,
                                                                  player->getSpeed() + 1);

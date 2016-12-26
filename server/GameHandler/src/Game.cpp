@@ -56,7 +56,7 @@ int				Game::isReady() const
 
 void			Game::display() const
 {
-	for (IElement* elem : _map)
+	for (RType::IElement* elem : _map)
 	{
 		std::cout << elem->getId() << "(" << elem->getType() << ")" << ":" << elem->getX() << "/" << elem->getY() << "/" << elem->getSizeX() << "/" << elem->getSizeY() << "|||" << std::endl;
 	}
@@ -64,10 +64,10 @@ void			Game::display() const
 
 void			Game::updateScene()
 {
-	std::vector<IElement*>::iterator it = _map.begin();
+	std::vector<RType::IElement*>::iterator it = _map.begin();
 	while (it != _map.end())
 	{
-		IElement* elem = (*it);
+		RType::IElement* elem = (*it);
 		if (!_cadre.isIn(*(new Rectangle(elem->getX(), elem->getY(), elem->getSizeX(), elem->getSizeY()))))
 		{
 			it = _map.erase(it);
@@ -83,7 +83,7 @@ void			Game::drawNewElem()
 
 void			Game::deleteElem(int id)
 {
-	std::vector<IElement*>::iterator it = _map.begin();
+	std::vector<RType::IElement*>::iterator it = _map.begin();
 	while (it != _map.end())
 	{
 		if ((*it)->getId() == id)
@@ -95,26 +95,26 @@ void			Game::deleteElem(int id)
 	}
 }
 
-std::vector<IElement*>& Game::getMap()
+std::vector<RType::IElement*>& Game::getMap()
 {
 	return _map;
 }
 
-void				Game::addElems(std::vector<IElement*> elems)
+void				Game::addElems(std::vector<RType::IElement*> elems)
 {
-	for (IElement* g : elems)
+	for (RType::IElement* g : elems)
 	{
 		_map.push_back(g);
 	}
 }
 
-void				Game::addElem(IElement* elem)
+void				Game::addElem(RType::IElement* elem)
 {
 	_map.push_back(elem);
 }
 
-bool 				Game::deleteElem(IElement* element)
-{  std::vector<IElement*>::iterator	it;
+bool 				Game::deleteElem(RType::IElement* element)
+{  std::vector<RType::IElement*>::iterator	it;
 
 
   if ((it = std::find(this->_map.begin(), this->_map.end(), element)) == this->_map.end())

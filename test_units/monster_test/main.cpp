@@ -20,7 +20,7 @@ int main(int ac, char **av)
     Dictionary dic;
     Monster *monster;
     ElementFactory *elementFactory = new ElementFactory;
-    IElement *decor = elementFactory->createDecor(0, 5, 1, 1);
+    RType::IElement *decor = elementFactory->createDecor(0, 5, 1, 1);
 
 #ifdef RT_UNIX
     IDLibrary *lib = ADLibrary::createLibrary(0, "monster", "./libmonster.so");

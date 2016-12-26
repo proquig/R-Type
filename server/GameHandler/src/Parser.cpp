@@ -23,7 +23,7 @@ void							Parser::setFile(File* file)
 	data = _file->getData();
 }
 
-const std::vector<AElement*>&	Parser::getLine() const {
+const std::vector<RType::AElement*>&	Parser::getLine() const {
 	return _line;
 }
 
@@ -50,7 +50,7 @@ void    Parser::parsePlayer() {
 		catch (std::exception &e) {
 			std::cerr << e.what() << std::endl;
 		}
-		_line.push_back(_factory->create(-1, -1, AElement::PLAYER, decal(value[0], value[2]), decal(value[1], value[3]), value[4], value[2], value[3], value[5], value[6], value[7]));
+		_line.push_back(_factory->create(-1, -1, RType::PLAYER, decal(value[0], value[2]), decal(value[1], value[3]), value[4], value[2], value[3], value[5], value[6], value[7]));
 		data.erase(pos, pos1 - pos);
 		data.erase(0, data.find('J') != std::string::npos ? data.find('J') : 1);
 		pos1 = 0;
@@ -81,7 +81,7 @@ void     Parser::parseElement()
 		catch (std::exception &e) {
 			std::cerr << e.what() << std::endl;
 		}
-		_line.push_back(_factory->create(0, 0, AElement::DECOR, decal(value[0], value[2]), decal(value[1], value[3]), 0, value[2], value[3], 0, 0, 0));
+		_line.push_back(_factory->create(0, 0, RType::DECOR, decal(value[0], value[2]), decal(value[1], value[3]), 0, value[2], value[3], 0, 0, 0));
 		data.erase(pos, pos1 - pos);
 		data.erase(0, data.find('D') != std::string::npos ? data.find('D') : 1);
 		pos1 = 0;
@@ -112,7 +112,7 @@ void    Parser::parseMonster()
 		catch (std::exception &e) {
 			std::cerr << e.what() << std::endl;
 		}
-		_line.push_back(_factory->create(-1, -1, AElement::MONSTER, decal(value[0], value[2]), decal(value[1], value[3]), value[4], value[2], value[3], value[5], value[6], value[7]));
+		_line.push_back(_factory->create(-1, -1, RType::MONSTER, decal(value[0], value[2]), decal(value[1], value[3]), value[4], value[2], value[3], value[5], value[6], value[7]));
 		data.erase(pos, pos1 - pos);
 		data.erase(0, data.find('M') != std::string::npos ? data.find('M') : 1);
 		pos1 = 0;
@@ -141,9 +141,9 @@ void    Parser::parseTitle() {
 }
 
 
-IElement *Parser::parse()
+RType::IElement *Parser::parse()
 {
-	IElement* element;
+	RType::IElement* element;
 	if (!_end) {
 		parseTitle();
 		parsePlayer();
@@ -159,7 +159,7 @@ IElement *Parser::parse()
 	return element;
 }
 
-AElement* Parser::get_map() const {
+RType::AElement* Parser::get_map() const {
 	return _map;
 }
 

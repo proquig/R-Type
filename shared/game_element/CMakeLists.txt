@@ -23,5 +23,7 @@ add_library(rtype_game_element
 
 target_include_directories(rtype_game_element PUBLIC . ../monster)
 
+target_link_libraries(rtype_game_element PUBLIC rtype_common)
+
 set_property(TARGET rtype_game_element PROPERTY CXX_STANDARD 11)
 set_property(TARGET rtype_game_element PROPERTY CXX_STANDARD_REQUIRED ON)

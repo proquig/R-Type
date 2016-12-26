@@ -8,7 +8,8 @@
 # include	<vector>
 # include	<algorithm>
 # include	"APacket.hh"
-# include	"GameElement.hpp"
+
+class GameElement;
 
 class GameDataPacket : public APacket
 {

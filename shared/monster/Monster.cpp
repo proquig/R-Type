@@ -12,7 +12,7 @@ Monster::Monster(uint32_t idFrom, uint32_t id, uint16_t type, uint16_t x, uint16
 }
 
 Monster::Monster(uint32_t id, uint16_t x, uint16_t y, ElementFactory *factory) :
-        GameElement::GameElement(-1, id, AElement::MONSTER, x, y, 3, 10, 10, 1, 0, 10)
+        GameElement::GameElement(-1, id, RType::MONSTER, x, y, 3, 10, 10, 1, 0, 10)
 {
     _factory = factory;
     _direction = false;
@@ -23,13 +23,13 @@ Monster::~Monster()
 {
 }
 
-std::vector<IElement*>			 Monster::collideWith(IElement* elem)
+std::vector<RType::IElement*>			 Monster::collideWith(RType::IElement* elem)
 {
-    if (elem->getType() == AElement::DECOR)
+    if (elem->getType() == RType::DECOR)
         if (elem->getX() == this->_x && elem->getY() == this->_y ||
                 this->_x == 0 && this->_y == 0)
         _direction = !_direction;
-    return std::vector<IElement*>();
+    return std::vector<RType::IElement*>();
 }
 
 bool    Monster::move()
@@ -49,12 +49,12 @@ Shot                            *Monster::shot()
 }
 
 
-IElement *NewMonster(uint32_t id, uint16_t x, uint16_t y, ElementFactory *factory) {
-    IElement *monster = new Monster(id, x, y, factory);
+RType::IElement *NewMonster(uint32_t id, uint16_t x, uint16_t y, ElementFactory *factory) {
+    RType::IElement *monster = new Monster(id, x, y, factory);
     return monster;
 }
 
-void destroyMonster(IElement *element)
+void destroyMonster(RType::IElement *element)
 {
     if (element)
         delete element;

@@ -17,10 +17,10 @@ class IGame
 	virtual void						updateScene() = 0;
 	virtual void						drawNewElem() = 0;
 	virtual void						deleteElem(int) = 0;
-	virtual std::vector<IElement*>&		getMap() = 0;
-	virtual void						addElems(std::vector<IElement*>) = 0;
-	virtual void						addElem(IElement*) = 0;
-  	virtual bool						deleteElem(IElement *element) = 0;
+	virtual std::vector<RType::IElement*>&		getMap() = 0;
+	virtual void						addElems(std::vector<RType::IElement*>) = 0;
+	virtual void						addElem(RType::IElement*) = 0;
+  	virtual bool						deleteElem(RType::IElement *element) = 0;
 };
 
 #endif

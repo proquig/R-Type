@@ -47,6 +47,7 @@ void											SFMLWindow::renderScene(void)
 			(*element)->loadSprites(SFML);
 			this->scene.push_back(*element);
 		}
+		match = false;
 	}
 }
 

@@ -8,7 +8,7 @@ Decor::~Decor()
 {
 }
 
-std::vector<IElement*>			Decor::collideWith(IElement* elem)
+std::vector<RType::IElement*>			Decor::collideWith(RType::IElement* elem)
 {
-	return std::vector<IElement*>();
+	return std::vector<RType::IElement*>();
 }

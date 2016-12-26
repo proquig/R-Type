@@ -30,7 +30,7 @@ void	GraphicalController::windowAction(void)
 	this->window->run(this->windowQueue, this->eventQueue, this);
 }
 
-void	GraphicalController::elementAction(unsigned int id, ElementType type, int x, int y, float angle, int speed)
+void	GraphicalController::elementAction(unsigned int id, RType::eType type, int x, int y, float angle, int speed)
 {
 	AElement									*element;
 	std::vector<AElement *>::const_iterator		elem;
@@ -40,7 +40,7 @@ void	GraphicalController::elementAction(unsigned int id, ElementType type, int x
 	if (this->scene.size()) {
 		for (elem = this->scene.begin(); elem != this->scene.end(); ++elem) {
 			if ((*elem)->getId() == id) {
-				if ((*elem)->getType() == SET) {
+				if ((*elem)->getType() == RType::SET) {
 					scale = (float)this->windowSize->y / 300;
 					(*elem)->setScale(scale);
 				}
@@ -54,7 +54,7 @@ void	GraphicalController::elementAction(unsigned int id, ElementType type, int x
 	if (!match) {
 		element = ElementFactory::create(id, type);
 		element->move(x, y, angle, std::chrono::milliseconds(speed));
-		if (element->getType() == SET) {
+		if (element->getType() == RType::SET) {
 			scale = (float)this->windowSize->y / 300;
 			element->setScale(scale);
 		}

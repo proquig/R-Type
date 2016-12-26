@@ -1,6 +1,7 @@
 #include <cstring>
 #include "clientStates.hh"
 #include "GameDataPacket.hh"
+#include "GameElement.hpp"
 #include "ICondVar.hh"
 #include "IMutex.hh"
 #include "ISocket.hpp"
@@ -100,7 +101,7 @@ bool		ClientStates::gameState(void)
   Event *event = nullptr;
   IPacket *packet;
   std::vector<uint16_t>::iterator it;
-  ElementType		objType;
+  RType::eType objType;
 
   _inputQueue.resize(10, 0);
   _mutex->lock();
@@ -130,7 +131,7 @@ bool		ClientStates::gameState(void)
       if (std::chrono::duration_cast<std::chrono::milliseconds>(_clock.now() - _ref).count() > 100)
       {
         _inputQueue.push_back(_input);
-        if (_inputQueue.size() == MAX_INPUT)
+        if (_inputQueue.size() > MAX_INPUT)
           _inputQueue.erase(_inputQueue.begin());
         InputPacket eventPacket;
         std::string serializedEvent;
@@ -148,43 +149,46 @@ bool		ClientStates::gameState(void)
       //PACKET RECEPTION
       while ((packet = _paquetQueue.pop()) != nullptr)
       {
-		  if (packet->getType() == APacket::GAME_ELEM_INFO)
-		  {
-			  GameDataPacket* pak = (GameDataPacket*)packet;
-			  for (uint8_t i = 0; i < pak->getGameElements().size(); ++i)
-			  {
-				  switch (pak->getGameElements()[i]->getType()) {
-				  case 0: // AI
-					  objType	= OBSTACLE;
-					  break;
-				  case 1: // BONUS
-					  objType	= OBSTACLE;
-					  break;
-				  case 2: // DECOR
-					  objType	= OBSTACLE;
-					  break;
-				  case 3: // PLAYER
-					  objType	= PLAYER;
-					  break;
-				  case 4: // BULLET
-					  objType	= MISSILE;
-					  break;
-				  case 5: // MONSTER
-					  objType	= MONSTER;
-					  break;
-				  }
-				  objType = PLAYER;
-				  this->controller->elementAction(
-					  pak->getGameElements()[i]->getId(),
-					  objType,
-					  pak->getGameElements()[i]->getX(),
-					  pak->getGameElements()[i]->getY(),
-					  pak->getGameElements()[i]->getAngle(),
-					  pak->getGameElements()[i]->getSpeed()
-				  );
-			  }
-			  this->controller->elementAction(0, SET, 0, 0, 0, 10);
-			}
+        if (packet->getType() == APacket::GAME_ELEM_INFO)
+        {
+          GameDataPacket *pak = (GameDataPacket *) packet;
+          for (GameElement* ptr : pak->getGameElements())
+          {
+            switch(ptr->getType())
+            {
+              case RType::PLAYER:
+                objType = RType::PLAYER;
+                break;
+              case RType::MISSILE:
+                objType = RType::MISSILE;
+                break;
+              case RType::MONSTER:
+                objType = RType::MONSTER;
+                break;
+              case RType::SET:
+                objType = RType::SET;
+                break;
+              case RType::OBSTACLE:
+                objType = RType::OBSTACLE;
+                break;
+              case RType::BONUS:
+                objType = RType::BONUS;
+                break;
+              default:
+                objType = RType::EMPTY;
+                break;
+            }
+            this->controller->elementAction(
+                ptr->getId(),
+                objType,
+                ptr->getX(),
+                ptr->getY(),
+                ptr->getAngle(),
+                ptr->getSpeed()
+            );
+          }
+          this->controller->elementAction(0, RType::SET, 0, 0, 0, 10);
+        }
         delete packet;
       }
     }
@@ -225,13 +229,13 @@ bool	ClientStates::testState(void)
 
 	while (!event || event->type != Event::QUIT) {
 
-		this->controller->elementAction(1, PLAYER, player->x, player->y, angle, 0);
-		this->controller->elementAction(2, PLAYER, 100, 50, 0, 0);
-		this->controller->elementAction(3, PLAYER, 150, 50, 0, 0);
-		this->controller->elementAction(4, MISSILE, 200, 50, 0, 0);
-		this->controller->elementAction(5, OBSTACLE, 250, 0, 0, 0);
+		this->controller->elementAction(1, RType::PLAYER, player->x, player->y, angle, 0);
+		this->controller->elementAction(2, RType::PLAYER, 100, 50, 0, 0);
+		this->controller->elementAction(3, RType::PLAYER, 150, 50, 0, 0);
+		this->controller->elementAction(4, RType::MISSILE, 200, 50, 0, 0);
+		this->controller->elementAction(5, RType::OBSTACLE, 250, 0, 0, 0);
 
-		this->controller->elementAction(0, SET, 0, 0, 0, 10);
+		this->controller->elementAction(0, RType::SET, 0, 0, 0, 10);
 
 		if (event = this->controller->eventAction()) {
 			std::cout << "[EVENT] " << event->name << std::endl;

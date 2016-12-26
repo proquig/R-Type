@@ -40,7 +40,7 @@ public:
 
 	bool	initAction(void);
 	void	windowAction(void);
-	void	elementAction(unsigned int, ElementType, int, int, float, int);
+	void	elementAction(unsigned int, RType::eType, int, int, float, int);
 	Event	*eventAction(void);
 
 };

@@ -3,6 +3,7 @@
 
 # include <chrono>
 # include <iostream>
+# include "RType.hpp"
 # include "sprite.hh"
 
 # define PTC_Obstacle		(char)1
@@ -10,14 +11,6 @@
 # define PTC_MISSILE	(char)4
 # define PTC_OBSTACLE	(char)8
 # define PTC_SET		(char)16
-
-enum ElementType {
-	PLAYER,
-	MONSTER,
-	MISSILE,
-	OBSTACLE,
-	SET
-};
 
 enum GLib
 {
@@ -40,7 +33,7 @@ public:
 	virtual void	setId(unsigned int) = 0;
 	virtual void	setAnimation(std::string) = 0;
 	virtual void	setSize(Coords *) = 0;
-	virtual void	setType(ElementType _type) = 0;
+	virtual void	setType(RType::eType _type) = 0;
 
 	//////////////////////////////////////////////
 	// GETTERS
@@ -52,7 +45,7 @@ public:
 	virtual std::string					getAnimation(void) const = 0;
 	virtual float						getAngle(void) const = 0;
 	virtual std::chrono::milliseconds	getSpeed(void) const = 0;
-	virtual ElementType					getType(void) const = 0;
+	virtual RType::eType					getType(void) const = 0;
 
 };
 
@@ -60,7 +53,7 @@ class AElement : public IElement
 {
 protected:
 
-	ElementType					type;
+  RType::eType					type;
 
 	unsigned int				id;
 	Coords						*coords;
@@ -88,7 +81,7 @@ public:
 	Coords *					getCoords(void) const { return (this->coords); }
 	Coords *					getSize(void) const { return (this->size); }
 	std::string					getAnimation(void) const { return (this->animation);}
-	ElementType					getType(void) const { return (this->type); }
+  RType::eType					getType(void) const { return (this->type); }
 	float						getScale(void) const { return (this->scale); }
 
 
@@ -100,13 +93,13 @@ public:
 	void	setAnimation(std::string _animation) { this->animation = _animation; }
 	void	setSize(Coords *_size) { this->size = _size; }
 	void	setScale(float _scale) { this->scale = _scale; }
-	void	setType(ElementType _type) { this->type = _type; }
+	void	setType(RType::eType _type) { this->type = _type; }
 };
 
 class				ElementFactory {
 public:
 
-	static AElement *	create(unsigned int, ElementType);
+	static AElement *	create(unsigned int, RType::eType);
 };
 
 #endif /* !ELEMENT_HH__ */

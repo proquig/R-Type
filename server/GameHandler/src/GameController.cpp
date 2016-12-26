@@ -29,7 +29,7 @@ void			GameController::setGame(IGame* game)
 bool			GameController::initGame(File* file)
 {
 	Parser parser(&_elemFact);
-	IElement* elem;
+	RType::IElement* elem;
 
 	if (_game == NULL || file == NULL)
 		return false;
@@ -50,10 +50,10 @@ void			GameController::startGame()
 void			GameController::handleCollisions()
 {
 	std::vector<int>			destructElementId;
-	std::vector<IElement*>		aEntity;
+	std::vector<RType::IElement*>		aEntity;
 
 	aEntity = _collisionHandler.foundCollisions(_game->getMap(), &destructElementId);
-//	for (std::vector<IElement *>::iterator it = aEntity.begin(); it != aEntity.end(); ++it)
+//	for (std::vector<RType::IElement *>::iterator it = aEntity.begin(); it != aEntity.end(); ++it)
 //	{
 //		std::cout << "Collision on entity " << (*it)->getId() << std::endl;
 //		_game->getScene()->getMap().push_back((*it));

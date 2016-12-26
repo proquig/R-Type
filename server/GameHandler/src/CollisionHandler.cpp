@@ -34,14 +34,14 @@ CollisionHandler&															CollisionHandler::operator=(const CollisionHandl
 * takes a list of entitys on the map
 * returns a vector of vectors of entitys in collision
 */
-std::vector<IElement*> 														CollisionHandler::foundCollisions(std::vector<IElement*>& entitys, std::vector<int>* collisionId)
+std::vector<RType::IElement*> 														CollisionHandler::foundCollisions(std::vector<RType::IElement*>& entitys, std::vector<int>* collisionId)
 {
-	std::vector<IElement*>::iterator											it;
-	std::map<IElement*, Rectangle>::iterator									mit;
-	std::map<IElement*, Rectangle>::iterator									sit;
+	std::vector<RType::IElement*>::iterator											it;
+	std::map<RType::IElement*, Rectangle>::iterator									mit;
+	std::map<RType::IElement*, Rectangle>::iterator									sit;
 	std::vector<Rectangle>														current;
-	std::vector<IElement*>													ret;
-	std::vector<IElement*>													tmp;
+	std::vector<RType::IElement*>													ret;
+	std::vector<RType::IElement*>													tmp;
 
 	_quadtree.clear();
 	for (it = entitys.begin(); it != entitys.end(); it++)
@@ -75,12 +75,12 @@ std::vector<IElement*> 														CollisionHandler::foundCollisions(std::vect
 * takes two entitys Id and vector of entitys
 * returns
 */
-std::vector<IElement*>														CollisionHandler::handleCollision(int id, int pid, std::vector<IElement*>& entitys, std::vector<int>* collisionId)
+std::vector<RType::IElement*>														CollisionHandler::handleCollision(int id, int pid, std::vector<RType::IElement*>& entitys, std::vector<int>* collisionId)
 {
-	std::vector<IElement*>													ret;
-	IElement																*f = NULL;
-	IElement																*s = NULL;
-	std::vector<IElement*>													tmp;
+	std::vector<RType::IElement*>													ret;
+	RType::IElement																*f = NULL;
+	RType::IElement																*s = NULL;
+	std::vector<RType::IElement*>													tmp;
 	int																		iF;
 	int																		iS;
 
@@ -120,11 +120,11 @@ std::vector<IElement*>														CollisionHandler::handleCollision(int id, in
 	return (ret);
 }
 
-void																		CollisionHandler::addScore(std::vector<IElement*>& entities, IElement * entity)
+void																		CollisionHandler::addScore(std::vector<RType::IElement*>& entities, RType::IElement * entity)
 {
 	if (entity) {
-		if (entity->getType() == AElement::BULLET ) {
-			for (std::vector<IElement *>::iterator it = entities.begin(); it != entities.end(); it++) {
+		if (entity->getType() == RType::BULLET ) {
+			for (std::vector<RType::IElement *>::iterator it = entities.begin(); it != entities.end(); it++) {
 				if (*it) {
 					int id = (*it)->getId();
 					if (entity->getIdFrom())
@@ -153,9 +153,9 @@ bool																		CollisionHandler::isCollision(const Rectangle a, const Rec
 }
 
 /*! \brief getRectangles of CollisionHandler
-* returns map of IElement*,Rectange
+* returns map of RType::IElement*,Rectange
 */
-std::map<IElement*, Rectangle>												CollisionHandler::getRectangles() const
+std::map<RType::IElement*, Rectangle>												CollisionHandler::getRectangles() const
 {
 	return (_rectangles);
 }

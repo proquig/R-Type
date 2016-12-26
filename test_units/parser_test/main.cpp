@@ -13,7 +13,7 @@ int main(int ac, char *av[])
 
     Parser parser(new ElementFactory());
 	parser.setFile(file);
-    IElement *elem;
+    RType::IElement *elem;
 	std::cout <<  "Test sur le parsing de la carte : '" << file->getName() << "'" << std::endl;
 
     while ((elem = parser.parse()) != nullptr)

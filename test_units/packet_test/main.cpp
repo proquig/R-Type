@@ -1,8 +1,9 @@
 #include <iostream>
-#include <InputPacket.hh>
-#include <GameDataPacket.hh>
 #undef	NDEBUG
 #include <assert.h>
+#include "InputPacket.hh"
+#include "GameDataPacket.hh"
+#include "GameElement.hpp"
 
 /*
  *

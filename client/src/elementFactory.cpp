@@ -5,14 +5,14 @@
 #include "obstacle.hh"
 #include "set.hh"
 
-AElement *					ElementFactory::create(unsigned int _id, ElementType type)
+AElement *					ElementFactory::create(unsigned int _id, RType::eType type)
 {
 	static Player::Color	playerColor = Player::CYAN;
-	AElement				*element;
+	AElement				*element = nullptr;
 
 	switch (type)
 	{
-	case PLAYER:
+		case RType::PLAYER:
 		element = new Player(playerColor);
 		switch (playerColor) {
 			case Player::CYAN:
@@ -32,16 +32,16 @@ AElement *					ElementFactory::create(unsigned int _id, ElementType type)
 				break;
 		}
 		break;
-	case MONSTER:
+	case RType::MONSTER:
 		element = new Monster();
 		break;
-	case MISSILE:
+	case RType::MISSILE:
 		element = new Missile(Missile::DEFAULT);
 		break;
-	case OBSTACLE:
+	case RType::OBSTACLE:
 		element = new Obstacle(Obstacle::DEFAULT);
 		break;
-	case SET:
+	case RType::SET:
 		element = new Set(Set::WASTE);
 		break;
 
@@ -49,7 +49,10 @@ AElement *					ElementFactory::create(unsigned int _id, ElementType type)
 		// unknown TO-DO
 		break;
 	}
-	element->setId(_id);
-	element->setType(type);
+	if (element)
+	{
+		element->setId(_id);
+		element->setType(type);
+	}
 	return (element);
 }
