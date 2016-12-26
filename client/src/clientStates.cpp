@@ -160,8 +160,8 @@ bool		ClientStates::gameState(void)
 					  pak->getGameElements()[i]->getAngle(),
 					  pak->getGameElements()[i]->getSpeed()
 				  );
-				  this->controller->elementAction(99999, SET, 0, 0, 0, 10); 
 			  }
+			  this->controller->elementAction(99999, SET, 0, 0, 0, 10);
 			}
         delete packet;
       }
