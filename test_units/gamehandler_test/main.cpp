@@ -2,6 +2,7 @@
 // Created by cloque_b on 08/12/16.
 //
 
+#include "Game.hh"
 #include "GameController.hh"
 #include "GameHandler.hh"
 #include "ControllerFactory.hh"
@@ -10,7 +11,6 @@
 #include "Player.hh"
 #include "ThreadPool.hh"
 #include "ADLibrary.hh"
-#include "Game.hh"
 
 void run(IThreadPool* pool)
 {
