@@ -100,6 +100,7 @@ bool		ClientStates::gameState(void)
   Event *event = nullptr;
   IPacket *packet;
   std::vector<uint16_t>::iterator it;
+  ElementType		objType;
 
   _inputQueue.resize(10, 0);
   _mutex->lock();
@@ -152,9 +153,30 @@ bool		ClientStates::gameState(void)
 			  GameDataPacket* pak = (GameDataPacket*)packet;
 			  for (uint8_t i = 0; i < pak->getGameElements().size(); ++i)
 			  {
+				  switch (pak->getGameElements()[i]->getType()) {
+				  case 0: // AI
+					  objType	= OBSTACLE;
+					  break;
+				  case 1: // BONUS
+					  objType	= OBSTACLE;
+					  break;
+				  case 2: // DECOR
+					  objType	= OBSTACLE;
+					  break;
+				  case 3: // PLAYER
+					  objType	= PLAYER;
+					  break;
+				  case 4: // BULLET
+					  objType	= MISSILE;
+					  break;
+				  case 5: // MONSTER
+					  objType	= MONSTER;
+					  break;
+				  }
+				  objType = PLAYER;
 				  this->controller->elementAction(
 					  pak->getGameElements()[i]->getId(),
-					  PLAYER, // ADD ELEMENT TYPE TO PROTOCOL
+					  objType,
 					  pak->getGameElements()[i]->getX(),
 					  pak->getGameElements()[i]->getY(),
 					  pak->getGameElements()[i]->getAngle(),
