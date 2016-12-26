@@ -1,8 +1,8 @@
 #ifndef TEXT_HH_
 #define TEXT_HH_
 
-#include <SFML\Graphics\Font.hpp>
-#include <SFML\Graphics\Text.hpp>
+#include <SFML/Graphics/Font.hpp>
+#include <SFML/Graphics/Text.hpp>
 #include "element.hh"
 
 class Text : public AElement
