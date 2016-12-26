@@ -19,12 +19,12 @@ void	Missile::loadSprites(GLib lib)
 	switch (lib)
 	{
 	case SFML:
-		this->sprite = new SFMLSprite("./../../client/media/GAME-Assets/r-typesheet2.gif");
+		this->sprite = new SFMLSprite("./../../client/media/GAME-Assets/r-typesheet9.gif");
 		break;
 	}
 
 	this->sprite->addRessource("DEFAULT", std::vector<Cut *>{
-		new Cut(54, 540, 13, 60),
+		/*new Cut(54, 540, 13, 60),
 			new Cut(71, 540, 29, 60),
 			new Cut(104, 540, 28, 60),
 			new Cut(137, 540, 37, 60),
@@ -37,10 +37,11 @@ void	Missile::loadSprites(GLib lib)
 			new Cut(40, 672, 64, 60),
 			new Cut(105, 672, 61, 60),
 			new Cut(170, 672, 59, 60),
-			new Cut(238, 672, 59, 60)
+			new Cut(238, 672, 59, 60)*/
 				/*new Cut(37, 738, 65, 60),
 				new Cut(30, 455, 65, 48),
 				new Cut(30, 455, 65, 48),*/
+				new Cut(70, 72, 30, 28)
 	});
 
 
