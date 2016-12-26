@@ -11,7 +11,7 @@
  *
  */
 
-InputPacket::InputPacket()
+InputPacket::InputPacket(uint16_t maxSamples) : _maxSamples(maxSamples)
 {
 }
 
@@ -52,7 +52,7 @@ bool InputPacket::checkData(const std::string &data)
 
 bool InputPacket::setInputs(std::vector<uint16_t> inputs)
 {
-  if (inputs.size() > MAX_INPUT)
+  if (inputs.size() > _maxSamples)
 	return (false);
   this->_inputs = inputs;
   return (true);
@@ -65,7 +65,7 @@ std::vector<uint16_t> InputPacket::getInputs() const
 
 bool InputPacket::putInput(uint16_t input)
 {
-  if (this->_inputs.size() >= MAX_INPUT)
+  if (this->_inputs.size() >= _maxSamples)
 	return (false);
   this->_inputs.push_back(input);
   return (true);

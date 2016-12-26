@@ -129,7 +129,7 @@ bool		ClientStates::gameState(void)
       if (std::chrono::duration_cast<std::chrono::milliseconds>(_clock.now() - _ref).count() > 100)
       {
         _inputQueue.push_back(_input);
-        if (_inputQueue.size() == 11)
+        if (_inputQueue.size() == MAX_INPUT)
           _inputQueue.erase(_inputQueue.begin());
         InputPacket eventPacket;
         std::string serializedEvent;
@@ -295,9 +295,9 @@ bool ClientStates::init()
     std::cout << "_socketFactory spawned" << std::endl;
   else
     return false;
-  if ((_socket = _socketFactory->createSocketUDP(this, RTYPE_PORT_CLIENT)) == nullptr)
+  if ((_socket = _socketFactory->createSocketUDP(this, RTYPE_CLIENT_PORT_UDP)) == nullptr)
     return false;
-  if (!_socketFactory->hintSockaddr(std::string(RTYPE_IP_SERVER), _sockaddr, RTYPE_PORT_SERVER))
+  if (!_socketFactory->hintSockaddr(std::string(RTYPE_CLIENT_DEFAULT_TARGET_IP), _sockaddr, RTYPE_CLIENT_DEFAULT_TARGET_PORT))
     return false;
   _init = true;
   return (true);

@@ -13,7 +13,7 @@ add_executable(rtype_client
     ${RTYPE_CLIENT_INCS}
     )
 
-target_link_libraries(rtype_client PUBLIC dlloader rtype_observer rtype_game_element)
+target_link_libraries(rtype_client PUBLIC dlloader rtype_common rtype_observer rtype_game_element)
 
 if (SFML_EXTERNAL)
   target_link_libraries(rtype_client PUBLIC sfml-system sfml-window sfml-graphics sfml-audio)

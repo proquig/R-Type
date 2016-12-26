@@ -1,6 +1,9 @@
 #DLLoader
 add_subdirectory(dlloader)
 
+#Common
+add_subdirectory(common)
+
 #GameElement
 add_subdirectory(game_element)
 

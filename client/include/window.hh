@@ -1,30 +1,17 @@
 #ifndef WINDOW_HH__
 # define WINDOW_HH__
 
-# include "element.hh"
-# include "workQueue.hh"
-# include "coords.hh"
 # include <iostream>
 # include <thread>
 # include <vector>
+# include "RType.hpp"
+# include "element.hh"
+# include "workQueue.hh"
+# include "coords.hh"
 
 # define EVENT_TIMER	1000
 
 class IObservable;
-
-struct RType
-{
-	enum Key
-	{
-		NONE = 1 << 0,
-		SPACE = 1 << 1,
-		ENTER = 1 << 2,
-		UP = 1 << 3,
-		DOWN = 1 << 4,
-		LEFT = 1 << 5,
-		RIGHT = 1 << 6,
-	};
-};
 
 struct Event
 {
