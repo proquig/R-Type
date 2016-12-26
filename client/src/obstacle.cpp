@@ -3,7 +3,6 @@
 
 Obstacle::Obstacle(Skin _skin)
 {
-	std::cout << "LA" << std::endl;
 	switch (_skin) {
 	default:
 		this->skin = "DEFAULT";
@@ -31,7 +30,7 @@ void	Obstacle::loadSprites(GLib lib)
 		new Cut(455, 0, 65, 140)
 	});
 
-	this->sprite->setAnimTime(500);
+	this->sprite->setAnimTime(100);
 
 }
 
