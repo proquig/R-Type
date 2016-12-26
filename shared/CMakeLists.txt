@@ -16,6 +16,9 @@ add_subdirectory(timer)
 #Network
 add_subdirectory(network)
 
+#Lobby protocol
+add_subdirectory(lobby_protocol)
+
 #Packet
 add_subdirectory(packet)
 
