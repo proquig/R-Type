@@ -24,7 +24,7 @@ void	Missile::loadSprites(GLib lib)
 	}
 
 	this->sprite->addRessource("DEFAULT", std::vector<Cut *>{
-		/*new Cut(54, 540, 13, 60),
+			/*new Cut(54, 540, 13, 60),
 			new Cut(71, 540, 29, 60),
 			new Cut(104, 540, 28, 60),
 			new Cut(137, 540, 37, 60),
