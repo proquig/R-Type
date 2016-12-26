@@ -55,7 +55,7 @@ int main(int ac, char **av)
   //
   GameDataPacket	packet3;
   GameDataPacket	packet4;
-  char 				player_ser[] = "\x42\x04\x2a\x32\x00\x00\x00\x64\x00\x00\x00\x0c\x00\x00\x00\x83\x00\x21\x00\x42\x0a\xd7\x28\x42\x12\x00\x00\x00\x04\x00\x01\x00\x02\xa4\x70\x45\x41\x03";
+  char 				player_ser[] = "\x42\x04\x2a\x32\x00\x00\x00\x64\x00\x00\x00\x0c\x00\x00\x00\x83\x00\x21\x00\x42\x0a\xd7\x28\x42\x12\x00\x03\x00\x00\x00\x04\x00\x01\x00\x02\xa4\x70\x45\x41\x03\x00\x04";
   packet.setHeader(APacket::GAME_ELEM_INFO, APacket::ACK_DONE, 0x42, 4, 42, 100, 12);
   GameElement		player1;
   GameElement		player2;
@@ -64,11 +64,13 @@ int main(int ac, char **av)
   player1.setSpeed(0x12);
   player1.setAngle(42.21);
   player1.setId(0x83);
+  player1.setType(0x03);
   player2.setX(0x01);
   player2.setY(0x02);
   player2.setSpeed(0x03);
   player2.setAngle(12.34);
   player2.setId(0x04);
+  player2.setType(0x04);
 
   packet3.setHeader(APacket::GAME_ELEM_INFO, APacket::ACK_DONE, 0x42, 4, 42, 100, 12);
   packet3.putGameElement(&player1);
@@ -82,12 +84,13 @@ int main(int ac, char **av)
   assert(!packet3.deleteGameElement(&player1));
   packet3.putGameElement(&player1);
   packet3.putGameElement(&player2);
-  std::cout << "VECTOR SIZE = " << packet3.getGameElements().size() << std::endl;
+  //std::cout << "VECTOR SIZE = " << packet3.getGameElements().size() << std::endl;
   //std::cout << packet3.serialize();
 
   std::string		player_ser1;
   player_ser1.append(player_ser, sizeof(player_ser) - 1);
-  //std::cout << player_ser1;
+  std::cout << packet3.serialize();
+  //exit(0);
   assert(packet3.serialize() == player_ser1);
   assert(packet4.unserialize(packet3.serialize()));
   assert(packet3.serialize() == packet4.serialize());
@@ -96,12 +99,14 @@ int main(int ac, char **av)
   assert(packet4.getGameElements()[0]->getSpeed() == 0x12);
   assert(packet4.getGameElements()[0]->getAngle() == (float)42.21);
   assert(packet4.getGameElements()[0]->getId() == 0x83);
+  assert(packet4.getGameElements()[0]->getType() == 0x03);
 
   assert(packet4.getGameElements()[1]->getX() == 0x01);
   assert(packet4.getGameElements()[1]->getY() == 0x02);
   assert(packet4.getGameElements()[1]->getSpeed() == 0x03);
   assert(packet4.getGameElements()[1]->getAngle() == (float)12.34);
   assert(packet4.getGameElements()[1]->getId() == 0x04);
+  assert(packet4.getGameElements()[1]->getType() == 0x04);
   /*float fl = 42.21;
   char*	test = (char *)&fl;
   //packet3.set(42.84);
@@ -169,6 +174,7 @@ int main(int ac, char **av)
   assert(packet.getGameElements()[0]->getSpeed() == packet1.getGameElements()[0]->getSpeed());
   assert(packet.getGameElements()[0]->getAngle() == packet1.getGameElements()[0]->getAngle());
   assert(packet.getGameElements()[0]->getId() == packet1.getGameElements()[0]->getId());
+  assert(packet.getGameElements()[0]->getType() == packet1.getGameElements()[0]->getType());
 
   std::cout << packet.serialize() << std::endl;
   std::cout << packet1.serialize() << std::endl;
@@ -298,6 +304,7 @@ int main(int ac, char **av)
 	assert(gameElements[i]->getY() == gameDataPacket.getGameElements()[i]->getY());
 	assert(gameElements[i]->getAngle() == gameDataPacket.getGameElements()[i]->getAngle());
 	assert(gameElements[i]->getSpeed() == gameDataPacket.getGameElements()[i]->getSpeed());
+    assert(gameElements[i]->getType() == gameDataPacket.getGameElements()[i]->getType());
   }
   return 0;
 }
