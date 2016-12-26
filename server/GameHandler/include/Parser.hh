@@ -3,24 +3,35 @@
 
 #include <vector>
 #include "File.hh"
-#include "GameElement.hpp"
+#include "AElement.hh"
+#include "ElementFactory.hh"
 
 class Parser
 {
 private:
-	std::vector<GameElement> 	_line;
-	File*						_file;
-	std::string              	data;
-	
+	File*						        _file;
+	std::vector<AElement*> 		        _line;
+	AElement*	 	                    _map;
+	std::string              	        data;
+	void 						        parseTitle();
+	void        				        parsePlayer();
+	void        				        parseMonster();
+	void             			        parseElement();
+    bool                                _end;
+    std::vector<AElement *>::iterator   it;
+	ElementFactory*						_factory;
+
+	int									decal(int, int);
+
 public:
-	Parser();
-	Parser(File *);
+	Parser(ElementFactory* factory);
 	~Parser();
 
-	void 						parseTitle();
-	void        				parseObstacle();
-	void             			parseElement();
-	const std::vector<GameElement> &	getLine() const;
+	IElement					*parse();
+
+	const std::vector<AElement*> &	getLine() const;
+	AElement							*get_map() const;
+	void								setFile(File*);
 };
 
 #endif

@@ -15,15 +15,15 @@ add_library(rtype_gamehandler
   
 # Include directories
 target_include_directories(rtype_gamehandler PUBLIC include)
-target_include_directories(rtype_gamehandler PRIVATE ${GAMEHANDLER_PLATFORM_INCLUDE})
-target_link_libraries(rtype_gamehandler PUBLIC rtype_game_element)
- 
+target_include_directories(rtype_gamehandler PRIVATE ${CMAKE_SOURCE_DIR}/shared/network/include)
+target_include_directories(rtype_gamehandler PRIVATE ${CMAKE_SOURCE_DIR}/shared/timer/include)
+target_link_libraries(rtype_gamehandler PUBLIC rtype_game_element rtype_observer)
+
 # Flags for different platforms
 if (MSVC)
   target_compile_options(rtype_gamehandler PRIVATE -DRT_WIN)
 else ()
   target_compile_options(rtype_gamehandler PRIVATE -DRT_UNIX)
-  target_link_libraries(rtype_gamehandler PUBLIC ${CMAKE_DL_LIBS})
 endif ()
  
 # C++ 11

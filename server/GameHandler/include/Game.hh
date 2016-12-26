@@ -1,21 +1,40 @@
 #ifndef GAMEHANDLER_GAME_HH
 #define GAMEHANDLER_GAME_HH
 
+#include	<algorithm>
 #include "IGame.hh"
-#include "GameScene.hh"
+#include "File.hh"
+
+class Rectangle;
 
 class Game : public IGame {
 
 private:
-	GameScene _gameScene;
-	
+	const Rectangle&			_cadre;
+	std::vector<Player*>		_players;
+	int							_id;
+	bool						_running;
+	std::vector<IElement*> 		_map;
+
 public:
-	Game();
+	Game(int, const Rectangle&);
 	~Game();
 	virtual bool launch();
 	virtual bool stop();
 	virtual bool pause();
 	virtual bool end();
+	virtual void addPlayer(Player*);
+	virtual int isReady() const;
+	virtual bool isRunning() const;
+	virtual void display() const;
+	virtual void						updateScene();
+	virtual void						drawNewElem();
+	virtual void						deleteElem(int);
+	virtual std::vector<IElement*>&		getMap();
+	virtual void						addElems(std::vector<IElement*>);
+	virtual void						addElem(IElement*);
+	virtual const Rectangle&			getCadre() const;
+  	virtual bool						deleteElem(IElement *element);
 };
 
 #endif
