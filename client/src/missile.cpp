@@ -9,7 +9,7 @@ Missile::Missile(Type _type)
 		this->skin = "DEFAULT";
 		break;
 	default:
-		this->skin = "DEFAULT";
+		this->skin = "ARC";
 		break;
 	}
 }
@@ -24,8 +24,27 @@ void	Missile::loadSprites(GLib lib)
 	}
 
 	this->sprite->addRessource("DEFAULT", std::vector<Cut *>{
-		new Cut(300, 300, 200, 200)
+		new Cut(54, 540, 13, 60),
+			new Cut(71, 540, 29, 60),
+			new Cut(104, 540, 28, 60),
+			new Cut(137, 540, 37, 60),
+			new Cut(186, 540, 47, 60),
+			new Cut(235, 540, 55, 60),
+			new Cut(40, 606, 62, 60),
+			new Cut(105, 606, 64, 60),
+			new Cut(172, 606, 60, 60),
+			new Cut(235, 606, 65, 60),
+			new Cut(40, 672, 64, 60),
+			new Cut(105, 672, 61, 60),
+			new Cut(170, 672, 59, 60),
+			new Cut(238, 672, 59, 60)
+				/*new Cut(37, 738, 65, 60),
+				new Cut(30, 455, 65, 48),
+				new Cut(30, 455, 65, 48),*/
 	});
+
+
+
 
 	this->sprite->setAnimated(true);
 	this->sprite->setAnimTime(500);

@@ -20,7 +20,16 @@ void CUCondVar::destroy()
 
 void CUCondVar::init()
 {
-  pthread_cond_init(&_condVar, NULL);
+  static bool attr_init = false;
+  static pthread_condattr_t attr;
+
+  if (!attr_init)
+  {
+    pthread_condattr_init(&attr);
+    pthread_condattr_setclock(&attr, CLOCK_REALTIME);
+    attr_init = true;
+  }
+  pthread_cond_init(&_condVar, &attr);
   _init = true;
 }
 
