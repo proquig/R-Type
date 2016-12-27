@@ -61,7 +61,8 @@ std::vector<std::pair<RType::IElement*, RType::IElement*> > 						CollisionHandl
 	RType::IElement*															second = NULL;
 	std::vector<std::pair<RType::IElement*, RType::IElement*> >					result;
 
-	_quadtree.clear();
+  _quadtree.clear();
+  _rectangles.clear();
 	for (it = entitys.begin(); it != entitys.end(); it++)
 	{
 		_rectangles[(*it)] = *(new Rectangle((*it)->getX(), (*it)->getY(), (*it)->getSizeX(), (*it)->getSizeY(), (*it)->getId()));
