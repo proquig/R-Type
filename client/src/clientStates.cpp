@@ -254,7 +254,7 @@ bool	ClientStates::testState(void)
 			}
 		}
 		#ifdef __linux__ 
-				sleep(20);
+				usleep(20);
 		#elif _WIN32
 				Sleep(20);
 		#endif
