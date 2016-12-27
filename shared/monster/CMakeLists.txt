@@ -3,7 +3,8 @@ cmake_minimum_required(VERSION 3.2)
 # Define library
 project(monster VERSION 1.0 LANGUAGES CXX)
 
-add_library(monster
+add_library(monster MODULE
+	instantiate.cpp
         Monster.cpp
         Monster.hh
         )
