@@ -72,6 +72,7 @@ void	Player::print(void * window)
 		*/
 	this->animation = this->skin;
 	this->sprite->setAnimation(this->animation, this->coords, 1);
+	this->sprite->setAnimated(false);
 	if (this->angle <= -45) {
 		this->sprite->setAnimation(this->animation + "_UP", this->coords, 1);
 		this->sprite->setAnimated(true);

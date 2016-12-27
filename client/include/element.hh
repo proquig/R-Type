@@ -64,16 +64,17 @@ protected:
 	float						angle;
 	std::chrono::milliseconds	speed;
 	Coords						*target;
+	Coords						*distance;
 
 public:
 
-	AElement() : coords(new Coords(0, 0)), size(new Coords(0, 0)), target(new Coords(0, 0)) {}
+	AElement() : coords(new Coords(0, 0)), size(new Coords(0, 0)), target(new Coords(0, 0)), distance(new Coords(0, 0)) {}
 
 	void	move(int _x, int _y, float _angle, std::chrono::milliseconds _speed) {
 		this->target->x = _x;
 		this->target->y = _y;
-		this->coords->x = _x;
-		this->coords->y = _y;
+		this->distance->x = (this->target->x - this->coords->x) / 5;
+		this->distance->y = (this->target->y - this->coords->y) / 5;
 		this->angle = _angle;
 		this->speed = _speed;
 	};
@@ -88,6 +89,7 @@ public:
 	unsigned int				getId(void) const { return (this->id); }
 	Coords *					getCoords(void) const { return (this->coords); }
 	Coords *					getTarget(void) const { return (this->target); }
+	Coords *					getDistance(void) const { return (this->distance); }
 	Coords *					getSize(void) const { return (this->size); }
 	std::string					getAnimation(void) const { return (this->animation);}
   RType::eType					getType(void) const { return (this->type); }
