@@ -91,9 +91,9 @@ void GameController::update(IObservable *o, int status)
 		update(status);
 }
 
-ElementFactory& GameController::getElementFactory()
+ElementFactory* GameController::getElementFactory()
 {
-	return _elemFact;
+	return &_elemFact;
 }
 
 ISocket *GameController::getSocket()

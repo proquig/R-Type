@@ -39,7 +39,7 @@ public:
 	int					getTick() const;
 	virtual void		update(int);
 	virtual void		update(IObservable*, int);
-	ElementFactory&		getElementFactory();
+	ElementFactory*		getElementFactory();
   virtual ISocket*		getSocket();
 	IGame*				getGame() const;
 };

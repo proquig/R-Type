@@ -2,7 +2,7 @@
 
 ElementFactory::ElementFactory()
 {
-	_elementId = 0;
+	_elementId = 4;
 }
 
 ElementFactory::~ElementFactory()
