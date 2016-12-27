@@ -72,8 +72,8 @@ public:
 	void	move(int _x, int _y, float _angle, std::chrono::milliseconds _speed) {
 		this->target->x = _x;
 		this->target->y = _y;
-		// this->coords->x = _x;
-		// this->coords->y = _y;
+		this->coords->x = _x;
+		this->coords->y = _y;
 		this->angle = _angle;
 		this->speed = _speed;
 	};

@@ -61,16 +61,20 @@ void											SFMLWindow::render(void)
 	if (this->scene.size()) {
 		for (element = this->scene.begin(); element != this->scene.end(); ++element)
 		{
-			coords = (*element)->getCoords();
-			target = (*element)->getTarget();
+			//coords = (*element)->getCoords();
+			//target = (*element)->getTarget();
+			//coords->x = target->x;
+			//coords->y = target->y;
+			/*
 			if (coords->x < target->x)
-				coords->x += 1;
+				coords->x += 5;
 			else if (coords->x > target->x)
-				coords->x -= 1;
+				coords->x -= 5;
 			if (coords->y < target->y)
-				coords->y += 1;
+				coords->y += 5;
 			else if (coords->y > target->y)
-				coords->y -= 1;
+				coords->y -= 5;
+				*/
 			(*element)->print((void *)this->handler);
 		}
 	}

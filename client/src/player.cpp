@@ -60,6 +60,16 @@ void	Player::loadSprites(GLib lib)
 
 void	Player::print(void * window)
 {
+	/*
+	if (this->coords->x < this->target->x)
+		this->coords->x += 8;
+	else if (this->coords->x > this->target->x)
+		this->coords->x -= 8;
+	if (this->coords->y < this->target->y)
+		this->coords->y += 8;
+	else if (this->coords->y > this->target->y)
+		this->coords->y -= 8;
+		*/
 	this->animation = this->skin;
 	this->sprite->setAnimation(this->animation, this->coords, 1);
 	if (this->angle <= -45) {
