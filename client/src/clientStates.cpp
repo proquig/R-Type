@@ -236,6 +236,8 @@ bool	ClientStates::testState(void)
 		this->controller->elementAction(2, RType::PLAYER, 100, 50, 0, 0);
 		this->controller->elementAction(3, RType::PLAYER, 150, 50, 0, 0);
 
+		this->controller->elementAction(8, RType::MONSTER, 400, 50, 0, 0);
+
 		if (testTtl < 100)
 			this->controller->elementAction(4, RType::MISSILE, 200, 50, 0, 0);
 

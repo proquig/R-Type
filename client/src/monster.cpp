@@ -28,7 +28,7 @@ void	Monster::loadSprites(GLib lib)
 
 void	Monster::print(void * window)
 {
-	this->animation = "CYAN_STAY";
+	this->animation = "DEFAULT";
 	this->size->x = 50;
 	this->size->y = 50;
 	this->sprite->setAnimation(this->animation, this->coords, 1);
