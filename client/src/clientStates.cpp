@@ -219,6 +219,7 @@ bool	ClientStates::testState(void)
 	Coords			*player = new Coords(50, 50);
 	float			angle = 0;
 	Coords			*windowSize = new Coords(800, 450);
+	int				testTtl = 0;
 
 	std::cout << "=================================" << std::endl;
 	std::cout << "============  TEST  =============" << std::endl;
@@ -229,10 +230,15 @@ bool	ClientStates::testState(void)
 
 	while (!event || event->type != Event::QUIT) {
 
+		testTtl++;
+
 		this->controller->elementAction(1, RType::PLAYER, player->x, player->y, angle, 0);
 		this->controller->elementAction(2, RType::PLAYER, 100, 50, 0, 0);
 		this->controller->elementAction(3, RType::PLAYER, 150, 50, 0, 0);
-		this->controller->elementAction(4, RType::MISSILE, 200, 50, 0, 0);
+
+		if (testTtl < 100)
+			this->controller->elementAction(4, RType::MISSILE, 200, 50, 0, 0);
+
 		this->controller->elementAction(5, RType::OBSTACLE, 250, 0, 0, 0);
 
 		this->controller->elementAction(0, RType::SET, 0, 0, 0, 10);

@@ -65,10 +65,11 @@ protected:
 	std::chrono::milliseconds	speed;
 	Coords						*target;
 	Coords						*distance;
+	int							ttl;
 
 public:
 
-	AElement() : coords(new Coords(0, 0)), size(new Coords(0, 0)), target(new Coords(0, 0)), distance(new Coords(0, 0)) {}
+	AElement() : coords(new Coords(0, 0)), size(new Coords(0, 0)), target(new Coords(0, 0)), distance(new Coords(0, 0)), ttl(10) {}
 
 	void	move(int _x, int _y, float _angle, std::chrono::milliseconds _speed) {
 		this->target->x = _x;
@@ -78,7 +79,10 @@ public:
 		this->angle = _angle;
 		this->speed = _speed;
 	};
+
 	void	destroy() {};
+	void	live() { this->ttl -= 1; };
+	void	alive() { this->ttl = 10; };
 
 	///////////////////////////////////////////////////////////////
 	// GETTERS
@@ -94,6 +98,7 @@ public:
 	std::string					getAnimation(void) const { return (this->animation);}
   RType::eType					getType(void) const { return (this->type); }
 	float						getScale(void) const { return (this->scale); }
+	float						getTtl(void) const { return (this->ttl); }
 
 
 	/////////////////////////////////////////////////////////////////

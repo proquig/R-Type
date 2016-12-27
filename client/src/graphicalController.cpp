@@ -33,13 +33,21 @@ void	GraphicalController::windowAction(void)
 void	GraphicalController::elementAction(unsigned int id, RType::eType type, int x, int y, float angle, int speed)
 {
 	AElement									*element;
-	std::vector<AElement *>::const_iterator		elem;
+	std::vector<AElement *>::iterator			elem;
 	bool										match = false;
 	float										scale = 0.f;
 
 	if (this->scene.size()) {
 		for (elem = this->scene.begin(); elem != this->scene.end(); ++elem) {
+			(*elem)->live();
+			if ((*elem)->getTtl() <= 0) {
+				this->scene.erase(elem);
+				elem = this->scene.begin();
+			}
+		}
+		for (elem = this->scene.begin(); elem != this->scene.end(); ++elem) {
 			if ((*elem)->getId() == id) {
+				(*elem)->alive();
 				if ((*elem)->getType() == RType::SET) {
 					scale = (float)this->windowSize->y / 300;
 					(*elem)->setScale(scale);

@@ -35,6 +35,14 @@ void											SFMLWindow::renderScene(void)
 	elements = this->elementQueue->popAll();
 	if (!elements->size())
 		return;
+	for (element = this->scene.begin(); element != this->scene.end(); ++element) {
+		if ((*element)->getTtl() <= 0) {
+			this->scene.erase(element);
+			element = this->scene.begin();
+		}
+	}
+	if (!elements->size())
+		return;
 	for (element = elements->begin(); element != elements->end(); ++element) {
 		for (elem = this->scene.begin(); elem != this->scene.end(); ++elem) {
 			if ((*elem)->getId() == (*element)->getId()) {
