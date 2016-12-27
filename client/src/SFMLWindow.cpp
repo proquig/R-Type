@@ -19,10 +19,9 @@ void	SFMLWindow::run(WorkQueue<AElement *> *_elemqueue, WorkQueue<Event *> *_eve
 		this->pollEvent();
 		this->renderScene();
 		this->render();
-		std::this_thread::sleep_for(std::chrono::milliseconds(16));
+		std::this_thread::sleep_for(std::chrono::milliseconds(2));
 	}
 }
-
 
 void											SFMLWindow::renderScene(void)
 {
@@ -35,11 +34,13 @@ void											SFMLWindow::renderScene(void)
 	elements = this->elementQueue->popAll();
 	if (!elements->size())
 		return;
-	for (element = this->scene.begin(); element != this->scene.end(); ++element) {
-		if ((*element)->getTtl() <= 0) {
-			this->scene.erase(element);
-			element = this->scene.begin();
+
+	for (element = this->scene.begin(); element != this->scene.end(); ) {
+		if ((*element)->getTtl() <= (float)0.0 && (*element)->getType() != RType::SET) {
+			element = this->scene.erase(element);
 		}
+		else
+			element++;
 	}
 	if (!elements->size())
 		return;

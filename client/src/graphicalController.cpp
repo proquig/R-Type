@@ -38,15 +38,18 @@ void	GraphicalController::elementAction(unsigned int id, RType::eType type, int 
 	float										scale = 0.f;
 
 	if (this->scene.size()) {
-		for (elem = this->scene.begin(); elem != this->scene.end(); ++elem) {
+		for (elem = this->scene.begin(); elem != this->scene.end(); ) {
 			(*elem)->live();
-			if ((*elem)->getTtl() <= 0) {
-				this->scene.erase(elem);
-				elem = this->scene.begin();
-			}
+            std::cout << "Size map:" << scene.size() << std::endl;
+            if ((*elem)->getTtl() <= 0  && (*elem)->getType() != RType::SET) {
+         //       std::cout << "Delete -> TYPE:" << (*elem)->getType() << "\tID:" << (*elem)->getId() << std::endl;
+                elem = this->scene.erase(elem);
+            }else
+				++elem;
 		}
+
 		for (elem = this->scene.begin(); elem != this->scene.end(); ++elem) {
-			if ((*elem)->getId() == id) {
+            if ((*elem)->getId() == id) {
 				(*elem)->alive();
 				if ((*elem)->getType() == RType::SET) {
 					scale = (float)this->windowSize->y / 300;
