@@ -15,7 +15,8 @@ class ElementFactory;
 class Monster : public GameElement
 {
 private:
-    bool                _direction;
+    int8_t				_direction;
+  	uint8_t				_mov;
     ElementFactory      *_factory;
 
 public:

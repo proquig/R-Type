@@ -19,6 +19,7 @@ Server::Server(unsigned short port)
 {
   _dlManager.add(0, "threadpool", "");
   _dlManager.add(0, "rtype_network", "");
+  _dlManager.add(0, "monster", "");
 }
 
 Server::~Server()
@@ -34,6 +35,8 @@ Server::~Server()
     _pool->stop();
     reinterpret_cast<void *(*)(IThreadPool *)>(_dic[0]->at("destroy"))(_pool);
   }
+  if (_monster)
+	reinterpret_cast<void *(*)(Monster *)>(_dic[2]->at("destroy"))(_monster);
   for (Dictionary dic : _dic)
   {
     if (dic)
@@ -217,6 +220,31 @@ void Server::handleRoom(Room* room)
 	  }
 	  else
 		elem->setX(elem->getX() + uint16_t(10));
+  this->handleMonsters(room);
+}
+
+void Server::handleMonsters(Room* room)
+{
+  uint16_t rand;
+  Dictionary dic;
+  std::srand(std::time(0));
+  rand = (uint16_t)(std::rand() % 10);
+  if (rand == 1)
+  {
+	std::cout << "BITCH" << std::endl;
+	if ((dic = _dlManager.handler.getDictionaryByName("monster")) != NULL
+		&& !(*_dic.insert(_dic.end(), dic))->empty()
+		&& (_monster = reinterpret_cast<Monster *(*)(int, int, int, ElementFactory*)>(_dic.back()->at("new"))(42, 450, 200, room->getGameController()->getElementFactory())) != nullptr)
+	{
+	  this->_monster->setType(RType::MONSTER);
+	  room->getGameController()->getGame()->addElem(this->_monster);
+	  std::cout << "_monster spawned" << std::endl;
+	}
+  }
+  for (uint8_t i = 0; i < room->getGameController()->getGame()->getMap().size(); ++i)
+	if (room->getGameController()->getGame()->getMap()[i]->getType() == RType::MONSTER)
+	  if (!((Monster*)room->getGameController()->getGame()->getMap()[i])->move())
+		room->getGameController()->getGame()->addElem(((Monster*)room->getGameController()->getGame()->getMap()[i])->shot());
 }
 
 void Server::handleMovement(Room* room, Player* player, InputPacket* packet)
@@ -251,11 +279,11 @@ void Server::realizeMovement(Room *room, Player *player)
 	if (((player->getY() + (dir * player->getSpeed())) > 0 && ((player->getY() + (dir * player->getSpeed())) < 450)))
 	  player->setY(player->getY() + (dir * player->getSpeed()));
   }
-  if (input & RType::ENTER)
+  if (input & RType::SPACE)
   {
 	std::cout << "BULLET" << std::endl;
     RType::AElement *elem;
-    elem = room->getGameController()->getElementFactory().create(player->getId(), -1, RType::BULLET,
+    elem = room->getGameController()->getElementFactory()->create(player->getId(), -1, RType::MISSILE,
                                                                  player->getX() + (player->getSizeX() / 2) + 1,
                                                                  player->getY(), 100, 5, 5, 100, 0,
                                                                  player->getSpeed() + 1);

@@ -41,6 +41,7 @@ protected:
 //  uint8_t 	_loop;
   std::map<Player*, std::vector<uint16_t>> _inputs;
   std::vector<Room*>		_rooms;
+  Monster*  _monster;
 public:
   Server(unsigned short port = 4242);
   virtual ~Server();
@@ -57,7 +58,8 @@ public:
   virtual void realizeMovement(Room* room, Player* player);
   virtual void handleCollision(Room* room);
   virtual void loop();
-  void handleRoom(Room *room);
+  virtual void handleRoom(Room *room);
+  virtual void handleMonsters(Room *room);
 };
 
 #endif //R_TYPE_SERVER_HPP_
