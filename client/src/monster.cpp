@@ -18,7 +18,7 @@ void	Monster::loadSprites(GLib lib)
 			new Cut(128, 0, 32, 30),
 			new Cut(160, 0, 32, 30),
 			new Cut(192, 0, 32, 30),
-			new Cut(224, 0, 32, 30),
+			new Cut(224, 0, 32, 30)
 	});
 	
 	this->sprite->setAnimated(true);
