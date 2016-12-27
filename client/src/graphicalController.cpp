@@ -53,7 +53,9 @@ void	GraphicalController::elementAction(unsigned int id, RType::eType type, int 
 	}
 	if (!match) {
 		element = ElementFactory::create(id, type);
-		element->move(x, y, angle, std::chrono::milliseconds(speed));
+		element->setCoords(new Coords(x, y));
+		element->setAngle(angle);
+		element->setSpeed(std::chrono::milliseconds(speed));
 		if (element->getType() == RType::SET) {
 			scale = (float)this->windowSize->y / 300;
 			element->setScale(scale);

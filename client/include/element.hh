@@ -103,7 +103,10 @@ public:
 	void	setId(unsigned int _id) { this->id = _id; }
 	void	setAnimation(std::string _animation) { this->animation = _animation; }
 	void	setSize(Coords *_size) { this->size = _size; }
+	void	setCoords(Coords *_coords) { this->coords = _coords; }
 	void	setScale(float _scale) { this->scale = _scale; }
+	void	setAngle(float _angle) { this->angle = _angle; }
+	void	setSpeed(std::chrono::milliseconds _speed) { this->speed = _speed; }
 	void	setType(RType::eType _type) { this->type = _type; }
 };
 

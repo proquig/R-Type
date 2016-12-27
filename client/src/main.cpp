@@ -3,7 +3,7 @@
 int main(int ac, char **av)
 {
   ClientStates client;
-  ClientStates::state mode = ClientStates::TEST;
+  ClientStates::state mode = ClientStates::LAUNCH;
 
   for (int i = 1; i < ac; ++i)
   {
