@@ -6,12 +6,21 @@ void	Monster::loadSprites(GLib lib)
 	switch (lib)
 	{
 	case SFML:
-		this->sprite = new SFMLSprite("./../../client/media/GAME-Assets/r-typesheet42.gif");
+		this->sprite = new SFMLSprite("./../../client/media/GAME-Assets/r-typesheet5.gif");
 		break;
 	}
 
-	this->sprite->addRessource("CYAN_STAY", std::vector<Cut *>{new Cut(66, 0, 33, 19), new Cut(33, 0, 33, 19), new Cut(0, 0, 33, 19)});
-
+	this->sprite->addRessource("DEFAULT", std::vector<Cut *>{
+		new Cut(0, 0, 32, 30),
+			new Cut(32, 0, 32, 30),
+			new Cut(64, 0, 32, 30),
+			new Cut(96, 0, 32, 30),
+			new Cut(128, 0, 32, 30),
+			new Cut(160, 0, 32, 30),
+			new Cut(192, 0, 32, 30),
+			new Cut(224, 0, 32, 30),
+	});
+	
 	this->sprite->setAnimated(true);
 	this->sprite->setAnimTime(500);
 	this->sprite->setLoop(true);
