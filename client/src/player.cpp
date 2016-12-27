@@ -50,9 +50,9 @@ void	Player::loadSprites(GLib lib)
 	this->sprite->addRessource("BLUE_DOWN", std::vector<Cut *>{new Cut(0, 68, 33, 19), new Cut(33, 68, 33, 19)});
 	this->sprite->addRessource("BLUE", std::vector<Cut *>{new Cut(66, 68, 33, 19)});
 	this->sprite->addRessource("BLUE_UP", std::vector<Cut *>{new Cut(99, 68, 33, 19), new Cut(132, 68, 33, 19)});
-
+	this->sprite->setAnimated(false);
 	this->sprite->setAnimTime(500);
-
+	this->sprite->setLoop(false);
 }
 
 void	Player::print(void * window)
@@ -61,17 +61,13 @@ void	Player::print(void * window)
 	this->size->x = 50;
 	this->size->y = 50;
 	this->sprite->setAnimation(this->animation, this->coords, 1);
-	this->sprite->setAnimated(false);
-	this->sprite->setLoop(false);
 	if (this->angle <= -45) {
 		this->sprite->setAnimation(this->animation + "_UP", this->coords, 1);
 		this->sprite->setAnimated(true);
-		this->sprite->setLoop(false);
 	}
 	if (this->angle >= 45) {
 		this->sprite->setAnimation(this->animation + "_DOWN", this->coords, 1);
 		this->sprite->setAnimated(true);
-		this->sprite->setLoop(false);
 	}
 	this->sprite->print(window);
 }

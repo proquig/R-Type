@@ -173,7 +173,6 @@ bool		ClientStates::gameState(void)
 					  objType	= MONSTER;
 					  break;
 				  }
-				  objType = PLAYER;
 				  this->controller->elementAction(
 					  pak->getGameElements()[i]->getId(),
 					  objType,
