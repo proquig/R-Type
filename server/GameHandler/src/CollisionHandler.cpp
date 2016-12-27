@@ -84,7 +84,7 @@ std::vector<std::pair<RType::IElement*, RType::IElement*> > 						CollisionHandl
 							second = tmp.back();
 						tmp.pop_back();
 					}
-					if (!doesAlreadyDetected(first, second, result) && second != NULL)
+					if (!doesAlreadyDetected(first, second, result) && second != NULL && first->getType() != second->getType() && first->getIdFrom() != second->getId() && second->getIdFrom() != first->getId())
 						result.push_back(std::make_pair<>(first, second));
 					first = NULL;
 					second = NULL;
