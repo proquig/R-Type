@@ -31,6 +31,9 @@ void	Player::loadSprites(GLib lib)
 		break;
 	}
 
+	this->size->x = 50;
+	this->size->y = 50;
+
 	this->sprite->addRessource("CYAN_DOWN", std::vector<Cut *>{new Cut(0, 0, 33, 19), new Cut(33, 0, 33, 19)});
 	this->sprite->addRessource("CYAN", std::vector<Cut *>{new Cut(66, 0, 33, 19)});
 	this->sprite->addRessource("CYAN_UP", std::vector<Cut *>{new Cut(99, 0, 33, 19), new Cut(132, 0, 33, 19)});
@@ -58,8 +61,6 @@ void	Player::loadSprites(GLib lib)
 void	Player::print(void * window)
 {
 	this->animation = this->skin;
-	this->size->x = 50;
-	this->size->y = 50;
 	this->sprite->setAnimation(this->animation, this->coords, 1);
 	if (this->angle <= -45) {
 		this->sprite->setAnimation(this->animation + "_UP", this->coords, 1);

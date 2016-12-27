@@ -72,8 +72,8 @@ public:
 	void	move(int _x, int _y, float _angle, std::chrono::milliseconds _speed) {
 		this->target->x = _x;
 		this->target->y = _y;
-		this->coords->x = _x;
-		this->coords->y = _y;
+		// this->coords->x = _x;
+		// this->coords->y = _y;
 		this->angle = _angle;
 		this->speed = _speed;
 	};
@@ -87,6 +87,7 @@ public:
 	std::chrono::milliseconds	getSpeed(void) const { return this->speed; }
 	unsigned int				getId(void) const { return (this->id); }
 	Coords *					getCoords(void) const { return (this->coords); }
+	Coords *					getTarget(void) const { return (this->target); }
 	Coords *					getSize(void) const { return (this->size); }
 	std::string					getAnimation(void) const { return (this->animation);}
   RType::eType					getType(void) const { return (this->type); }

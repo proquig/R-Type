@@ -54,11 +54,25 @@ void											SFMLWindow::renderScene(void)
 void											SFMLWindow::render(void)
 {
 	std::vector<AElement *>::const_iterator		element;
+	Coords										*coords;
+	Coords										*target;
 
 	this->handler->clear();
 	if (this->scene.size()) {
 		for (element = this->scene.begin(); element != this->scene.end(); ++element)
+		{
+			coords = (*element)->getCoords();
+			target = (*element)->getTarget();
+			if (coords->x < target->x)
+				coords->x += 1;
+			else if (coords->x > target->x)
+				coords->x -= 1;
+			if (coords->y < target->y)
+				coords->y += 1;
+			else if (coords->y > target->y)
+				coords->y -= 1;
 			(*element)->print((void *)this->handler);
+		}
 	}
 	this->handler->display();
 }
