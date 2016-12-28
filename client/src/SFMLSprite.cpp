@@ -2,6 +2,15 @@
 /*	*/
 //	Private Functions
 /*	*/
+SFMLSprite::~SFMLSprite()
+{
+	for (std::pair<std::string, std::vector<sf::IntRect> *> p : _anim)
+	{
+		delete p.second;
+	}
+	delete _currAnim;
+}
+
 void				SFMLSprite::init()
 {
 	//_delta = _clock.restart();

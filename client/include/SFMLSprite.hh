@@ -26,6 +26,7 @@ private:
 // Public Functions
 public:
 	SFMLSprite(std::string _path) : ASprite(_path) {}
+	~SFMLSprite();
 	void	addRessource(std::string, const std::vector<Cut *>);
 	void	print(void *);
 	void	setAnimation(std::string, Coords *, float);

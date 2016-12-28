@@ -21,17 +21,20 @@ void		Text::loadSprites(GLib lib)
 
 void	Text::print(void * window)
 {
-	this->animation = "DEFAULT";
-	this->size->x = 0;
-	this->size->y = 0;
-	this->sprite->setAnimation(this->animation, this->coords, 1);
-	this->sprite->print(window);
-	this->size->x = 0;
-	this->size->y = 0;
-	_txt.setCharacterSize(_fontSize);
-	_txt.setFont(_font);
-	_txt.setString(_str);
-	((sf::RenderWindow *)window)->draw(_txt);
+	if (_isReady)
+	{
+		this->animation = "DEFAULT";
+		this->size->x = 0;
+		this->size->y = 0;
+		this->sprite->setAnimation(this->animation, this->coords, 1);
+		this->sprite->print(window);
+		this->size->x = 0;
+		this->size->y = 0;
+		_txt.setCharacterSize(_fontSize);
+		_txt.setFont(_font);
+		_txt.setString(_str);
+		((sf::RenderWindow *)window)->draw(_txt);
+	}
 	return;
 }
 
