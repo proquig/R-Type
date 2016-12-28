@@ -13,7 +13,7 @@ class SFMLWindow : public AWindow
 
 public:
 
-	SFMLWindow(int _w, int _h, std::string _name) : AWindow(_w, _h, _name) {}
+	SFMLWindow(int _w, int _h, std::string _name) : AWindow(_w, _h, _name) {this->handler = nullptr; }
 
 	void	run(WorkQueue<AElement *> *, WorkQueue<Event *> *, IObservable*);
 	void	pollEvent(void);
