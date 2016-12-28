@@ -17,6 +17,8 @@ ClientStates::ClientStates()
   memset(&_sockaddr, '0', sizeof(_sockaddr));
   _dlManager.add(0, "threadpool", "");
   _dlManager.add(0, "rtype_network", "");
+  soundLoader.initSoundMap();
+  soundLoader.getSound(ISoundLoader::eSound::eMain);
 }
 
 ClientStates::~ClientStates()
@@ -102,7 +104,7 @@ bool		ClientStates::gameState(void)
   IPacket *packet;
   std::vector<uint16_t>::iterator it;
   RType::eType objType;
-
+  
   _inputQueue.resize(10, 0);
   _mutex->lock();
   _ref = _clock.now();

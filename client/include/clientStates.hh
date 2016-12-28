@@ -14,6 +14,8 @@
 # include "element.hh"
 # include "DLManager.hh"
 # include "IObserver.hpp"
+# include "SFMLSoundLoader.hh"
+# include "ISoundLoader.hh"
 
 # define Y_SPEED	10
 # define X_SPEED	10
@@ -43,6 +45,7 @@ private:
 
 	std::vector<state>	history;
 	std::string			error;
+	SFMLSoundLoader		soundLoader;
 
 	// Controllers
 	GraphicalController	*controller;
