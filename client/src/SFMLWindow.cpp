@@ -37,11 +37,14 @@ void											SFMLWindow::renderScene(void)
 
 	for (element = this->scene.begin(); element != this->scene.end(); ) {
 		if ((*element)->getTtl() <= (float)0.0 && (*element)->getType() != RType::SET) {
-			element = this->scene.erase(element);
+            (*element)->destroy();
+            delete (*element);
+            element = this->scene.erase(element);
 		}
 		else
 			element++;
 	}
+
 	if (!elements->size())
 		return;
 	for (element = elements->begin(); element != elements->end(); ++element) {
@@ -52,6 +55,7 @@ void											SFMLWindow::renderScene(void)
 				match = true;
 			}
 		}
+
 		if (!match) {
 			(*element)->loadSprites(SFML);
 			this->scene.push_back(*element);

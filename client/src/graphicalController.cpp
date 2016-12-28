@@ -40,9 +40,11 @@ void	GraphicalController::elementAction(unsigned int id, RType::eType type, int 
 	if (this->scene.size()) {
 		for (elem = this->scene.begin(); elem != this->scene.end(); ) {
 			(*elem)->live();
-            std::cout << "Size map:" << scene.size() << std::endl;
+//            std::cout << "Size map:" << scene.size() << std::endl;
             if ((*elem)->getTtl() <= 0  && (*elem)->getType() != RType::SET) {
-         //       std::cout << "Delete -> TYPE:" << (*elem)->getType() << "\tID:" << (*elem)->getId() << std::endl;
+				(*elem)->destroy();
+				//delete (*elem);
+				//       std::cout << "Delete -> TYPE:" << (*elem)->getType() << "\tID:" << (*elem)->getId() << std::endl;
                 elem = this->scene.erase(elem);
             }else
 				++elem;
@@ -98,7 +100,7 @@ std::string		GraphicalController::getIp(unsigned int id)
 	std::string ret;
 	for (elem = this->scene.begin(); elem != this->scene.end(); ++elem) {
 		if ((*elem)->getId() == id) {
-			ret = ((Text*)(*elem))->getString();
+			//ret = ((Text*)(*elem))->getString();
 			std::size_t pos = ret.find(" : ") + 4;
 
 			std::string str3;

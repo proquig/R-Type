@@ -81,6 +81,7 @@ public:
 	};
 
 	void	destroy() {};
+
 	void	live() { this->ttl -= 1; };
 	void	alive() { this->ttl = 10; };
 
