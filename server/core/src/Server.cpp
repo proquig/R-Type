@@ -1,5 +1,6 @@
 #include <iostream>
 #include <thread>
+#include <set>
 #include "Server.hpp"
 #include "Room.hpp"
 #include "APacket.hh"
@@ -107,24 +108,26 @@ void Server::loop()
   std::vector<std::pair<std::string, struct sockaddr*>> *vector;
   APacket *packet;
 
-  for (Room* room :  this->_rooms)
-	this->handleRoom(room);
+  /*
   for (Room* room : this->_rooms)
     for (Player* player : room->getPlayers())
       {
         //this->handleCollision(room, player);
         this->realizeMovement(room, player);
       }
-
+*/
   //PACKET EMISSION
   if (_test && _rooms.size())
-	_rooms.front()->sendNotification(_test);
+	for (Room* room : this->_rooms)
+	  room->sendNotification(_test);
   //PACKET RECEPTION
   if ((vector = _packets.popAll()) != nullptr && vector->size() != 0)
     for (std::pair<std::string, struct sockaddr*> pair : (*vector))
       if ((packet = APacket::create(pair.first)) != nullptr)
         if (packet->getType() == APacket::INPUT_DATA)
           this->handleSocket(pair.second, packet);
+  for (Room* room : this->_rooms)
+	this->handleRoom(room);
 }
 
 void Server::stop(unsigned int delay)
@@ -179,10 +182,13 @@ void Server::handleSocket(struct sockaddr *addr, APacket* packet)
 	}
 	else
 	{
-	  if ((player = this->_rooms[i]->getPlayerFromSock(addr)))
-            this->handleMovement(this->_rooms[i], player, (InputPacket*)packet);
-	  else
-            std::cout << "ERROR" << std::endl;
+	  if ((player = this->_rooms[i]->getPlayerFromSock(addr)) && player->isAlive())
+	  {
+		this->handleMovement(this->_rooms[i], player, (InputPacket*)packet);
+		this->realizeMovement(this->_rooms[i], player);
+	  }
+	  //else
+		//std::cout << "ERROR" << std::endl;
 	}
 }
 
@@ -206,21 +212,45 @@ void Server::addPlayer(struct sockaddr *sock)
   this->_rooms.back()->sendNotification(_test);
 }
 
+/*#include <set>
+#include <algorithm>
+
+void tallyList(std::vector<RType::IElement*> &list)
+{
+  //ends function if list is empty
+  if (list.empty())
+  {
+	std::cout << "OOPSOOPS1" << std::endl;
+	return;
+  }
+
+  //creates a set which containes the unique words within list
+  std::set<RType::IElement*> unique(list.begin(), list.end());
+  if (unique.size() != list.size())
+	std::cout << "OOPSOOPS2 " << unique.size() << " " << list.size() << std::endl;
+}*/
+
 void Server::handleRoom(Room* room)
 {
- // std::cout << room->getGameController()->getGame()->getMap().size() << std::endl;
-  this->handleCollision(room);
+  std::vector<RType::IElement*>	del;
   for (RType::IElement* elem : room->getGameController()->getGame()->getMap())
+  {
 	if (elem->getType() == RType::BULLET)
 	  if (elem->getX() > 799)
 	  {
 		room->getGameController()->getGame()->deleteElem(elem);
 		//delete elem;
-		std::cout << "ELEM DELETED" << std::endl;
-	  }
-	  else
+		del.push_back(elem);
+		std::cout << "ELEM DELETED WITH ID" << elem->getId() << std::endl;
+	  } else
 		elem->setX(elem->getX() + uint16_t(10));
-  this->handleMonsters(room);
+  }
+  //this->handleMonsters(room);
+  this->handleCollision(room);
+  //tallyList(del);
+  std::set<RType::IElement*> unique(del.begin(), del.end());
+  for (RType::IElement* elem : unique)
+	delete elem;
 }
 
 void Server::handleMonsters(Room* room)
@@ -244,7 +274,8 @@ void Server::handleMonsters(Room* room)
   for (uint8_t i = 0; i < room->getGameController()->getGame()->getMap().size(); ++i)
 	if (room->getGameController()->getGame()->getMap()[i]->getType() == RType::MONSTER)
 	  if (!((Monster*)room->getGameController()->getGame()->getMap()[i])->move())
-		room->getGameController()->getGame()->addElem(((Monster*)room->getGameController()->getGame()->getMap()[i])->shot());
+		std::cout << "SHOT" << std::endl;
+		//room->getGameController()->getGame()->addElem(((Monster*)room->getGameController()->getGame()->getMap()[i])->shot());
 }
 
 void Server::handleMovement(Room* room, Player* player, InputPacket* packet)
@@ -294,7 +325,7 @@ void Server::realizeMovement(Room *room, Player *player)
 void Server::handleCollision(Room* room)
 {
   //std::cout << "HANDLE COLLISION" << std::endl;
-  for (Player* pl : room->getPlayers())
+  //for (Player* pl : room->getPlayers())
 	//if (player != pl)
-	room->getGameController()->handleCollisions();
+  room->getGameController()->handleCollisions();
 }

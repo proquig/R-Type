@@ -48,20 +48,33 @@ void			GameController::startGame()
 
 void			GameController::handleCollisions()
 {
-	std::vector<int>			destructElementId;
-	std::vector<std::pair<RType::IElement*, RType::IElement*> >		aEntity;
+  std::vector<int>			destructElementId;
+  std::vector<std::pair<RType::IElement*, RType::IElement*> >		aEntity;
 
-	aEntity = _collisionHandler.foundCollisions(_game->getMap(), &destructElementId);
-//	for (std::vector<RType::IElement *>::iterator it = aEntity.begin(); it != aEntity.end(); ++it)
-//	{
-//		std::cout << "Collision on entity " << (*it)->getId() << std::endl;
-//		_game->getScene()->getMap().push_back((*it));
-//	}
-//	for (std::vector<int>::iterator it = destructElementId.begin(); it != destructElementId.end(); ++it)
-//	{
-//		std::cout << "sendDestructElement" << std::endl;
-//		//sendDestructElement((*it));
-//	}
+  aEntity = _collisionHandler.foundCollisions(_game->getMap(), &destructElementId);
+  for (std::pair<RType::IElement*,RType::IElement*> element : aEntity)
+  {
+	std::cout << "I PASS HERE" << std::endl;
+	std::cout << (element.first == nullptr) << (element.second == nullptr) << std::endl;
+	std::cout << element.first->getId() << " WITH " << element.second->getId() << std::endl;
+	this->_game->deleteElem(element.first);
+	this->_game->deleteElem(element.second);
+
+	if (element.first->getType() != RType::PLAYER)
+	  delete element.first;
+	else
+	{
+	  ((Player*)element.first)->kill();
+	  std::cout << "COLLISION PLAYER" << std::endl;
+	}
+	if (element.second->getType() != RType::PLAYER)
+	  delete element.second;
+	else
+	{
+	  ((Player*)element.second)->kill();
+	  std::cout << "COLLISION PLAYER 2" << std::endl;
+	}
+  }
 }
 
 void GameController::update(int timer)

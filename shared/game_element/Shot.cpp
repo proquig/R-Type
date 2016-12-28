@@ -4,6 +4,10 @@ Shot::Shot(uint32_t idFrom, uint32_t id, uint16_t type, uint16_t x, uint16_t y, 
 {
 }
 
+Shot::~Shot()
+{
+}
+
 std::vector<RType::IElement*>			Shot::collideWith(RType::IElement* elem)
 {
 	return std::vector<RType::IElement*>();

@@ -18,5 +18,6 @@ class Player : public GameElement
 	void									kill();
 	sockaddr*								getAddr();
 	void									setAddr(sockaddr *addr);
+  	bool									isAlive();
 };
 #endif
