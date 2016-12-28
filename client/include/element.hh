@@ -70,7 +70,12 @@ protected:
 public:
 
 	AElement() : coords(new Coords(0, 0)), size(new Coords(0, 0)), target(new Coords(0, 0)), distance(new Coords(0, 0)), ttl(10) {}
-
+~AElement(){
+	//delete coords;
+	//delete size;
+	//delete target;
+	//delete distance;
+}
 	void	move(int _x, int _y, float _angle, std::chrono::milliseconds _speed) {
 		this->target->x = _x;
 		this->target->y = _y;
@@ -108,8 +113,8 @@ public:
 
 	void	setId(unsigned int _id) { this->id = _id; }
 	void	setAnimation(std::string _animation) { this->animation = _animation; }
-	void	setSize(Coords *_size) { this->size = _size; }
-	void	setCoords(Coords *_coords) { this->coords = _coords; }
+	void	setSize(Coords *_size) { delete this->size; this->size = _size; }
+	void	setCoords(Coords *_coords) { delete this->coords; this->coords = _coords; }
 	void	setScale(float _scale) { this->scale = _scale; }
 	void	setAngle(float _angle) { this->angle = _angle; }
 	void	setSpeed(std::chrono::milliseconds _speed) { this->speed = _speed; }
