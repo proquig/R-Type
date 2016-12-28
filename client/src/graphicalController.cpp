@@ -32,16 +32,14 @@ void	GraphicalController::windowAction(void)
 
 void	GraphicalController::elementAction(unsigned int id, RType::eType type, int x, int y, float angle, int speed)
 {
-	AElement									*element;
 	std::vector<AElement *>::iterator			elem;
 	bool										match = false;
 	float										scale = 0.f;
 
-	//std::cout << this->scene.size() << std::endl;
+	std::cout << "graphicalController:" << this->scene.size() << std::endl;
 	if (this->scene.size()) {
 		for (elem = this->scene.begin(); elem != this->scene.end(); ) {
 			(*elem)->live();
-//            std::cout << "Size map:" << scene.size() << std::endl;
             if ((*elem)->getTtl() <= 0  && (*elem)->getType() != RType::SET) {
 				//delete (*elem);
 				//       std::cout << "Delete -> TYPE:" << (*elem)->getType() << "\tID:" << (*elem)->getId() << std::endl;
@@ -65,6 +63,8 @@ void	GraphicalController::elementAction(unsigned int id, RType::eType type, int 
 		}
 	}
 	if (!match) {
+		AElement									*element;
+
 		element = ElementFactory::create(id, type);
 		element->setCoords(new Coords(x, y));
 		element->setAngle(angle);

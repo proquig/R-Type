@@ -154,31 +154,8 @@ bool		ClientStates::gameState(void)
           GameDataPacket *pak = (GameDataPacket *) packet;
           for (GameElement* ptr : pak->getGameElements())
           {
-            switch(ptr->getType())
-            {
-              case RType::PLAYER:
-                objType = RType::PLAYER;
-                break;
-              case RType::MISSILE:
-                objType = RType::MISSILE;
-                break;
-              case RType::MONSTER:
-                objType = RType::MONSTER;
-                break;
-              case RType::SET:
-                objType = RType::SET;
-                break;
-              case RType::OBSTACLE:
-                objType = RType::OBSTACLE;
-                break;
-              case RType::BONUS:
-                objType = RType::BONUS;
-                break;
-              default:
-                objType = RType::EMPTY;
-                break;
-            }
-            this->controller->elementAction(
+              objType = (RType::eType) ptr->getType();
+              this->controller->elementAction(
                 ptr->getId(),
                 objType,
                 ptr->getX(),

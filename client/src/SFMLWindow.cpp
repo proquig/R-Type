@@ -21,6 +21,7 @@ void	SFMLWindow::run(WorkQueue<AElement *> *_elemqueue, WorkQueue<Event *> *_eve
 		this->render();
 		std::this_thread::sleep_for(std::chrono::milliseconds(2));
 	}
+	delete this->handler;
 }
 
 void											SFMLWindow::renderScene(void)
@@ -35,7 +36,7 @@ void											SFMLWindow::renderScene(void)
 	if (!elements->size())
 		return;
 
-	std::cout << this->scene.size() << std::endl;
+	std::cout << "SFMLWindow:" << this->scene.size() << std::endl;
 	for (element = this->scene.begin(); element != this->scene.end(); ) {
 		if ((*element)->getTtl() <= (float)0.0 && (*element)->getType() != RType::SET) {
             (*element)->destroy();
