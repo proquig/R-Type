@@ -12,6 +12,7 @@ Player::Player(uint32_t idFrom, uint32_t id, uint16_t x, uint16_t y, uint16_t hp
 
 Player::Player(struct sockaddr *addr)
 {
+  this->_alive = true;
   this->_type = RType::PLAYER;
   this->_addr = addr;
 }
@@ -23,6 +24,11 @@ Player::~Player()
 void	Player::kill()
 {
 	_alive = false;
+}
+
+bool	Player::isAlive()
+{
+  return (this->_alive);
 }
 
 std::vector<RType::IElement*>					Player::collideWith(RType::IElement* elem)

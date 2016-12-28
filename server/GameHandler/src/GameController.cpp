@@ -58,16 +58,22 @@ void			GameController::handleCollisions()
 	std::cout << (element.first == nullptr) << (element.second == nullptr) << std::endl;
 	std::cout << element.first->getId() << " WITH " << element.second->getId() << std::endl;
 	this->_game->deleteElem(element.first);
-	this->_game->deleteElem(element.first);
+	this->_game->deleteElem(element.second);
 
 	if (element.first->getType() != RType::PLAYER)
 	  delete element.first;
 	else
+	{
+	  ((Player*)element.first)->kill();
 	  std::cout << "COLLISION PLAYER" << std::endl;
+	}
 	if (element.second->getType() != RType::PLAYER)
 	  delete element.second;
 	else
+	{
+	  ((Player*)element.second)->kill();
 	  std::cout << "COLLISION PLAYER 2" << std::endl;
+	}
   }
 }
 

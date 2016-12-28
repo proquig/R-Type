@@ -108,13 +108,14 @@ void Server::loop()
   std::vector<std::pair<std::string, struct sockaddr*>> *vector;
   APacket *packet;
 
+  /*
   for (Room* room : this->_rooms)
     for (Player* player : room->getPlayers())
       {
         //this->handleCollision(room, player);
         this->realizeMovement(room, player);
       }
-
+*/
   //PACKET EMISSION
   if (_test && _rooms.size())
 	for (Room* room : this->_rooms)
@@ -181,10 +182,13 @@ void Server::handleSocket(struct sockaddr *addr, APacket* packet)
 	}
 	else
 	{
-	  if ((player = this->_rooms[i]->getPlayerFromSock(addr)))
-            this->handleMovement(this->_rooms[i], player, (InputPacket*)packet);
-	  else
-            std::cout << "ERROR" << std::endl;
+	  if ((player = this->_rooms[i]->getPlayerFromSock(addr)) && player->isAlive())
+	  {
+		this->handleMovement(this->_rooms[i], player, (InputPacket*)packet);
+		this->realizeMovement(this->_rooms[i], player);
+	  }
+	  //else
+		//std::cout << "ERROR" << std::endl;
 	}
 }
 
