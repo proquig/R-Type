@@ -11,6 +11,7 @@
 # include "window.hh"
 # include "hookEvent.hh"
 # include "coords.hh"
+#include "Text.hh"
 # include <thread>
 # include <vector>
 
@@ -42,6 +43,8 @@ public:
 	void	windowAction(void);
 	void	elementAction(unsigned int, RType::eType, int, int, float, int);
 	Event	*eventAction(void);
+	void	addText(unsigned int, std::string);
+	std::string	getIp(unsigned int);
 
 };
 

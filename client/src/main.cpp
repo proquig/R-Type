@@ -27,7 +27,7 @@ int main(int ac, char **av)
             std::cerr << "Unknown option or wrong format on flag" << c << std::endl;
         }
   }
-  if (client.run(ClientStates::TEST))
+  if (client.run(ClientStates::GAME))
     return 0;
   std::cerr << client.getErr() << std::endl;
   return 1;
