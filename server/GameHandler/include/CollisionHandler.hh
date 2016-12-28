@@ -16,7 +16,7 @@ private:
 	int														_sizeY;
 	Quadtree												_quadtree;
 
-	bool													doesAlreadyDetected(RType::IElement*, RType::IElement*, std::vector<std::pair<RType::IElement*, RType::IElement*>>);
+	bool													doesAlreadyDetected(RType::IElement*, RType::IElement*, std::vector<std::pair<RType::IElement*, RType::IElement*>>, std::vector<RType::IElement*>);
 
 public:
 	CollisionHandler(int, int);

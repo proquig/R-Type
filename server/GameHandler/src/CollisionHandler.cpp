@@ -30,15 +30,31 @@ CollisionHandler&															CollisionHandler::operator=(const CollisionHandl
 	return *this;
 }
 
-bool																		CollisionHandler::doesAlreadyDetected(RType::IElement* first, RType::IElement* second, std::vector<std::pair<RType::IElement*, RType::IElement*>> vec)
+bool																		CollisionHandler::doesAlreadyDetected(RType::IElement* first, RType::IElement* second, std::vector<std::pair<RType::IElement*, RType::IElement*>> vec, std::vector<RType::IElement*> entitys)
 {
-
 	std::pair<RType::IElement*, RType::IElement*>							pairone = std::make_pair<>(first, second);
 	std::pair<RType::IElement*, RType::IElement*>							pairtwo = std::make_pair<>(second, first);
 
 	for (std::pair<RType::IElement*, RType::IElement*> pair : vec)
 	{
 		if (pair == pairone || pair == pairtwo)
+		{
+			return true;
+		}
+	}
+	if (second != NULL && first->getType() != second->getType() && first->getIdFrom() != second->getId() && second->getIdFrom() != first->getId())
+	{
+		return true;
+	}
+	int idone = first->getIdFrom();
+	int idtwo = second->getIdFrom();
+	for (RType::IElement* elem : entitys)
+	{
+		if (elem->getId() == idtwo && elem->getType() == first->getType())
+		{
+			return true;
+		}
+		if (elem->getId() == idone && elem->getType() == second->getType())
 		{
 			return true;
 		}
@@ -84,7 +100,7 @@ std::vector<std::pair<RType::IElement*, RType::IElement*> > 						CollisionHandl
 							second = tmp.back();
 						tmp.pop_back();
 					}
-					if (!doesAlreadyDetected(first, second, result) && second != NULL && first->getType() != second->getType() && first->getIdFrom() != second->getId() && second->getIdFrom() != first->getId())
+					if (!doesAlreadyDetected(first, second, result, entitys))
 						result.push_back(std::make_pair<>(first, second));
 					first = NULL;
 					second = NULL;
