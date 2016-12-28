@@ -4,6 +4,7 @@
 #include "missile.hh"
 #include "obstacle.hh"
 #include "set.hh"
+#include "Text.hh"
 
 AElement *					ElementFactory::create(unsigned int _id, RType::eType type)
 {
@@ -44,7 +45,12 @@ AElement *					ElementFactory::create(unsigned int _id, RType::eType type)
 	case RType::SET:
 		element = new Set(Set::WASTE);
 		break;
-
+	case RType::TEXT:
+		element = new Text();
+		((Text *)element)->setFont("./../../client/media/GAME-Assets/space.otf");
+		((Text *)element)->setFontSize(20);
+		((Text *)element)->setMaxLength(16);
+		break;
 	default:
 		// unknown TO-DO
 		break;

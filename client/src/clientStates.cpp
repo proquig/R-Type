@@ -88,7 +88,7 @@ bool	ClientStates::launchState(void)
 	this->controller->initAction();
   if (!_init && !init())
       return false;
-	return this->run(MENU);
+  return this->run(MENU);
 }
 
 bool	ClientStates::menuState(void)
@@ -245,29 +245,70 @@ bool	ClientStates::testState(void)
 
 		this->controller->elementAction(5, RType::OBSTACLE, 250, 0, 0, 0);
 
+		this->controller->elementAction(9, RType::TEXT, 100, 0, 0, 0);
+
 		this->controller->elementAction(0, RType::SET, 0, 0, 0, 10);
+
 
 		if (event = this->controller->eventAction()) {
 			std::cout << "[EVENT] " << event->name << std::endl;
 			switch (event->type) {
-        case Event::KEYPRESS:
-          switch (event->key)
-          {
+			case Event::KEYPRESS:
+				switch (event->key)
+				{
 				case RType::UP: player->y -= Y_SPEED; angle = -90; break;
 				case RType::DOWN: player->y += Y_SPEED; angle = 90; break;
 				case RType::RIGHT: player->x += X_SPEED; angle = 0; break;
 				case RType::LEFT: player->x -= X_SPEED; angle = 0; break;
-          }
-          break;
-				case Event::RESIZE: windowSize = event->size; break;
-				default: break;
+				}
+				break;
+			case Event::RESIZE: windowSize = event->size; break;
+			default: break;
 			}
 		}
-		#ifdef __linux__ 
-				usleep(20);
-		#elif _WIN32
-				Sleep(20);
-		#endif
+#ifdef __linux__ 
+		usleep(20);
+#elif _WIN32
+		Sleep(20);
+#endif
+	}
+	return this->run(END);
+}
+
+bool	ClientStates::Menu(void)
+{
+	Event			*event = NULL;
+	Coords			*player = new Coords(50, 50);
+	float			angle = 0;
+	Coords			*windowSize = new Coords(800, 450);
+
+	std::cout << "=================================" << std::endl;
+	std::cout << "============  Menu  =============" << std::endl;
+	std::cout << "=================================" << std::endl << std::endl;
+
+	this->controller = new GraphicalController(SFML, windowSize->x, windowSize->y, "R-type - Graphical tests");
+	this->controller->initAction();
+
+	while (!event || event->type != Event::QUIT) {
+
+		this->controller->elementAction(9, RType::TEXT, 0, 0, 0, 0);
+		this->controller->elementAction(0, RType::SET, 0, 0, 0, 10);
+
+		if (event = this->controller->eventAction())
+		{
+			this->controller->addText(9, std::string(event->name));
+			if (std::string(event->name) == "ENTER")
+			{
+				std::string ip = this->controller->getIp(9);
+				
+				std::cout << "  IP = " << ip << std::endl;
+			}
+		}
+#ifdef __linux__ 
+		usleep(20);
+#elif _WIN32
+		Sleep(20);
+#endif
 	}
 	return this->run(END);
 }

@@ -17,10 +17,10 @@ struct Event
 {
 	enum Type {
 		QUIT = 0,
-		RESIZE,
-		KEYPRESS,
-		KEYRELEASE,
-		CLICK
+		RESIZE = 1,
+		KEYPRESS = 2,
+		KEYRELEASE = 3,
+		CLICK = 4
 	};
 
 	char	*name;

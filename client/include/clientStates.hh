@@ -93,6 +93,7 @@ public:
 	bool	scoreState(void);
 	bool	endState(void);
 	bool	testState(void);
+	bool	Menu(void);
 	virtual void update(IObservable*, int);
 protected:
 	bool init();

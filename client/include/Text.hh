@@ -26,15 +26,23 @@ public:
 	void			setMaxLength(int);
 	void			setString(std::string);
 
+
+	//////////////////////////////////////////////
+	// SETTERS
+	//////////////////////////////////////////////
+
+	std::string		getString() const;
 	//////////////////////////////////////////////
 	// VALUES
 	//////////////////////////////////////////////
 
 private:
 	std::string		_str;
+	std::string		_save;
 	std::string		_fontPath;
 	sf::Font		_font;
 	int				_fontSize;
+	int				_cnt;
 	sf::Text		_txt;
 	int				_maxLen;
 	bool			_isReady;

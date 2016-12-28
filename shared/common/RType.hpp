@@ -44,6 +44,8 @@ enum eType
   OBSTACLE = 1 << 5,
   //Bonus
   BONUS = 1 << 6,
+  //UI
+  TEXT = 1 << 7,
 };
 
 };
