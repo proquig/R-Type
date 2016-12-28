@@ -34,14 +34,14 @@ std::string GameDataPacket::serialize()
   // TODO: ADD UP TO 4 PLAYER & OTHER ELEMENTS
   // TODO: ADD TIMER !!!
   APacket::serialize();
-  for (uint8_t i = 0; i < this->_gameElements.size(); ++i)
-  	if (this->_gameElements[i])
-		*this << this->_gameElements[i]->getId()
-			  << this->_gameElements[i]->getX()
-			  << this->_gameElements[i]->getY()
-			  << this->_gameElements[i]->getAngle()
-			  << this->_gameElements[i]->getSpeed()
-			  << this->_gameElements[i]->getType();
+  for (RType::IElement* elem : this->_gameElements)
+  	if (elem)
+	  *this << elem->getId()
+			<< elem->getX()
+			<< elem->getY()
+			<< elem->getAngle()
+			<< elem->getSpeed()
+			<< elem->getType();
   return (this->_content.str());
 }
 
