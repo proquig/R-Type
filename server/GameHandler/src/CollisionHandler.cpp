@@ -35,6 +35,8 @@ bool																		CollisionHandler::doesAlreadyDetected(RType::IElement* fir
 	std::pair<RType::IElement*, RType::IElement*>							pairone = std::make_pair<>(first, second);
 	std::pair<RType::IElement*, RType::IElement*>							pairtwo = std::make_pair<>(second, first);
 
+  if (second != NULL && first->getType() != second->getType() && first->getIdFrom() != second->getId() && second->getIdFrom() != first->getId())
+  {
 	for (std::pair<RType::IElement*, RType::IElement*> pair : vec)
 	{
 		if (pair == pairone || pair == pairtwo)
@@ -42,24 +44,22 @@ bool																		CollisionHandler::doesAlreadyDetected(RType::IElement* fir
 			return true;
 		}
 	}
-	if (second != NULL && first->getType() != second->getType() && first->getIdFrom() != second->getId() && second->getIdFrom() != first->getId())
-	{
-		return true;
-	}
-	int idone = first->getIdFrom();
-	int idtwo = second->getIdFrom();
-	for (RType::IElement* elem : entitys)
-	{
+	  int idone = first->getIdFrom();
+	  int idtwo = second->getIdFrom();
+	  for (RType::IElement *elem : entitys)
+	  {
 		if (elem->getId() == idtwo && elem->getType() == first->getType())
 		{
-			return true;
+		  return true;
 		}
 		if (elem->getId() == idone && elem->getType() == second->getType())
 		{
-			return true;
+		  return true;
 		}
+	  }
+	  return false;
 	}
-	return false;
+	return true;
 }
 
 /*! \brief foundCollisions of CollisionHandler

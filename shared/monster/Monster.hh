@@ -20,8 +20,8 @@ private:
     ElementFactory      *_factory;
 
 public:
-    Monster(uint32_t idFrom, uint32_t id, uint16_t type, uint16_t x, uint16_t y, uint16_t hp, uint16_t sizex, uint16_t sizey, uint16_t damage, float angle, char speed, ElementFactory *factory);
-    Monster(uint32_t id, uint16_t x, uint16_t y, ElementFactory *factory);
+    Monster(uint32_t idFrom, uint16_t type, uint16_t x, uint16_t y, uint16_t hp, uint16_t sizex, uint16_t sizey, uint16_t damage, float angle, char speed, ElementFactory *factory);
+    Monster(uint16_t x, uint16_t y, ElementFactory *factory);
     ~Monster();
 
     std::vector<IElement*>					collideWith(IElement*);

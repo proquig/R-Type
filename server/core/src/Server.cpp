@@ -233,49 +233,50 @@ void tallyList(std::vector<RType::IElement*> &list)
 void Server::handleRoom(Room* room)
 {
   std::vector<RType::IElement*>	del;
+
+  this->handleMonsters(room);
+  this->handleCollision(room);
   for (RType::IElement* elem : room->getGameController()->getGame()->getMap())
   {
 	if (elem->getType() == RType::BULLET)
 	  if (elem->getX() > 799)
 	  {
-		room->getGameController()->getGame()->deleteElem(elem);
+		//room->getGameController()->getGame()->deleteElem(elem);
 		//delete elem;
 		del.push_back(elem);
 		std::cout << "ELEM DELETED WITH ID" << elem->getId() << std::endl;
-	  } else
-		elem->setX(elem->getX() + uint16_t(10));
+	  }
+	  else
+		elem->setX(elem->getX() + (elem->getSpeed() * (elem->getAngle() == (float)90 ? 1 : -1)));
   }
-  //this->handleMonsters(room);
-  this->handleCollision(room);
-  //tallyList(del);
   std::set<RType::IElement*> unique(del.begin(), del.end());
   for (RType::IElement* elem : unique)
+  {
+	room->getGameController()->getGame()->deleteElem(elem);
 	delete elem;
+  }
 }
 
 void Server::handleMonsters(Room* room)
 {
   uint16_t rand;
   Dictionary dic;
-  std::srand(std::time(0));
-  rand = (uint16_t)(std::rand() % 10);
-  if (rand == 1)
+  rand = (uint16_t)(std::rand() % 20);
+  if (!rand)
   {
-	std::cout << "BITCH" << std::endl;
 	if ((dic = _dlManager.handler.getDictionaryByName("monster")) != NULL
 		&& !(*_dic.insert(_dic.end(), dic))->empty()
-		&& (_monster = reinterpret_cast<Monster *(*)(int, int, int, ElementFactory*)>(_dic.back()->at("new"))(42, 450, 200, room->getGameController()->getElementFactory())) != nullptr)
+		&& (_monster = reinterpret_cast<Monster *(*)(int, int, ElementFactory*)>(_dic.back()->at("new"))(900, (std::rand() % 350) + 50, room->getGameController()->getElementFactory())) != nullptr)
 	{
 	  this->_monster->setType(RType::MONSTER);
 	  room->getGameController()->getGame()->addElem(this->_monster);
 	  std::cout << "_monster spawned" << std::endl;
 	}
   }
-  for (uint8_t i = 0; i < room->getGameController()->getGame()->getMap().size(); ++i)
-	if (room->getGameController()->getGame()->getMap()[i]->getType() == RType::MONSTER)
-	  if (!((Monster*)room->getGameController()->getGame()->getMap()[i])->move())
-		std::cout << "SHOT" << std::endl;
-		//room->getGameController()->getGame()->addElem(((Monster*)room->getGameController()->getGame()->getMap()[i])->shot());
+  for (RType::IElement* elem : room->getGameController()->getGame()->getMap())
+	if (elem->getType() == RType::MONSTER)
+	  if (!((Monster*)elem)->move())
+		room->getGameController()->getGame()->addElem(((Monster*)elem)->shot());
 }
 
 void Server::handleMovement(Room* room, Player* player, InputPacket* packet)
@@ -316,7 +317,7 @@ void Server::realizeMovement(Room *room, Player *player)
     RType::AElement *elem;
     elem = room->getGameController()->getElementFactory()->create(player->getId(), -1, RType::MISSILE,
                                                                  player->getX() + (player->getSizeX() / 2) + 1,
-                                                                 player->getY(), 100, 5, 5, 100, 0,
+                                                                 player->getY(), 100, 5, 5, 100, 90,
                                                                  player->getSpeed() + 1);
     room->getGameController()->getGame()->addElem(elem);
   }

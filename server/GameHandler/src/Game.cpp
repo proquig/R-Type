@@ -110,12 +110,18 @@ void				Game::addElems(std::vector<RType::IElement*> elems)
 
 void				Game::addElem(RType::IElement* elem)
 {
+  if (!this->isPresent(elem))
 	_map.push_back(elem);
 }
 
-bool 				Game::deleteElem(RType::IElement* element)
-{  std::vector<RType::IElement*>::iterator	it;
+bool 				Game::isPresent(RType::IElement* element)
+{
+  return (std::find(this->_map.begin(), this->_map.end(), element) != this->_map.end());
+}
 
+bool 				Game::deleteElem(RType::IElement* element)
+{
+  std::vector<RType::IElement*>::iterator	it;
 
   if ((it = std::find(this->_map.begin(), this->_map.end(), element)) == this->_map.end())
 	return (false);

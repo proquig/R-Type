@@ -14,6 +14,7 @@ private:
 public:
 	ElementFactory();
 	~ElementFactory();
+  	unsigned int newID();
 
 public:
 

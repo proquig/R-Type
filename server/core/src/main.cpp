@@ -35,6 +35,7 @@ int run(unsigned short tcp_port, unsigned short udp_port, unsigned short time)
 
 int main(int ac, char **av)
 {
+  std::srand(std::time(NULL));
   unsigned short
       tcp_port = 0,
       udp_port = 0,
