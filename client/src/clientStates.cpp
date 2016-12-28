@@ -53,7 +53,7 @@ bool	ClientStates::run(state to)
 	switch (to) {
 	case LAUNCH: return this->launchState();
 		break;
-	case MENU: return this->Menu();
+	case MENU: return this->menuState();
 		break;
 	case GAME: return this->gameState();
 		break;
