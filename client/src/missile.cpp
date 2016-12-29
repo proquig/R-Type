@@ -16,6 +16,7 @@ Missile::Missile(Type _type)
 
 void	Missile::loadSprites(GLib lib)
 {
+  /*
 	switch (lib)
 	{
 	case SFML:
@@ -40,7 +41,7 @@ void	Missile::loadSprites(GLib lib)
 			new Cut(238, 672, 59, 60)*/
 				/*new Cut(37, 738, 65, 60),
 				new Cut(30, 455, 65, 48),
-				new Cut(30, 455, 65, 48),*/
+				new Cut(30, 455, 65, 48),
 				new Cut(70, 72, 30, 28)
 	});
 
@@ -50,6 +51,7 @@ void	Missile::loadSprites(GLib lib)
 	this->sprite->setAnimated(true);
 	this->sprite->setAnimTime(500);
 	this->sprite->setLoop(true);
+*/
 }
 
 void	Missile::print(void * window)

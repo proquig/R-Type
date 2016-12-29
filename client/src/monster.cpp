@@ -3,6 +3,7 @@
 
 void	Monster::loadSprites(GLib lib)
 {
+  /*
 	switch (lib)
 	{
 	case SFML:
@@ -20,10 +21,10 @@ void	Monster::loadSprites(GLib lib)
 			new Cut(196, 0, 33, 35),
 			new Cut(229, 0, 33, 35)
 	});
-	
 	this->sprite->setAnimated(true);
 	this->sprite->setAnimTime(500);
 	this->sprite->setLoop(true);
+   */
 }
 
 void	Monster::print(void * window)

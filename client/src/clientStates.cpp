@@ -164,6 +164,9 @@ bool		ClientStates::gameState(void)
 				this->_player1->addRessource("CYAN_DOWN", std::vector<Cut *>{new Cut(0, 0, 33, 19), new Cut(33, 0, 33, 19)});
 				this->_player1->addRessource("CYAN", std::vector<Cut *>{new Cut(66, 0, 33, 19)});
 				this->_player1->addRessource("CYAN_UP", std::vector<Cut *>{new Cut(99, 0, 33, 19), new Cut(132, 0, 33, 19)});
+				this->_player1->setAnimated(true);
+				this->_player1->setAnimTime(500);
+				this->_player1->setLoop(true);
 			  }
 			  sprite = this->_player1;
 			}
@@ -175,6 +178,9 @@ bool		ClientStates::gameState(void)
 				this->_bullet->addRessource("DEFAULT", std::vector<Cut *>{
 						new Cut(70, 72, 30, 28)
 				});
+				this->_bullet->setAnimated(true);
+				this->_bullet->setAnimTime(500);
+				this->_bullet->setLoop(true);
 			  }
 			  sprite = this->_bullet;
 			}
@@ -193,6 +199,9 @@ bool		ClientStates::gameState(void)
 						new Cut(196, 0, 33, 35),
 						new Cut(229, 0, 33, 35)
 				});
+				this->_monster->setAnimated(false);
+				this->_monster->setAnimTime(500);
+				this->_monster->setLoop(false);
 			  }
 			  sprite = this->_monster;
 			}
