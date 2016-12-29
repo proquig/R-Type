@@ -34,7 +34,8 @@ void				SFMLSprite::update()
 	{
 		_tex.loadFromImage(_img);
 		_spr = sf::Sprite(_tex);
-		_spr.setTextureRect(_anim[_name]->at(0));
+		//_spr.setTextureRect(_anim[_name]->at(0));
+		_spr.setTextureRect(_curr);
 		sf::Vector2f scale = sf::Vector2f(_size.first, _size.second);
 		_spr.setScale(scale);
 	}
@@ -57,10 +58,10 @@ void				SFMLSprite::update()
 		}
 		_tex.loadFromImage(_img);
 		_spr = sf::Sprite(_tex);
-		sf::IntRect rect = _currAnim->at(_cnt);
+		//sf::IntRect rect = _currAnim->at(_cnt);
 		sf::Vector2f scale = sf::Vector2f(_size.first, _size.second);
 		_spr.setScale(scale);
-		_spr.setTextureRect(rect);
+		_spr.setTextureRect(_curr);
 	}
 	return;
 }
@@ -81,11 +82,14 @@ void				SFMLSprite::addRessource(std::string name, const std::vector<Cut *> piec
 	//Add une suite d'element a jouer
 	std::vector<sf::IntRect> *vect = new std::vector<sf::IntRect>();
 
-	for (Cut *c : pieces)
+	std::cout << "NAME = " << name << "pieces = " << pieces.size() << std::endl;
+		for (Cut *c : pieces)
 	{
 		vect->push_back(sf::IntRect(c->begin.x, c->begin.y, c->end.x, c->end.y));
 	}
 	_anim[name] = vect;
+	_curr = _anim[name]->at(0);
+	std::cout << "lol ?" << std::endl;
 	return;
 }
 

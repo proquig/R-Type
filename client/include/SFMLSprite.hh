@@ -19,6 +19,7 @@ private:
 	sf::Texture											_tex;
 	sf::Image											_img;
 	sf::Sprite											_spr;
+	sf::IntRect											_curr;
 	//int												_cnt;
 	// Not usefull										_notUsed;
 	sf::Vertex											_vert[4];
