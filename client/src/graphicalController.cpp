@@ -1,7 +1,7 @@
 #include "graphicalController.hh"
 #include "SFMLWindow.hh"
+#include "SFMLSprite.hh"
 #include <thread>
-#include <SFMLSprite.hh>
 
 GraphicalController::GraphicalController(GLib lib, int _w, int _h, std::string _n)
 	: windowSize(new Coords(_w, _h))
@@ -36,17 +36,17 @@ void	GraphicalController::elementAction(unsigned int id, RType::eType type, int 
   bool										match = false;
   float										scale = 0.f;
 
-  //std::cout << "graphicalController:" << this->scene.size() << std::endl;
-  if (this->scene.size()) {
-	for (elem = this->scene.begin(); elem != this->scene.end(); ) {
-	  (*elem)->live();
-	  if ((*elem)->getTtl() <= 0  && (*elem)->getType() != RType::SET) {
-		//delete (*elem);
-		//       std::cout << "Delete -> TYPE:" << (*elem)->getType() << "\tID:" << (*elem)->getId() << std::endl;
-		elem = this->scene.erase(elem);
-	  }else
-		++elem;
-	}
+	std::cout << "graphicalController:" << this->scene.size() << "workQ:" << windowQueue->getQueue().size()  <<std::endl;
+	if (this->scene.size()) {
+		for (elem = this->scene.begin(); elem != this->scene.end(); ) {
+			(*elem)->live();
+            if ((*elem)->getTtl() <= 0  && (*elem)->getType() != RType::SET) {
+				//delete (*elem);
+				//       std::cout << "Delete -> TYPE:" << (*elem)->getType() << "\tID:" << (*elem)->getId() << std::endl;
+                elem = this->scene.erase(elem);
+            }else
+				++elem;
+		}
 
 	for (elem = this->scene.begin(); elem != this->scene.end(); ++elem) {
 	  if ((*elem)->getId() == id) {

@@ -9,6 +9,10 @@ class WorkQueue
 {
 	std::mutex		access;
 	std::list<T>	queue;
+public:
+	const std::list<T> &getQueue() const {
+		return queue;
+	}
 
 
 public:
@@ -66,6 +70,8 @@ public:
 
 	void	flush(void) {
 		this->access.lock();
+		for (T* t : this->queue)
+			delete t;
 		this->queue.clear();
 		this->access.unlock();
 	}
