@@ -115,11 +115,17 @@ void Server::update(IObservable *o, int status)
 
 void Server::stop(unsigned int delay)
 {
-  std::this_thread::sleep_for(std::chrono::seconds(delay));
-  if (!_stop)
+  if (_cond && _mutex)
   {
-    _stop = true;
-    if (_waiting)
-      _cond->signal();
+    _mutex->lock();
+    _cond->wait(_mutex, 1000 * delay);
+    _mutex->unlock();
+    if (!_stop)
+    {
+      std::cout << "Stopping server after " << delay << " seconds" << std::endl;
+      _stop = true;
+      if (_waiting)
+        _cond->signal();
+    }
   }
 }

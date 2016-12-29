@@ -96,7 +96,7 @@ bool Server::run()
     _cond->wait(_mutex, 100);
     _waiting = false;
     if (!_stop)
-	  this->loop();
+      this->loop();
   }
   _mutex->unlock();
   return true;
@@ -129,13 +129,18 @@ void Server::loop()
 
 void Server::stop(unsigned int delay)
 {
-  std::this_thread::sleep_for(std::chrono::seconds(delay));
-  if (!_stop)
+  if (_cond && _mutex)
   {
-    std::cout << "Stopping server after " << delay << " seconds" << std::endl;
-    _stop = true;
-    if (_waiting)
-      _cond->signal();
+    _mutex->lock();
+    _cond->wait(_mutex, 1000 * delay);
+    _mutex->unlock();
+    if (!_stop)
+    {
+      std::cout << "Stopping server after " << delay << " seconds" << std::endl;
+      _stop = true;
+      if (_waiting)
+        _cond->signal();
+    }
   }
 }
 
