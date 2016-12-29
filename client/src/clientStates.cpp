@@ -87,6 +87,7 @@ bool	ClientStates::launchState(void)
 	this->controller->initAction();
   if (!_init && !init())
       return false;
+  controller->setProperty(IWindow::KEY_REPEAT, false);
   return this->run(MENU);
 }
 
@@ -105,7 +106,6 @@ bool		ClientStates::gameState(void)
   std::vector<uint16_t>::iterator it;
   RType::eType objType;
 
-  controller->setProperty(IWindow::KEY_REPEAT, false);
   _inputQueue.resize(10, 0);
   _mutex->lock();
   _ref = _clock.now();

@@ -105,29 +105,27 @@ bool Server::run()
 
 void Server::loop()
 {
-  std::vector<std::pair<std::string, struct sockaddr*>> *vector;
+  std::vector<std::pair<std::string, struct sockaddr *>> *vector;
   APacket *packet;
 
-  /*
-  for (Room* room : this->_rooms)
-    for (Player* player : room->getPlayers())
-      {
-        //this->handleCollision(room, player);
+  for (Room *room : this->_rooms)
+    for (Player *player : room->getPlayers())
+    {
+      if (player->isAlive())
         this->realizeMovement(room, player);
-      }
-*/
+    }
   //PACKET EMISSION
   if (_test && _rooms.size())
-	for (Room* room : this->_rooms)
-	  room->sendNotification(_test);
+    for (Room *room : this->_rooms)
+      room->sendNotification(_test);
   //PACKET RECEPTION
   if ((vector = _packets.popAll()) != nullptr && vector->size() != 0)
-    for (std::pair<std::string, struct sockaddr*> pair : (*vector))
+    for (std::pair<std::string, struct sockaddr *> pair : (*vector))
       if ((packet = APacket::create(pair.first)) != nullptr)
         if (packet->getType() == APacket::INPUT_DATA)
           this->handleSocket(pair.second, packet);
-  for (Room* room : this->_rooms)
-	this->handleRoom(room);
+  for (Room *room : this->_rooms)
+    this->handleRoom(room);
 }
 
 void Server::stop(unsigned int delay)
@@ -170,26 +168,21 @@ void Server::update(IObservable *o, int status)
 
 void Server::handleSocket(struct sockaddr *addr, APacket* packet)
 {
-  Player  *player = nullptr;
+  Player *player = nullptr;
   int16_t i = -1;
   while (++i < this->_rooms.size() && !this->_rooms[i]->socketIsPresent(addr));
-	if (i == this->_rooms.size())
-	{
-	  if (!i || this->_rooms.back()->isFull())
-		this->createRoom(addr);
-	  else
-		this->addPlayer(addr);
-	}
-	else
-	{
-	  if ((player = this->_rooms[i]->getPlayerFromSock(addr)) && player->isAlive())
-	  {
-		this->handleMovement(this->_rooms[i], player, (InputPacket*)packet);
-		this->realizeMovement(this->_rooms[i], player);
-	  }
-	  //else
-		//std::cout << "ERROR" << std::endl;
-	}
+  if (i == this->_rooms.size())
+  {
+    if (!i || this->_rooms.back()->isFull())
+      this->createRoom(addr);
+    else
+      this->addPlayer(addr);
+  } else
+  {
+    if ((player = this->_rooms[i]->getPlayerFromSock(addr)) && player->isAlive())
+      this->handleMovement(this->_rooms[i], player, (InputPacket *) packet);
+    //DONT MOVE THE PLAYER HERE OR WE LOOSE PACKET LOSS COMPENSATION
+  }
 }
 
 void Server::createRoom(struct sockaddr *sock)
