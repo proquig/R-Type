@@ -15,12 +15,14 @@ void	SFMLWindow::run(WorkQueue<AElement *> *_elemqueue, WorkQueue<Event *> *_eve
 	if (!this->handler)
 		this->handler = new sf::RenderWindow(sf::VideoMode(this->width, this->height), this->name);
 	this->handler->clear(sf::Color::Black);
+  	this->handler->setFramerateLimit(0);
+  	//this->handler->setVerticalSyncEnabled(true);
 	while (this->handler->isOpen())
 	{
 		this->pollEvent();
-		this->renderScene();
-		this->render();
-		//std::this_thread::sleep_for(std::chrono::milliseconds(2));
+	  	this->renderScene();
+	  	this->render();
+		std::this_thread::sleep_for(std::chrono::milliseconds(2));
 	}
 	//delete this->handler;
 }
@@ -33,9 +35,9 @@ void											SFMLWindow::renderScene(void)
 	bool										match = false;
 	Coords										*position;
 
-	elements = this->elementQueue->popAll();
-	if (!elements->size())
-		return;
+  if (!this->elementQueue->getQueue().size())
+	return;
+  elements = this->elementQueue->popAll();
 
 #ifndef NDEBUG
   std::cout << "SFMLWindow:" << this->scene.size() << "workQ:" << this->elementQueue->getQueue().size() << std::endl;
@@ -77,8 +79,10 @@ void											SFMLWindow::render(void)
 	Coords										*target;
 	Coords										*distance;
 
-	this->handler->clear();
-	if (this->scene.size()) {
+	if (!this->scene.size())
+	  return;
+	  //std::cout << "SIZESIZE=" << this->scene.size() << std::endl;
+	  this->handler->clear();
 		for (element = this->scene.begin(); element != this->scene.end(); ++element)
 		{
 			coords = (*element)->getCoords();
@@ -86,17 +90,19 @@ void											SFMLWindow::render(void)
 			distance = (*element)->getDistance();
 			//coords->x = target->x;
 			//coords->y = target->y;
-			if (coords->x < target->x)
+		  	if (coords->x != target->x || coords->y != target->y || (*element)->getType())
+			{
+			  if (coords->x < target->x)
 				coords->x += distance->x;
-			else if (coords->x > target->x)
+			  else if (coords->x > target->x)
 				coords->x += distance->x;
 			if (coords->y < target->y)
 				coords->y += distance->y;
 			else if (coords->y > target->y)
 				coords->y += distance->y;
 			(*element)->print((void *)this->handler);
+			}
 		}
-	}
 	this->handler->display();
 }
 
@@ -232,6 +238,7 @@ int		SFMLWindow::getHeight(void)
 
 void SFMLWindow::setProperty(IWindow::eProperty property, bool flag)
 {
+  /*
   switch (property)
   {
     case KEY_REPEAT:
@@ -240,4 +247,5 @@ void SFMLWindow::setProperty(IWindow::eProperty property, bool flag)
     default:
       break;
   }
+   */
 }

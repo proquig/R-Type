@@ -30,9 +30,6 @@ void				SFMLSprite::init()
 void				SFMLSprite::update()
 {
 	_delta += _clock.restart();
-#ifndef NDEBUG
-	std::cout << "_isAnimated = " << _isAnimated << "_animsize = " << _anim.size() << std::endl;
-#endif
 		if (!_isAnimated)
 	{
 			//_tex.loadFromImage(_img);

@@ -7,7 +7,7 @@ namespace RType
 # define RTYPE_CLIENT_PORT_TCP 0
 # define RTYPE_CLIENT_PORT_UDP 0
 # define RTYPE_CLIENT_DEFAULT_TARGET_IP "localhost"
-# define RTYPE_CLIENT_DEFAULT_TARGET_PORT 5497
+# define RTYPE_CLIENT_DEFAULT_TARGET_PORT 4242
 //Default network properties for server
 # define RTYPE_SERVER_PORT_TCP 5496
 # define RTYPE_SERVER_PORT_UDP 5497

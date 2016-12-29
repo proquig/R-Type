@@ -87,7 +87,7 @@ bool	ClientStates::launchState(void)
 	this->controller->initAction();
   if (!_init && !init())
       return false;
-  controller->setProperty(IWindow::KEY_REPEAT, false);
+  //controller->setProperty(IWindow::KEY_REPEAT, false);
   return this->run(MENU);
 }
 
@@ -161,9 +161,6 @@ bool		ClientStates::gameState(void)
 			{
 			  if (!this->_player1)
 			  {
-#ifndef NDEBUG
-          std::cout << "I PASS HERE BITCH4" << std::endl;
-#endif
 				this->_player1 = new SFMLSprite("./../../client/media/GAME-Assets/r-typesheet42.gif");
 				//this->_player1->addRessource("CYAN_DOWN", std::vector<Cut *>{new Cut(0, 0, 33, 19), new Cut(33, 0, 33, 19)});
 				this->_player1->addRessource("CYAN", std::vector<Cut *>{new Cut(66, 0, 33, 19)});
@@ -176,9 +173,6 @@ bool		ClientStates::gameState(void)
 			}
 			else if (ptr->getType() == RType::BULLET)
 			{
-#ifndef NDEBUG
-			  std::cout << "I PASS HERE BITCH3" << std::endl;
-#endif
 			  if (!this->_bullet)
 			  {
 				this->_bullet = new SFMLSprite("./../../client/media/GAME-Assets/r-typesheet9.gif");
@@ -193,14 +187,8 @@ bool		ClientStates::gameState(void)
 			}
 			else if (ptr->getType() == RType::MONSTER)
 			{
-#ifndef NDEBUG
-			  std::cout << "I PASS HERE BITCH1" << std::endl;
-#endif
 			  if (!this->_monster)
 			  {
-#ifndef NDEBUG
-				std::cout << "I PASS HERE BITCH2" << std::endl;
-#endif
 				this->_monster = new SFMLSprite("./../../client/media/GAME-Assets/r-typesheet23.gif");
 				this->_monster->addRessource("DEFAULT", std::vector<Cut *>{
 						new Cut(0, 0, 33, 35)/*,
