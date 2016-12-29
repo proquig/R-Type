@@ -29,7 +29,8 @@ void				SFMLSprite::init()
 void				SFMLSprite::update()
 {
 	_delta += _clock.restart();
-	if (!_isAnimated)
+	std::cout << "_isAnimated = " << _isAnimated << "_animsize = " << _anim.size() << std::endl;
+		if (!_isAnimated)
 	{
 		_tex.loadFromImage(_img);
 		_spr = sf::Sprite(_tex);

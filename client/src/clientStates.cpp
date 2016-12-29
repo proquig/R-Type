@@ -161,11 +161,15 @@ bool		ClientStates::gameState(void)
 			  if (!this->_player1)
 			  {
 				this->_player1 = new SFMLSprite("./../../client/media/GAME-Assets/r-typesheet42.gif");
-				this->_player1->addRessource("CYAN_DOWN", std::vector<Cut *>{new Cut(0, 0, 33, 19), new Cut(33, 0, 33, 19)});
+				//this->_player1->addRessource("CYAN_DOWN", std::vector<Cut *>{new Cut(0, 0, 33, 19), new Cut(33, 0, 33, 19)});
 				this->_player1->addRessource("CYAN", std::vector<Cut *>{new Cut(66, 0, 33, 19)});
-				this->_player1->addRessource("CYAN_UP", std::vector<Cut *>{new Cut(99, 0, 33, 19), new Cut(132, 0, 33, 19)});
+				//this->_player1->addRessource("CYAN_UP", std::vector<Cut *>{new Cut(99, 0, 33, 19), new Cut(132, 0, 33, 19)});
+				sprite = this->_player1;
+				sprite->setAnimated(true);
+				sprite->setAnimTime(500);
+				sprite->setLoop(true);
+
 			  }
-			  sprite = this->_player1;
 			}
 			else if (ptr->getType() == RType::BULLET)
 			{
@@ -175,29 +179,32 @@ bool		ClientStates::gameState(void)
 				this->_bullet->addRessource("DEFAULT", std::vector<Cut *>{
 						new Cut(70, 72, 30, 28)
 				});
+				sprite = this->_bullet;
+				sprite->setAnimated(true);
+				sprite->setAnimTime(500);
+				sprite->setLoop(true);
 			  }
-			  sprite = this->_bullet;
 			}
-			else if (ptr->getType() == RType::BULLET)
+			else if (ptr->getType() == RType::MONSTER)
 			{
 			  if (!this->_monster)
 			  {
 				this->_monster = new SFMLSprite("./../../client/media/GAME-Assets/r-typesheet23.gif");
 				this->_monster->addRessource("DEFAULT", std::vector<Cut *>{
-						new Cut(0, 0, 33, 35),
+						new Cut(0, 0, 33, 35)/*,
 						new Cut(33, 0, 33, 35),
 						new Cut(66, 0, 33, 35),
 						new Cut(99, 0, 33, 35),
 						new Cut(132, 0, 33, 35),
 						new Cut(165, 0, 33, 35),
 						new Cut(196, 0, 33, 35),
-						new Cut(229, 0, 33, 35)
+						new Cut(229, 0, 33, 35)*/
 				});
+				sprite = this->_monster;
+				sprite->setAnimated(true);
+				sprite->setAnimTime(500);
+				sprite->setLoop(true);
 			  }
-			  sprite = this->_monster;
-			  sprite->setAnimated(true);
-			  sprite->setAnimTime(500);
-			  sprite->setLoop(false);
 			}
 			objType = (RType::eType) ptr->getType();
               this->controller->elementAction(
