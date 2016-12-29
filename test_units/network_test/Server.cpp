@@ -33,6 +33,7 @@ Server::~Server()
 {
   if (_pool)
   {
+    _pool->stop();
     if (_cond)
       _pool->deleteCondVar(_cond);
     if (_mutex)
