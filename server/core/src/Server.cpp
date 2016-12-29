@@ -16,7 +16,7 @@
 
 Server::Server(unsigned short port)
     : _socketFactory(nullptr), _pool(nullptr), _stop(false),
-    _test(nullptr), _waiting(false)
+    _test(nullptr), _waiting(false), _monster(nullptr)
 {
   _dlManager.add(0, "threadpool", "");
   _dlManager.add(0, "rtype_network", "");
@@ -26,18 +26,20 @@ Server::Server(unsigned short port)
 Server::~Server()
 {
   _network.removeObserver(this);
+  if (_pool)
+    _pool->stop();
   if (_socketFactory)
   {
     _network.stop();
+    _socketFactory->stopPoller();
     reinterpret_cast<void *(*)(ISocketFactory *)>(_dic[1]->at("destroy"))(_socketFactory);
   }
   if (_pool)
   {
-    _pool->stop();
     reinterpret_cast<void *(*)(IThreadPool *)>(_dic[0]->at("destroy"))(_pool);
   }
   if (_monster)
-	reinterpret_cast<void *(*)(Monster *)>(_dic[2]->at("destroy"))(_monster);
+    reinterpret_cast<void *(*)(Monster *)>(_dic[2]->at("destroy"))(_monster);
   for (Dictionary dic : _dic)
   {
     if (dic)
@@ -48,9 +50,6 @@ Server::~Server()
 
 bool Server::game_test(unsigned short port, unsigned short time)
 {
-  //File *file = new File("./map.txt");
-
-  //GameController* gc = _controllerFactory.create(file);
   if (port != 0)
     _test = _socketFactory->createSocketUDP(this, port);
   if (time != 0)

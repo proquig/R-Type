@@ -82,6 +82,8 @@ DWORD WINAPI ThreadPool::exec(void*)
     Task *task = _tasks.front();
     _tasks.pop();
     _taskMutex->unlock();
+    if (!_tasks.empty())
+      _condition->signal();
     (*task)();
     delete task;
   }
