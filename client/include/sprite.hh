@@ -48,6 +48,7 @@ protected:
 	bool			_isAnimated;
 	bool			_loop;
 	int				_cnt;
+	bool			_isLoaded = false;
 
 public:
 

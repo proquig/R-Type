@@ -20,7 +20,7 @@ void	SFMLWindow::run(WorkQueue<AElement *> *_elemqueue, WorkQueue<Event *> *_eve
 		this->pollEvent();
 		this->renderScene();
 		this->render();
-//		std::this_thread::sleep_for(std::chrono::milliseconds(2));
+		//std::this_thread::sleep_for(std::chrono::milliseconds(20));
 	}
 	//delete this->handler;
 }

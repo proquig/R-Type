@@ -13,16 +13,17 @@ SFMLSprite::~SFMLSprite()
 
 void				SFMLSprite::init()
 {
-	//_delta = _clock.restart();
-	//std::cout << "isAnimated = " << _isAnimated << std::endl;
-	//_isAnimated = false;
-	if (_tex.loadFromFile(_path));
-	if (_img.loadFromFile(_path))
+	if (_isLoaded == false)
 	{
-		_img.createMaskFromColor(sf::Color::Black);
+		//if (_tex.loadFromFile(_path));
+		if (_img.loadFromFile(_path))
+		{
+			_img.createMaskFromColor(sf::Color::Black);
+			_tex.loadFromImage(_img);
+			_spr = sf::Sprite(_tex);
+		}
+		_isLoaded = true;
 	}
-		//std::cout << "Texture loaded." << std::endl;
-	//Generation du sprite courrant a partir du path
 	return;
 }
 
@@ -32,9 +33,9 @@ void				SFMLSprite::update()
 	std::cout << "_isAnimated = " << _isAnimated << "_animsize = " << _anim.size() << std::endl;
 		if (!_isAnimated)
 	{
-		_tex.loadFromImage(_img);
-		_spr = sf::Sprite(_tex);
-		//_spr.setTextureRect(_anim[_name]->at(0));
+			//_tex.loadFromImage(_img);
+			//_spr = sf::Sprite(_tex);
+			//_spr.setTextureRect(_anim[_name]->at(0));
 		_spr.setTextureRect(_curr);
 		sf::Vector2f scale = sf::Vector2f(_size.first, _size.second);
 		_spr.setScale(scale);
@@ -56,12 +57,12 @@ void				SFMLSprite::update()
 				}
 			}
 		}
-		_tex.loadFromImage(_img);
-		_spr = sf::Sprite(_tex);
+		//_tex.loadFromImage(_img);
+		//_spr = sf::Sprite(_tex);
 		//sf::IntRect rect = _currAnim->at(_cnt);
+		_spr.setTextureRect(_curr);
 		sf::Vector2f scale = sf::Vector2f(_size.first, _size.second);
 		_spr.setScale(scale);
-		_spr.setTextureRect(_curr);
 	}
 	return;
 }

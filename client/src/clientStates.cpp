@@ -221,7 +221,7 @@ bool		ClientStates::gameState(void)
 				sprite
             );
           }
-          //this->controller->elementAction(0, RType::SET, 0, 0, 0, 10);
+          this->controller->elementAction(0, RType::SET, 0, 0, 0, 10);
         }
         delete packet;
       }
