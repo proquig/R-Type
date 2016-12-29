@@ -14,8 +14,7 @@
 # include "element.hh"
 # include "DLManager.hh"
 # include "IObserver.hpp"
-# include "SFMLSoundLoader.hh"
-# include "ISoundLoader.hh"
+#include "SFMLSprite.hh"
 
 # define Y_SPEED	10
 # define X_SPEED	10
@@ -45,7 +44,6 @@ private:
 
 	std::vector<state>	history;
 	std::string			error;
-	SFMLSoundLoader		soundLoader;
 
 	// Controllers
 	GraphicalController	*controller;
@@ -74,7 +72,7 @@ private:
 	//Timer
 	std::chrono::high_resolution_clock _clock;
 	std::chrono::high_resolution_clock::time_point _ref;
-
+  	SFMLSprite*	_player1;
 
 public:
 	ClientStates();

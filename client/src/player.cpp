@@ -1,5 +1,4 @@
 #include "player.hh"
-#include "SFMLSprite.hh"
 
 Player::Player(Color color)
 {
@@ -24,6 +23,7 @@ Player::Player(Color color)
 
 void	Player::loadSprites(GLib lib)
 {
+  /*
 	switch (lib)
 	{
 	case SFML:
@@ -53,6 +53,7 @@ void	Player::loadSprites(GLib lib)
 	this->sprite->addRessource("BLUE_DOWN", std::vector<Cut *>{new Cut(0, 68, 33, 19), new Cut(33, 68, 33, 19)});
 	this->sprite->addRessource("BLUE", std::vector<Cut *>{new Cut(66, 68, 33, 19)});
 	this->sprite->addRessource("BLUE_UP", std::vector<Cut *>{new Cut(99, 68, 33, 19), new Cut(132, 68, 33, 19)});
+   */
 	this->sprite->setAnimated(false);
 	this->sprite->setAnimTime(500);
 	this->sprite->setLoop(false);

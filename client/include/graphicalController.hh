@@ -42,6 +42,7 @@ public:
 	bool	initAction(void);
 	void	windowAction(void);
 	void	elementAction(unsigned int, RType::eType, int, int, float, int);
+  	void	elementAction(unsigned int, RType::eType, int, int, float, int, ASprite* sprite);
 	Event	*eventAction(void);
 	void	addText(unsigned int, std::string);
 	std::string	getIp(unsigned int);

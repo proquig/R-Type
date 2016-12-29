@@ -6,12 +6,6 @@
 # include "RType.hpp"
 # include "sprite.hh"
 
-# define PTC_Obstacle		(char)1
-# define PTC_MONSTER	(char)2
-# define PTC_MISSILE	(char)4
-# define PTC_OBSTACLE	(char)8
-# define PTC_SET		(char)16
-
 enum GLib
 {
 	SFML
@@ -105,6 +99,7 @@ public:
   RType::eType					getType(void) const { return (this->type); }
 	float						getScale(void) const { return (this->scale); }
 	float						getTtl(void) const { return (this->ttl); }
+  	ASprite*					getSprite() const { return (this->sprite); }
 
 
 	/////////////////////////////////////////////////////////////////
@@ -119,6 +114,7 @@ public:
 	void	setAngle(float _angle) { this->angle = _angle; }
 	void	setSpeed(std::chrono::milliseconds _speed) { this->speed = _speed; }
 	void	setType(RType::eType _type) { this->type = _type; }
+  	void 	setSprite(ASprite* sprite) { this->sprite = sprite; }
 };
 
 class				ElementFactory {

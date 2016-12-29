@@ -12,13 +12,12 @@
 ClientStates::ClientStates()
     : _init(false), _stop(false), _waiting(false), _input(0),
     _cond(nullptr), _mutex(nullptr), _pool(nullptr),
-    _socketFactory(nullptr), _socket(nullptr)
+    _socketFactory(nullptr), _socket(nullptr),
+	_player1(nullptr)//, _player2(nullptr), _player3(nullptr), _player4(nullptr), _bullet(nullptr)
 {
   memset(&_sockaddr, '0', sizeof(_sockaddr));
   _dlManager.add(0, "threadpool", "");
   _dlManager.add(0, "rtype_network", "");
-  soundLoader.initSoundMap();
-  soundLoader.getSound(ISoundLoader::eSound::eMain);
 }
 
 ClientStates::~ClientStates()
@@ -156,14 +155,22 @@ bool		ClientStates::gameState(void)
           GameDataPacket *pak = (GameDataPacket *) packet;
           for (GameElement* ptr : pak->getGameElements())
           {
-              objType = (RType::eType) ptr->getType();
+			if (ptr->getType() == RType::PLAYER && !this->_player1)
+			{
+			  this->_player1 = new SFMLSprite("./../../client/media/GAME-Assets/r-typesheet42.gif");
+			  this->_player1->addRessource("CYAN_DOWN", std::vector<Cut *>{new Cut(0, 0, 33, 19), new Cut(33, 0, 33, 19)});
+			  this->_player1->addRessource("CYAN", std::vector<Cut *>{new Cut(66, 0, 33, 19)});
+			  this->_player1->addRessource("CYAN_UP", std::vector<Cut *>{new Cut(99, 0, 33, 19), new Cut(132, 0, 33, 19)});
+			}
+			objType = (RType::eType) ptr->getType();
               this->controller->elementAction(
                 ptr->getId(),
                 objType,
                 ptr->getX(),
                 ptr->getY(),
                 ptr->getAngle(),
-                ptr->getSpeed()
+                ptr->getSpeed(),
+				this->_player1
             );
           }
           this->controller->elementAction(0, RType::SET, 0, 0, 0, 10);
