@@ -57,5 +57,6 @@ void	Missile::loadSprites(GLib lib)
 void	Missile::print(void * window)
 {
 	this->sprite->setAnimation(this->skin, this->coords, 1);
-	this->sprite->print(window);
+  	this->sprite->setAnimated(false);
+  	this->sprite->print(window);
 }

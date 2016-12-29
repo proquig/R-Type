@@ -71,16 +71,17 @@ void	Player::print(void * window)
 	else if (this->coords->y > this->target->y)
 		this->coords->y -= 8;
 		*/
+  std::cout << "I PASS SJAJJA" << std::endl;
 	this->animation = this->skin;
 	this->sprite->setAnimation(this->animation, this->coords, 1);
 	this->sprite->setAnimated(false);
-	if (this->angle <= -45) {
+/*	if (this->angle <= -45) {
 		this->sprite->setAnimation(this->animation + "_UP", this->coords, 1);
 		this->sprite->setAnimated(true);
 	}
 	if (this->angle >= 45) {
 		this->sprite->setAnimation(this->animation + "_DOWN", this->coords, 1);
 		this->sprite->setAnimated(true);
-	}
+	}*/
 	this->sprite->print(window);
 }

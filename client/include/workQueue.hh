@@ -70,8 +70,8 @@ public:
 
 	void	flush(void) {
 		this->access.lock();
-		for (T* t : this->queue)
-			delete t;
+		//for (T* t : this->queue)
+		//	delete t;
 		this->queue.clear();
 		this->access.unlock();
 	}

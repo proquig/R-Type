@@ -160,35 +160,38 @@ bool		ClientStates::gameState(void)
 			{
 			  if (!this->_player1)
 			  {
+				std::cout << "I PASS HERE BITCH4" << std::endl;
 				this->_player1 = new SFMLSprite("./../../client/media/GAME-Assets/r-typesheet42.gif");
 				//this->_player1->addRessource("CYAN_DOWN", std::vector<Cut *>{new Cut(0, 0, 33, 19), new Cut(33, 0, 33, 19)});
 				this->_player1->addRessource("CYAN", std::vector<Cut *>{new Cut(66, 0, 33, 19)});
 				//this->_player1->addRessource("CYAN_UP", std::vector<Cut *>{new Cut(99, 0, 33, 19), new Cut(132, 0, 33, 19)});
-				sprite = this->_player1;
-				sprite->setAnimated(true);
-				sprite->setAnimTime(500);
-				sprite->setLoop(true);
-
+				this->_player1->setAnimated(false);
+				this->_player1->setAnimTime(500);
+				this->_player1->setLoop(true);
 			  }
+			  sprite = this->_player1;
 			}
 			else if (ptr->getType() == RType::BULLET)
 			{
+			  std::cout << "I PASS HERE BITCH3" << std::endl;
 			  if (!this->_bullet)
 			  {
 				this->_bullet = new SFMLSprite("./../../client/media/GAME-Assets/r-typesheet9.gif");
 				this->_bullet->addRessource("DEFAULT", std::vector<Cut *>{
 						new Cut(70, 72, 30, 28)
 				});
-				sprite = this->_bullet;
-				sprite->setAnimated(true);
-				sprite->setAnimTime(500);
-				sprite->setLoop(true);
+				this->_bullet->setAnimated(false);
+				this->_bullet->setAnimTime(500);
+				this->_bullet->setLoop(true);
 			  }
+			  sprite = this->_bullet;
 			}
 			else if (ptr->getType() == RType::MONSTER)
 			{
+			  std::cout << "I PASS HERE BITCH1" << std::endl;
 			  if (!this->_monster)
 			  {
+				std::cout << "I PASS HERE BITCH2" << std::endl;
 				this->_monster = new SFMLSprite("./../../client/media/GAME-Assets/r-typesheet23.gif");
 				this->_monster->addRessource("DEFAULT", std::vector<Cut *>{
 						new Cut(0, 0, 33, 35)/*,
@@ -200,13 +203,14 @@ bool		ClientStates::gameState(void)
 						new Cut(196, 0, 33, 35),
 						new Cut(229, 0, 33, 35)*/
 				});
-				sprite = this->_monster;
-				sprite->setAnimated(true);
-				sprite->setAnimTime(500);
-				sprite->setLoop(true);
+				this->_monster->setAnimated(false);
+				this->_monster->setAnimTime(500);
+				this->_monster->setLoop(true);
 			  }
+			  sprite = this->_monster;
 			}
 			objType = (RType::eType) ptr->getType();
+			//if (objType == RType::PLAYER || objType == RType::BULLET || objType == RType::MONSTER)
               this->controller->elementAction(
                 ptr->getId(),
                 objType,
@@ -217,7 +221,7 @@ bool		ClientStates::gameState(void)
 				sprite
             );
           }
-          this->controller->elementAction(0, RType::SET, 0, 0, 0, 10);
+          //this->controller->elementAction(0, RType::SET, 0, 0, 0, 10);
         }
         delete packet;
       }

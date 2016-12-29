@@ -40,8 +40,8 @@ void											SFMLWindow::renderScene(void)
 	std::cout << "SFMLWindow:" << this->scene.size() << "workQ:" << this->elementQueue->getQueue().size() << std::endl;
 	for (element = this->scene.begin(); element != this->scene.end(); ) {
 		if ((*element)->getTtl() <= (float)0.0 && (*element)->getType() != RType::SET) {
-            (*element)->destroy();
-            delete (*element);
+            //(*element)->destroy();
+            //delete (*element);
             element = this->scene.erase(element);
 		}
 		else
