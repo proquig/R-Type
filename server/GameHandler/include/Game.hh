@@ -35,6 +35,7 @@ public:
 	virtual void						addElem(RType::IElement*);
 	virtual const Rectangle&			getCadre() const;
   	virtual bool						deleteElem(RType::IElement *element);
+  	virtual bool						isPresent(RType::IElement *element);
 };
 
 #endif

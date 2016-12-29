@@ -30,20 +30,55 @@ CollisionHandler&															CollisionHandler::operator=(const CollisionHandl
 	return *this;
 }
 
+bool																		CollisionHandler::doesAlreadyDetected(RType::IElement* first, RType::IElement* second, std::vector<std::pair<RType::IElement*, RType::IElement*>> vec, std::vector<RType::IElement*> entitys)
+{
+	std::pair<RType::IElement*, RType::IElement*>							pairone = std::make_pair<>(first, second);
+	std::pair<RType::IElement*, RType::IElement*>							pairtwo = std::make_pair<>(second, first);
+
+  if (second != NULL && first->getType() != second->getType() && first->getIdFrom() != second->getId() && second->getIdFrom() != first->getId())
+  {
+	for (std::pair<RType::IElement*, RType::IElement*> pair : vec)
+	{
+		if (pair == pairone || pair == pairtwo)
+		{
+			return true;
+		}
+	}
+	  int idone = first->getIdFrom();
+	  int idtwo = second->getIdFrom();
+	  for (RType::IElement *elem : entitys)
+	  {
+		if (elem->getId() == idtwo && elem->getType() == first->getType())
+		{
+		  return true;
+		}
+		if (elem->getId() == idone && elem->getType() == second->getType())
+		{
+		  return true;
+		}
+	  }
+	  return false;
+	}
+	return true;
+}
+
 /*! \brief foundCollisions of CollisionHandler
 * takes a list of entitys on the map
 * returns a vector of vectors of entitys in collision
 */
-std::vector<RType::IElement*> 														CollisionHandler::foundCollisions(std::vector<RType::IElement*>& entitys, std::vector<int>* collisionId)
+std::vector<std::pair<RType::IElement*, RType::IElement*> > 						CollisionHandler::foundCollisions(std::vector<RType::IElement*>& entitys, std::vector<int>* collisionId)
 {
 	std::vector<RType::IElement*>::iterator											it;
 	std::map<RType::IElement*, Rectangle>::iterator									mit;
 	std::map<RType::IElement*, Rectangle>::iterator									sit;
 	std::vector<Rectangle>														current;
-	std::vector<RType::IElement*>													ret;
 	std::vector<RType::IElement*>													tmp;
+	RType::IElement*															first = NULL;
+	RType::IElement*															second = NULL;
+	std::vector<std::pair<RType::IElement*, RType::IElement*> >					result;
 
-	_quadtree.clear();
+  _quadtree.clear();
+  _rectangles.clear();
 	for (it = entitys.begin(); it != entitys.end(); it++)
 	{
 		_rectangles[(*it)] = *(new Rectangle((*it)->getX(), (*it)->getY(), (*it)->getSizeX(), (*it)->getSizeY(), (*it)->getId()));
@@ -57,18 +92,24 @@ std::vector<RType::IElement*> 														CollisionHandler::foundCollisions(st
 		{
 			if (isCollision((*vit), (*mit).second))
 			{
-			  std::cout << "COLLISION" << std::endl;
 				if ((*mit).first && collisionId) {
 					tmp = handleCollision((*vit).getId(), (*mit).first->getId(), entitys, collisionId);
 					while (tmp.size() != 0) {
-						ret.push_back(tmp.back());
+						if (first == NULL)
+							first = tmp.back();
+						else
+							second = tmp.back();
 						tmp.pop_back();
 					}
+					if (!doesAlreadyDetected(first, second, result, entitys))
+						result.push_back(std::make_pair<>(first, second));
+					first = NULL;
+					second = NULL;
 				}
 			}
 		}
 	}
-	return (ret);
+	return	result;
 }
 
 /*! \brief handleCollision of CollisionHandler
@@ -117,20 +158,20 @@ std::vector<RType::IElement*>														CollisionHandler::handleCollision(int
 		//delete(entitys[iS]);
 		//entitys.erase(entitys.begin() + iS);
 	}
+	ret.push_back(f);
+	ret.push_back(s);
 	return (ret);
 }
 
 void																		CollisionHandler::addScore(std::vector<RType::IElement*>& entities, RType::IElement * entity)
 {
 	if (entity) {
-		if (entity->getType() == RType::BULLET ) {
+		if (entity->getType() == RType::BULLET) {
 			for (std::vector<RType::IElement *>::iterator it = entities.begin(); it != entities.end(); it++) {
 				if (*it) {
 					int id = (*it)->getId();
 					if (entity->getIdFrom())
 						if (id == entity->getIdFrom()) {
-							//std::cout << "id = " << entity->getIdFrom();
-							//(*it)->setHighScore((*it)->getHighScore() + 10);
 						}
 				}
 			}

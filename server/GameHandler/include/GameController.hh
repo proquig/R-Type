@@ -1,6 +1,7 @@
 #ifndef GAMEHANDLER_GAMECONTROLLER_HH
 #define GAMEHANDLER_GAMECONTROLLER_HH
 
+#include			<algorithm>
 #include			"CollisionHandler.hh"
 #include			"IObserver.hpp"
 #include			"IGame.hh"
@@ -39,7 +40,7 @@ public:
 	int					getTick() const;
 	virtual void		update(int);
 	virtual void		update(IObservable*, int);
-	ElementFactory&		getElementFactory();
+	ElementFactory*		getElementFactory();
   virtual ISocket*		getSocket();
 	IGame*				getGame() const;
 };

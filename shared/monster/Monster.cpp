@@ -4,20 +4,21 @@
 
 #include "Monster.hh"
 
-Monster::Monster(uint32_t idFrom, uint32_t id, uint16_t type, uint16_t x, uint16_t y, uint16_t hp, uint16_t sizex, uint16_t sizey, uint16_t damage, float angle, char speed, ElementFactory *factory)
-        : GameElement::GameElement(idFrom, id, type, x, y, hp, sizex, sizey, damage, angle, speed)
+Monster::Monster(uint32_t idFrom, uint16_t type, uint16_t x, uint16_t y, uint16_t hp, uint16_t sizex, uint16_t sizey, uint16_t damage, float angle, char speed, ElementFactory *factory)
+        : GameElement::GameElement(idFrom, factory->newID(), type, x, y, hp, sizex, sizey, damage, angle, speed)
 {
     _factory = factory;
-    _direction = false;
+    _direction = 1;
+    _mov = 0;
 }
 
-Monster::Monster(uint32_t id, uint16_t x, uint16_t y, ElementFactory *factory) :
-        GameElement::GameElement(-1, id, RType::MONSTER, x, y, 3, 10, 10, 1, 0, 10)
+Monster::Monster(uint16_t x, uint16_t y, ElementFactory *factory) :
+        GameElement::GameElement(-1, factory->newID(), RType::MONSTER, x, y, 3, 10, 10, 1, 0, 10)
 {
     _factory = factory;
-    _direction = false;
+    _direction = 1;
+    _mov = 0;
 }
-
 
 Monster::~Monster()
 {
@@ -34,23 +35,24 @@ std::vector<RType::IElement*>			 Monster::collideWith(RType::IElement* elem)
 
 bool    Monster::move()
 {
-   //_direction ? this->_y++ : (!_y ? this->_y-- : _y = _y);
-    if (!_direction)
-        this->_y++;
-    else
-        _y == 0 ? _y = 0 : this->_y--;
-    return _y % 3 != 0;
+    //this->_mov = (uint8_t) ((this->_mov + 1) % 3);
+    this->_mov++;
+    _direction = (uint8_t) (!(this->_mov % 3) ? -_direction : _direction);
+    this->_y += 10 * _direction;
+    this->_x -= 5;
+    return ((this->_mov % 9) != 0);
 }
 
 
 Shot                            *Monster::shot()
 {
-    return _factory->createShot(this->_id, this->_x, this->_y, 1, 1, 1, 180, 5);
+//    return _factory->createShot(this->_id, this->_x, this->_y, 1, 1, 1, 180, 5);
+    return ((Shot *) _factory->create(this->_id, -1, RType::MISSILE, this->_x, this->_y, 10, 10, 10, 10, -90, 8));
 }
 
 
-RType::IElement *NewMonster(uint32_t id, uint16_t x, uint16_t y, ElementFactory *factory) {
-    RType::IElement *monster = new Monster(id, x, y, factory);
+RType::IElement *NewMonster(uint16_t x, uint16_t y, ElementFactory *factory) {
+    RType::IElement *monster = new Monster(x, y, factory);
     return monster;
 }
 

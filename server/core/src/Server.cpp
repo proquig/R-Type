@@ -1,5 +1,6 @@
 #include <iostream>
 #include <thread>
+#include <set>
 #include "Server.hpp"
 #include "Room.hpp"
 #include "APacket.hh"
@@ -19,6 +20,7 @@ Server::Server(unsigned short port)
 {
   _dlManager.add(0, "threadpool", "");
   _dlManager.add(0, "rtype_network", "");
+  _dlManager.add(0, "monster", "");
 }
 
 Server::~Server()
@@ -34,6 +36,8 @@ Server::~Server()
     _pool->stop();
     reinterpret_cast<void *(*)(IThreadPool *)>(_dic[0]->at("destroy"))(_pool);
   }
+  if (_monster)
+	reinterpret_cast<void *(*)(Monster *)>(_dic[2]->at("destroy"))(_monster);
   for (Dictionary dic : _dic)
   {
     if (dic)
@@ -104,24 +108,26 @@ void Server::loop()
   std::vector<std::pair<std::string, struct sockaddr*>> *vector;
   APacket *packet;
 
-  for (Room* room :  this->_rooms)
-	this->handleRoom(room);
+  /*
   for (Room* room : this->_rooms)
     for (Player* player : room->getPlayers())
       {
         //this->handleCollision(room, player);
         this->realizeMovement(room, player);
       }
-
+*/
   //PACKET EMISSION
   if (_test && _rooms.size())
-	_rooms.front()->sendNotification(_test);
+	for (Room* room : this->_rooms)
+	  room->sendNotification(_test);
   //PACKET RECEPTION
   if ((vector = _packets.popAll()) != nullptr && vector->size() != 0)
     for (std::pair<std::string, struct sockaddr*> pair : (*vector))
       if ((packet = APacket::create(pair.first)) != nullptr)
         if (packet->getType() == APacket::INPUT_DATA)
           this->handleSocket(pair.second, packet);
+  for (Room* room : this->_rooms)
+	this->handleRoom(room);
 }
 
 void Server::stop(unsigned int delay)
@@ -176,10 +182,13 @@ void Server::handleSocket(struct sockaddr *addr, APacket* packet)
 	}
 	else
 	{
-	  if ((player = this->_rooms[i]->getPlayerFromSock(addr)))
-            this->handleMovement(this->_rooms[i], player, (InputPacket*)packet);
-	  else
-            std::cout << "ERROR" << std::endl;
+	  if ((player = this->_rooms[i]->getPlayerFromSock(addr)) && player->isAlive())
+	  {
+		this->handleMovement(this->_rooms[i], player, (InputPacket*)packet);
+		this->realizeMovement(this->_rooms[i], player);
+	  }
+	  //else
+		//std::cout << "ERROR" << std::endl;
 	}
 }
 
@@ -203,20 +212,71 @@ void Server::addPlayer(struct sockaddr *sock)
   this->_rooms.back()->sendNotification(_test);
 }
 
+/*#include <set>
+#include <algorithm>
+
+void tallyList(std::vector<RType::IElement*> &list)
+{
+  //ends function if list is empty
+  if (list.empty())
+  {
+	std::cout << "OOPSOOPS1" << std::endl;
+	return;
+  }
+
+  //creates a set which containes the unique words within list
+  std::set<RType::IElement*> unique(list.begin(), list.end());
+  if (unique.size() != list.size())
+	std::cout << "OOPSOOPS2 " << unique.size() << " " << list.size() << std::endl;
+}*/
+
 void Server::handleRoom(Room* room)
 {
- // std::cout << room->getGameController()->getGame()->getMap().size() << std::endl;
+  std::vector<RType::IElement*>	del;
+
+  this->handleMonsters(room);
   this->handleCollision(room);
   for (RType::IElement* elem : room->getGameController()->getGame()->getMap())
+  {
 	if (elem->getType() == RType::BULLET)
 	  if (elem->getX() > 799)
 	  {
-		room->getGameController()->getGame()->deleteElem(elem);
+		//room->getGameController()->getGame()->deleteElem(elem);
 		//delete elem;
-		std::cout << "ELEM DELETED" << std::endl;
+		del.push_back(elem);
+		std::cout << "ELEM DELETED WITH ID" << elem->getId() << std::endl;
 	  }
 	  else
-		elem->setX(elem->getX() + uint16_t(10));
+		elem->setX(elem->getX() + (elem->getSpeed() * (elem->getAngle() == (float)90 ? 1 : -1)));
+  }
+  std::set<RType::IElement*> unique(del.begin(), del.end());
+  for (RType::IElement* elem : unique)
+  {
+	room->getGameController()->getGame()->deleteElem(elem);
+	delete elem;
+  }
+}
+
+void Server::handleMonsters(Room* room)
+{
+  uint16_t rand;
+  Dictionary dic;
+  rand = (uint16_t)(std::rand() % 20);
+  if (!rand)
+  {
+	if ((dic = _dlManager.handler.getDictionaryByName("monster")) != NULL
+		&& !(*_dic.insert(_dic.end(), dic))->empty()
+		&& (_monster = reinterpret_cast<Monster *(*)(int, int, ElementFactory*)>(_dic.back()->at("new"))(900, (std::rand() % 350) + 50, room->getGameController()->getElementFactory())) != nullptr)
+	{
+	  this->_monster->setType(RType::MONSTER);
+	  room->getGameController()->getGame()->addElem(this->_monster);
+	  std::cout << "_monster spawned" << std::endl;
+	}
+  }
+  for (RType::IElement* elem : room->getGameController()->getGame()->getMap())
+	if (elem->getType() == RType::MONSTER)
+	  if (!((Monster*)elem)->move())
+		room->getGameController()->getGame()->addElem(((Monster*)elem)->shot());
 }
 
 void Server::handleMovement(Room* room, Player* player, InputPacket* packet)
@@ -251,13 +311,13 @@ void Server::realizeMovement(Room *room, Player *player)
 	if (((player->getY() + (dir * player->getSpeed())) > 0 && ((player->getY() + (dir * player->getSpeed())) < 450)))
 	  player->setY(player->getY() + (dir * player->getSpeed()));
   }
-  if (input & RType::ENTER)
+  if (input & RType::SPACE)
   {
 	std::cout << "BULLET" << std::endl;
     RType::AElement *elem;
-    elem = room->getGameController()->getElementFactory().create(player->getId(), -1, RType::BULLET,
+    elem = room->getGameController()->getElementFactory()->create(player->getId(), -1, RType::MISSILE,
                                                                  player->getX() + (player->getSizeX() / 2) + 1,
-                                                                 player->getY(), 100, 5, 5, 100, 0,
+                                                                 player->getY(), 100, 5, 5, 100, 90,
                                                                  player->getSpeed() + 1);
     room->getGameController()->getGame()->addElem(elem);
   }
@@ -266,7 +326,7 @@ void Server::realizeMovement(Room *room, Player *player)
 void Server::handleCollision(Room* room)
 {
   //std::cout << "HANDLE COLLISION" << std::endl;
-  for (Player* pl : room->getPlayers())
+  //for (Player* pl : room->getPlayers())
 	//if (player != pl)
-	room->getGameController()->handleCollisions();
+  room->getGameController()->handleCollisions();
 }

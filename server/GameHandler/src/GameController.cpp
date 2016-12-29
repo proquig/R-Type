@@ -37,7 +37,6 @@ bool			GameController::initGame(File* file)
 	while ((elem = parser.parse()) != NULL)
 	{
 		_game->addElem(elem);
-		std::cout << "Element added to game : " << elem->getType() << "|" << elem->getId() << std::endl;
 	}
 }
 
@@ -49,20 +48,41 @@ void			GameController::startGame()
 
 void			GameController::handleCollisions()
 {
-	std::vector<int>			destructElementId;
-	std::vector<RType::IElement*>		aEntity;
+  std::vector<int>			destructElementId;
+  std::vector<std::pair<RType::IElement*, RType::IElement*> >		aEntity;
+  std::vector<RType::IElement*>	del;
 
-	aEntity = _collisionHandler.foundCollisions(_game->getMap(), &destructElementId);
-//	for (std::vector<RType::IElement *>::iterator it = aEntity.begin(); it != aEntity.end(); ++it)
-//	{
-//		std::cout << "Collision on entity " << (*it)->getId() << std::endl;
-//		_game->getScene()->getMap().push_back((*it));
-//	}
-//	for (std::vector<int>::iterator it = destructElementId.begin(); it != destructElementId.end(); ++it)
-//	{
-//		std::cout << "sendDestructElement" << std::endl;
-//		//sendDestructElement((*it));
-//	}
+  aEntity = _collisionHandler.foundCollisions(_game->getMap(), &destructElementId);
+  std::cout << "TO DELETE = " << aEntity.size() << std::endl;
+  for (std::pair<RType::IElement*, RType::IElement*> element : aEntity)
+  {
+	std::cout << "OK" << std::endl;
+	if (std::find(del.begin(), del.end(), element.first) == del.end())
+	  del.push_back(element.first);
+	if (std::find(del.begin(), del.end(), element.second) == del.end())
+	  del.push_back(element.second);
+  }
+  for (RType::IElement* elem : del)
+  {
+	this->_game->deleteElem(elem);
+	if (elem->getType() != RType::PLAYER)
+	  delete elem;
+  }
+	/*if (element.first->getType() != RType::PLAYER)
+	  delete element.first;
+	else
+	{
+	  ((Player*)element.first)->kill();
+	  std::cout << "COLLISION PLAYER" << std::endl;
+	}*/
+	/*
+	if (element.second->getType() != RType::PLAYER)
+	  delete element.second;
+	else
+	{
+	  ((Player*)element.second)->kill();
+	  std::cout << "COLLISION PLAYER 2" << std::endl;
+	}*/
 }
 
 void GameController::update(int timer)
@@ -71,8 +91,6 @@ void GameController::update(int timer)
 	if (_tick >= _delta)
 	{
 		_game->display();
-		std::cout << "Tick = " << _tick << "|GameSize=" << _game->getMap().size() <<  std::endl;
-		_tick = 0;
 		handleCollisions();
 		//appel tes fonctions ici :D �a devrais marcher.
 		// Faire attention de bien set la variable _delta (en milisecondes entre chaque passage)
@@ -94,9 +112,9 @@ void GameController::update(IObservable *o, int status)
 		update(status);
 }
 
-ElementFactory& GameController::getElementFactory()
+ElementFactory* GameController::getElementFactory()
 {
-	return _elemFact;
+	return &_elemFact;
 }
 
 ISocket *GameController::getSocket()
