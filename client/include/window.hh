@@ -35,13 +35,16 @@ struct Event
 
 class IWindow
 {
-
 public:
+	enum eProperty {
+		KEY_REPEAT,
+	};
 
 	virtual void	run(WorkQueue<AElement *> *, WorkQueue<Event *> *, IObservable* = nullptr) = 0;
 	virtual void	pollEvent(void) = 0;
 	virtual void	renderScene(void) = 0;
 	virtual void	render(void) = 0;
+	virtual void setProperty(IWindow::eProperty, bool) = 0;
 
 	/////////////////////////////////////////////////
 	// GETTERS

@@ -71,7 +71,9 @@ void	Player::print(void * window)
 	else if (this->coords->y > this->target->y)
 		this->coords->y -= 8;
 		*/
+#ifndef NDEBUG
   std::cout << "I PASS SJAJJA" << std::endl;
+#endif
 	this->animation = this->skin;
 	this->sprite->setAnimation(this->animation, this->coords, 1);
 	this->sprite->setAnimated(false);

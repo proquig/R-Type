@@ -53,10 +53,14 @@ void			GameController::handleCollisions()
   std::vector<RType::IElement*>	del;
 
   aEntity = _collisionHandler.foundCollisions(_game->getMap(), &destructElementId);
+#ifndef NDEBUG
   std::cout << "TO DELETE = " << aEntity.size() << std::endl;
+#endif
   for (std::pair<RType::IElement*, RType::IElement*> element : aEntity)
   {
+#ifndef NDEBUG
 	std::cout << "OK" << std::endl;
+#endif
 	if (std::find(del.begin(), del.end(), element.first) == del.end())
 	  del.push_back(element.first);
 	if (std::find(del.begin(), del.end(), element.second) == del.end())

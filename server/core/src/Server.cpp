@@ -244,7 +244,9 @@ void Server::handleRoom(Room* room)
 		//room->getGameController()->getGame()->deleteElem(elem);
 		//delete elem;
 		del.push_back(elem);
+#ifndef NDEBUG
 		std::cout << "ELEM DELETED WITH ID" << elem->getId() << std::endl;
+#endif
 	  }
 	  else
 		elem->setX(elem->getX() + (elem->getSpeed() * (elem->getAngle() == (float)90 ? 1 : -1)));

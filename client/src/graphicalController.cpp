@@ -18,6 +18,12 @@ GraphicalController::GraphicalController(GLib lib, int _w, int _h, std::string _
 	}
 }
 
+void GraphicalController::setProperty(IWindow::eProperty prop, bool flag)
+{
+  if (window)
+    window->setProperty(prop, flag);
+}
+
 bool	GraphicalController::initAction(void)
 {
 	this->scene = std::vector<AElement *>();
@@ -36,7 +42,9 @@ void	GraphicalController::elementAction(unsigned int id, RType::eType type, int 
   bool										match = false;
   float										scale = 0.f;
 
+#ifndef NDEBUG
 	std::cout << "graphicalController:" << this->scene.size() << "workQ:" << windowQueue->getQueue().size()  <<std::endl;
+#endif
 	if (this->scene.size()) {
 		for (elem = this->scene.begin(); elem != this->scene.end(); ) {
 			(*elem)->live();

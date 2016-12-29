@@ -39,6 +39,7 @@ public:
 
 	GraphicalController(GLib, int, int, std::string);
 
+  void setProperty(IWindow::eProperty, bool);
 	bool	initAction(void);
 	void	windowAction(void);
 	void	elementAction(unsigned int, RType::eType, int, int, float, int);

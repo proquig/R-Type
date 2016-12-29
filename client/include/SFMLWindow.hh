@@ -23,7 +23,7 @@ public:
 	void *	getHandler(void);
 	int		getWidth(void);
 	int		getHeight(void);
-
+	void setProperty(IWindow::eProperty, bool);
 };
 
 #endif /* !SFML_WINDOW_HH__ */
