@@ -11,7 +11,7 @@
 class														CollisionHandler
 {
 private:
-	std::map<RType::IElement*, Rectangle>							_rectangles;
+	std::map<RType::IElement*, Rectangle>					_rectangles;
 	int														_sizeX;
 	int														_sizeY;
 	Quadtree												_quadtree;

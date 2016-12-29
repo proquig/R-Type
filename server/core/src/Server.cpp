@@ -115,16 +115,16 @@ void Server::loop()
     }
   //PACKET EMISSION
   if (_test && _rooms.size())
-    for (Room *room : this->_rooms)
-      room->sendNotification(_test);
+	for (Room* room : this->_rooms)
+	  room->sendNotification(_test);
   //PACKET RECEPTION
   if ((vector = _packets.popAll()) != nullptr && vector->size() != 0)
     for (std::pair<std::string, struct sockaddr *> pair : (*vector))
       if ((packet = APacket::create(pair.first)) != nullptr)
         if (packet->getType() == APacket::INPUT_DATA)
           this->handleSocket(pair.second, packet);
-  for (Room *room : this->_rooms)
-    this->handleRoom(room);
+  for (Room* room : this->_rooms)
+	this->handleRoom(room);
 }
 
 void Server::stop(unsigned int delay)
@@ -209,34 +209,17 @@ void Server::addPlayer(struct sockaddr *sock)
   this->_rooms.back()->sendNotification(_test);
 }
 
-/*#include <set>
-#include <algorithm>
-
-void tallyList(std::vector<RType::IElement*> &list)
-{
-  //ends function if list is empty
-  if (list.empty())
-  {
-	std::cout << "OOPSOOPS1" << std::endl;
-	return;
-  }
-
-  //creates a set which containes the unique words within list
-  std::set<RType::IElement*> unique(list.begin(), list.end());
-  if (unique.size() != list.size())
-	std::cout << "OOPSOOPS2 " << unique.size() << " " << list.size() << std::endl;
-}*/
-
 void Server::handleRoom(Room* room)
 {
   std::vector<RType::IElement*>	del;
 
   this->handleMonsters(room);
   this->handleCollision(room);
+  //std::cout << "SIZE = " << room->getGameController()->getGame()->getMap().size() << std::endl;
   for (RType::IElement* elem : room->getGameController()->getGame()->getMap())
   {
 	if (elem->getType() == RType::BULLET)
-	  if (elem->getX() > 799)
+	  if (elem->getX() > 799 || ((int16_t )elem->getX()) < 0)
 	  {
 		//room->getGameController()->getGame()->deleteElem(elem);
 		//delete elem;
@@ -265,7 +248,7 @@ void Server::handleMonsters(Room* room)
   {
 	if ((dic = _dlManager.handler.getDictionaryByName("monster")) != NULL
 		&& !(*_dic.insert(_dic.end(), dic))->empty()
-		&& (_monster = reinterpret_cast<Monster *(*)(int, int, ElementFactory*)>(_dic.back()->at("new"))(900, (std::rand() % 350) + 50, room->getGameController()->getElementFactory())) != nullptr)
+		&& (_monster = reinterpret_cast<Monster *(*)(int, int, ElementFactory*)>(_dic.back()->at("new"))(900, (std::rand() % 450), room->getGameController()->getElementFactory())) != nullptr)
 	{
 	  this->_monster->setType(RType::MONSTER);
 	  room->getGameController()->getGame()->addElem(this->_monster);
@@ -274,7 +257,12 @@ void Server::handleMonsters(Room* room)
   }
   for (RType::IElement* elem : room->getGameController()->getGame()->getMap())
 	if (elem->getType() == RType::MONSTER)
-	  if (!((Monster*)elem)->move())
+	  if (((int16_t)elem->getX()) < 0)
+	  {
+		room->getGameController()->getGame()->deleteElem(elem);
+		delete elem;
+	  }
+	  else if (!((Monster*)elem)->move())
 		room->getGameController()->getGame()->addElem(((Monster*)elem)->shot());
 }
 
@@ -324,8 +312,5 @@ void Server::realizeMovement(Room *room, Player *player)
 
 void Server::handleCollision(Room* room)
 {
-  //std::cout << "HANDLE COLLISION" << std::endl;
-  //for (Player* pl : room->getPlayers())
-	//if (player != pl)
   room->getGameController()->handleCollisions();
 }
