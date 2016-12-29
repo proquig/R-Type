@@ -13,7 +13,7 @@ Monster::Monster(uint32_t idFrom, uint16_t type, uint16_t x, uint16_t y, uint16_
 }
 
 Monster::Monster(uint16_t x, uint16_t y, ElementFactory *factory) :
-        GameElement::GameElement(-1, factory->newID(), RType::MONSTER, x, y, 3, 10, 10, 1, 0, 10)
+        GameElement::GameElement(-1, (factory != nullptr ? factory->newID() : 0), RType::MONSTER, x, y, 3, 10, 10, 1, 0, 10)
 {
     _factory = factory;
     _direction = 1;
@@ -46,8 +46,9 @@ bool    Monster::move()
 
 Shot                            *Monster::shot()
 {
-//    return _factory->createShot(this->_id, this->_x, this->_y, 1, 1, 1, 180, 5);
+  if (_factory)
     return ((Shot *) _factory->create(this->_id, -1, RType::MISSILE, this->_x, this->_y, 10, 10, 10, 10, -90, 8));
+  return nullptr;
 }
 
 
