@@ -73,7 +73,7 @@ private:
 	std::chrono::high_resolution_clock _clock;
 	std::chrono::high_resolution_clock::time_point _ref;
   	SFMLSprite*	_player[4];
-  	SFMLSprite*	_bullet;
+  	SFMLSprite*	_bullet[2];
   	SFMLSprite*	_monster;
 
 public:
