@@ -37,17 +37,17 @@ bool    Monster::move()
 {
     //this->_mov = (uint8_t) ((this->_mov + 1) % 3);
     this->_mov++;
-    _direction = (uint8_t) (!(this->_mov % 3) ? -_direction : _direction);
+    _direction = (uint8_t) (!(this->_mov % 5) ? -_direction : _direction);
     this->_y += 10 * _direction;
     this->_x -= 5;
-    return ((this->_mov % 9) != 0);
+    return ((this->_mov % 3) != 0);
 }
 
 
 Shot                            *Monster::shot()
 {
   if (_factory)
-    return ((Shot *) _factory->create(this->_id, -1, RType::MISSILE, this->_x, this->_y, 10, 10, 10, 10, -90, 8));
+    return ((Shot *) _factory->create(this->_id, -1, RType::MISSILE, this->_x, this->_y, 10, 10, 10, 10, -90, 12));
   return nullptr;
 }
 
