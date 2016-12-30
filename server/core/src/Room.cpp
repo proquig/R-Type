@@ -7,6 +7,8 @@
 #include "ISocket.hpp"
 #include "GameDataPacket.hh"
 
+#include <typeinfo>
+
 Room::Room(Dictionary* dicMonster, Dictionary* dicBildo)
 {
   this->_gameController = this->_cf.create(new File(""));
@@ -152,11 +154,12 @@ void Room::handle()
 	  else
 	  {
 		  elem->move();
-		  if (typeid(elem).name() == "TripleShot" && ((TripleShot*)elem)->isActivated())
+		 if (typeid(elem).name() == "TripleShot" && ((TripleShot*)elem)->isActivated())
 		  {
 			  _gameController->getElementFactory()->createShot(elem->getIdFrom(), elem->getX(), elem->getY() + 25, elem->getSizeX(), elem->getSizeY(), elem->getDamage(), elem->getAngle(), elem->getSpeed());
 			  _gameController->getElementFactory()->createShot(elem->getIdFrom(), elem->getX(), elem->getY() - 25, elem->getSizeX(), elem->getSizeY(), elem->getDamage(), elem->getAngle(), elem->getSpeed());
 		  }
+
 	  }
   }
   std::set<RType::IElement*> unique(del.begin(), del.end());
