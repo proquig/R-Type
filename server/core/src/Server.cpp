@@ -77,23 +77,23 @@ bool Server::init()
     return false;
   if ((dic = _dlManager.handler.getDictionaryByName("rtype_network")) != NULL
       && !(*_dic.insert(_dic.end(), dic))->empty()
-      && (_socketFactory = reinterpret_cast<ISocketFactory *(*)(IThreadPool*)>(_dic.back()->at("instantiate"))(_pool)) != nullptr)
+      &&
+      (_socketFactory = reinterpret_cast<ISocketFactory *(*)(IThreadPool *)>(_dic.back()->at("instantiate"))(_pool)) !=
+      nullptr)
     std::cout << "_socketFactory spawned" << std::endl;
   else
     return false;
   if ((dic = _dlManager.handler.getDictionaryByName("monster")) != NULL
-			&& !(*_dic.insert(_dic.end(), dic))->empty())
-	std::cout << "monster loaded" << std::endl;
+      && !(*_dic.insert(_dic.end(), dic))->empty())
+    std::cout << "monster loaded" << std::endl;
   else
-	return false;
+    return false;
   if ((dic = _dlManager.handler.getDictionaryByName("bildo")) != NULL
-	  && !(*_dic.insert(_dic.end(), dic))->empty())
-	std::cout << "bildo loaded" << std::endl;
+      && !(*_dic.insert(_dic.end(), dic))->empty())
+    std::cout << "bildo loaded" << std::endl;
   else
-	return false;
-	_network = NetworkHandler(_socketFactory);
-  _network.addObserver(this);
-  return (_network.getState() == NetworkHandler::RUNNING);
+    return false;
+  return true;
 }
 
 bool Server::run()

@@ -2,6 +2,7 @@
 #include "SFMLWindow.hh"
 #include "SFMLSprite.hh"
 #include <thread>
+#include <sstream>
 
 GraphicalController::GraphicalController(GLib lib, int _w, int _h, std::string _n)
 	: windowSize(new Coords(_w, _h))
@@ -26,6 +27,7 @@ void GraphicalController::setProperty(IWindow::eProperty prop, bool flag)
 
 bool	GraphicalController::initAction(void)
 {
+	this->score = -1;
 	this->scene = std::vector<AElement *>();
 	this->windowThread = new std::thread(&GraphicalController::windowAction, this);
 	return (true);
@@ -42,22 +44,17 @@ void	GraphicalController::elementAction(unsigned int id, RType::eType type, int 
   bool										match = false;
   float										scale = 0.f;
 
-#ifndef NDEBUG
-	std::cout << "graphicalController:" << this->scene.size() << "workQ:" << windowQueue->getQueue().size()  <<std::endl;
-#endif
 	if (this->scene.size()) {
 		for (elem = this->scene.begin(); elem != this->scene.end(); ) {
 			(*elem)->live();
-            if ((*elem)->getTtl() <= 0  && (*elem)->getType() != RType::SET) {
-				//delete (*elem);
-				//       std::cout << "Delete -> TYPE:" << (*elem)->getType() << "\tID:" << (*elem)->getId() << std::endl;
+            if ((*elem)->getTtl() <= 0 && (*elem)->getType() != RType::SET && (*elem)->getType() != RType::SCORE) {
                 elem = this->scene.erase(elem);
             }else
 				++elem;
 		}
 
 	for (elem = this->scene.begin(); elem != this->scene.end(); ++elem) {
-	  if ((*elem)->getId() == id) {
+	  if ((*elem)->getId() == id && (*elem)->getType() == type) {
 		(*elem)->alive();
 		if ((*elem)->getType() == RType::SET) {
 		  scale = (float)this->windowSize->y / 300;
@@ -92,20 +89,17 @@ void	GraphicalController::elementAction(unsigned int id, RType::eType type, int 
 	bool										match = false;
 	float										scale = 0.f;
 
-	//std::cout << "graphicalController:" << this->scene.size() << std::endl;
 	if (this->scene.size()) {
 		for (elem = this->scene.begin(); elem != this->scene.end(); ) {
 			(*elem)->live();
-            if ((*elem)->getTtl() <= 0  && (*elem)->getType() != RType::SET) {
-				//delete (*elem);
-				//       std::cout << "Delete -> TYPE:" << (*elem)->getType() << "\tID:" << (*elem)->getId() << std::endl;
+            if ((*elem)->getTtl() <= 0  && (*elem)->getType() != RType::SET && (*elem)->getType() != RType::SCORE) {
                 elem = this->scene.erase(elem);
             }else
 				++elem;
 		}
 
 		for (elem = this->scene.begin(); elem != this->scene.end(); ++elem) {
-            if ((*elem)->getId() == id) {
+            if ((*elem)->getId() == id && (*elem)->getType() == type) {
 				(*elem)->alive();
 				if ((*elem)->getType() == RType::SET) {
 					scale = (float)this->windowSize->y / 300;
@@ -122,7 +116,7 @@ void	GraphicalController::elementAction(unsigned int id, RType::eType type, int 
 		AElement									*element;
 
 		element = ElementFactory::create(id, type);
-	  	element->setSprite((ASprite *) sprite);
+	  	element->setSprite(sprite);
 		element->setCoords(new Coords(x, y));
 		element->setAngle(angle);
 		element->setSpeed(std::chrono::milliseconds(speed));
@@ -140,13 +134,83 @@ Event *		GraphicalController::eventAction(void)
 	return this->eventQueue->pop();
 }
 
+void		GraphicalController::scoreAction(int _score)
+{
+  if (!this->score_elem)
+  {
+	this->score_elem = ElementFactory::create(0, RType::SCORE);
+	this->score_elem->setCoords(new Coords(0, 410));
+	this->score_elem->setAngle(0);
+	this->score_elem->setSpeed(std::chrono::milliseconds(0));
+  }
+  if (_score == this->score)
+	return;
+  std::ostringstream	ss;
+  std::vector<AElement *>::iterator elem;
+  ss << _score;
+
+  this->score = _score;
+  ((Score*)this->score_elem)->setString(ss.str());
+  this->elementAction(0, RType::SCORE, 0, 410, 0, 0);
+  this->scene.push_back(this->score_elem);
+  this->windowQueue->push(this->score_elem);
+  return;
+}
+
+/*
+void		GraphicalController::scoreAction(int _score)
+{
+	if (_score == this->score)
+		return;
+	std::ostringstream	ss;
+	std::vector<AElement *>::iterator elem;
+	ss << _score;
+
+	if (this->scene.size())
+	{
+		for (elem = this->scene.begin(); elem != this->scene.end(); ++elem) {
+			if ((*elem)->getId() == 0 && (*elem)->getType() == RType::SCORE)
+			{
+				((Score*)(*elem))->setString(ss.str());
+				return;
+			}
+		}
+	}
+	this->elementAction(0, RType::SCORE, 0, 410, 0, 0);
+	return;
+}
+*/
+
+void		GraphicalController::setText(unsigned int id, std::string txt)
+{
+	std::vector<AElement *>::iterator elem;
+
+	for (elem = this->scene.begin(); elem != this->scene.end(); ++elem) {
+		if ((*elem)->getId() == id && (*elem)->getType() == RType::TEXT) {
+			((Text*)(*elem))->rmString();
+			((Text*)(*elem))->setString(txt);
+		}
+	}
+}
+
 void		GraphicalController::addText(unsigned int id, std::string txt)
 {
 	std::vector<AElement *>::iterator elem;
 
 	for (elem = this->scene.begin(); elem != this->scene.end(); ++elem) {
-		if ((*elem)->getId() == id) {
+		if ((*elem)->getId() == id && (*elem)->getType() == RType::TEXT) {
 			((Text*)(*elem))->setString(txt);
+		}
+	}
+}
+
+void		GraphicalController::rmText(unsigned int id)
+{
+	std::vector<AElement *>::iterator elem;
+
+	for (elem = this->scene.begin(); elem != this->scene.end(); ++elem) {
+		if ((*elem)->getId() == id && (*elem)->getType() == RType::TEXT) {
+			((Text*)(*elem))->rmString();
 		}
 	}
 }
@@ -155,14 +219,27 @@ std::string		GraphicalController::getIp(unsigned int id)
 {
 	std::vector<AElement *>::iterator elem;
 	std::string ret;
+
 	for (elem = this->scene.begin(); elem != this->scene.end(); ++elem) {
 		if ((*elem)->getId() == id) {
-			//ret = ((Text*)(*elem))->getString();
+			ret = ((Text*)(*elem))->getString();
 			std::size_t pos = ret.find(" : ") + 4;
-
 			std::string str3;
 			ret = ret.substr(pos);
 		}
 	}
 	return (ret);
+}
+
+bool			GraphicalController::checkIp(std::string ip)
+{
+	size_t n = std::count(ip.begin(), ip.end(), '.');
+
+	if ((n < 3 || n > 3) || ip.size() < 7)
+	{
+		std::cout << "IP  non VALIDE" << std::endl;
+		return (false);
+	}
+	std::cout << "ip valide" << std::endl;
+	return (true);
 }

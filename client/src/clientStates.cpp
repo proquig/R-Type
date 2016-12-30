@@ -13,30 +13,31 @@ ClientStates::ClientStates()
     : _init(false), _stop(false), _waiting(false), _input(0),
     _cond(nullptr), _mutex(nullptr), _pool(nullptr),
     _socketFactory(nullptr), _socket(nullptr),
-	_player1(nullptr), _bullet(nullptr), _monster(nullptr)//, _player2(nullptr), _player3(nullptr), _player4(nullptr), _bullet(nullptr)
+	_monster(nullptr)
 {
   memset(&_sockaddr, '0', sizeof(_sockaddr));
   _dlManager.add(0, "threadpool", "");
   _dlManager.add(0, "rtype_network", "");
+  soundLoader = new SFMLSoundLoader();
+  soundLoader->initSoundMap();
 }
 
 ClientStates::~ClientStates()
 {
-  if (_socketFactory)
-  {
-    _socketFactory->stopPoller();
-    reinterpret_cast<void *(*)(ISocketFactory *)>(_dic[1]->at("destroy"))(_socketFactory);
-  }
-  if (_pool)
-  {
-    _pool->stop();
-    reinterpret_cast<void *(*)(IThreadPool *)>(_dic[0]->at("destroy"))(_pool);
-  }
-  for (Dictionary dic : _dic)
-  {
-    if (dic)
-      delete dic;
-  }
+	if (_pool)
+		_pool->stop();
+	if (_socketFactory)
+	{
+		_socketFactory->stopPoller();
+		reinterpret_cast<void *(*)(ISocketFactory *)>(_dic[1]->at("destroy"))(_socketFactory);
+	}
+	if (_pool)
+		reinterpret_cast<void *(*)(IThreadPool *)>(_dic[0]->at("destroy"))(_pool);
+	for (Dictionary dic : _dic)
+	{
+		if (dic)
+			delete dic;
+	}
 }
 
 bool	ClientStates::run(state to)
@@ -52,11 +53,16 @@ bool	ClientStates::run(state to)
 	else
 		this->history.push_back(to);
 	switch (to) {
-	case LAUNCH: return this->launchState();
+	case LAUNCH: 
+		soundLoader->getSound(ASound::eMenu)->play();
+		return this->launchState();
 		break;
-	case MENU: return this->menuState();
+	case MENU: return this->Menu();
 		break;
-	case GAME: return this->gameState();
+	case GAME: 
+		soundLoader->getSound(ASound::eMenu)->stop();
+		soundLoader->getSound(ASound::eMain)->play();
+		return this->gameState();
 		break;
 	case SCORE: return this->scoreState();
 		break;
@@ -83,12 +89,78 @@ bool	ClientStates::launchState(void)
 {
 	this->controller	= new GraphicalController(SFML, 800, 450, "R-type");
 
-  controller->addObserver(this);
 	this->controller->initAction();
-  if (!_init && !init())
-      return false;
-  controller->setProperty(IWindow::KEY_REPEAT, false);
-  return this->run(MENU);
+	Dictionary dic;
+	std::string error;
+
+	if (!_dlManager.handler.loadAll(error))
+	{
+		std::cout << "Failed loading library module : " << error << std::endl;
+		return false;
+	}
+	std::cout << "Library load success" << std::endl;
+	if ((dic = _dlManager.handler.getDictionaryByName("threadpool")) != NULL
+		&& !(*_dic.insert(_dic.end(), dic))->empty()
+		&& (_pool = reinterpret_cast<IThreadPool *(*)(size_t)>(_dic.back()->at("instantiate"))(4)) != nullptr
+		&& ((_cond = _pool->createCondVar()) != nullptr)
+		&& ((_mutex = _pool->createMutex()) != nullptr))
+		std::cout << "pool spawned" << std::endl;
+	else
+		return false;
+	if ((dic = _dlManager.handler.getDictionaryByName("rtype_network")) != NULL
+		&& !(*_dic.insert(_dic.end(), dic))->empty()
+		&& (_socketFactory = reinterpret_cast<ISocketFactory *(*)(IThreadPool*)>(_dic.back()->at("instantiate"))(_pool)) != nullptr)
+		std::cout << "_socketFactory spawned" << std::endl;
+	else
+		return false;
+	controller->addObserver(this);
+	//controller->setProperty(IWindow::KEY_REPEAT, false);
+	return this->run(MENU);
+}
+
+bool ClientStates::init(std::string ip)
+{
+	if (!ip.size())
+		ip = std::string(RTYPE_CLIENT_DEFAULT_TARGET_IP);
+	if ((_socket = _socketFactory->createSocketUDP(this, RTYPE_CLIENT_PORT_UDP)) == nullptr)
+		return false;
+	if (!_socketFactory->hintSockaddr(ip, _sockaddr, RTYPE_CLIENT_DEFAULT_TARGET_PORT))
+		return false;
+	_init = true;
+	return (true);
+}
+
+bool	ClientStates::Menu(void)
+{
+	Event			*event = NULL;
+	std::string		ip;
+
+	this->controller->elementAction(9, RType::TEXT, 0, -50, 0, 0);
+	this->controller->rmText(9);
+	while (!event || event->type != Event::QUIT) {
+
+		this->controller->elementAction(9, RType::TEXT, 0, -50, 0, 0);
+		this->controller->elementAction(0, RType::SET, 0, 0, 0, 10);
+
+		if (event = this->controller->eventAction())
+		{
+			this->controller->addText(9, std::string(event->name));
+			if (std::string(event->name) == "ENTER")
+			{
+				ip = this->controller->getIp(9);
+
+				std::cout << "[IP] " << ip << std::endl;
+				if (!this->controller->checkIp(ip) || (!_init && !init(ip)))
+					return this->run(MENU);
+				return this->run(GAME);
+			}
+		}
+			#ifdef __linux__ 
+					usleep(20);
+			#elif _WIN32
+					Sleep(20);
+			#endif
+	}
 }
 
 bool	ClientStates::menuState(void)
@@ -96,6 +168,48 @@ bool	ClientStates::menuState(void)
 	std::cout << "Menu ..." << std::endl;
 
 	return this->run(GAME);
+}
+
+void		ClientStates::loadSprites(void)
+{
+  for (uint8_t i = 0; i < 4; ++i)
+	this->_player[i] = new SFMLSprite("./../../client/media/GAME-Assets/r-typesheet42.gif");
+  this->_player[0]->addRessource("CYAN", std::vector<Cut *>{new Cut(66, 0, 33, 19)});
+  this->_player[1]->addRessource("VIOLET", std::vector<Cut *>{new Cut(66, 17, 33, 19)});
+  this->_player[2]->addRessource("GREEN", std::vector<Cut *>{new Cut(66, 34, 33, 19)});
+  this->_player[3]->addRessource("RED", std::vector<Cut *>{new Cut(66, 51, 33, 19)});
+  for (uint8_t i = 0; i < 4; ++i)
+  {
+	this->_player[i]->setAnimated(false);
+  	this->_player[i]->setAnimTime(500);
+  	this->_player[i]->setLoop(true);
+  }
+
+  this->_bullet[0] = new SFMLSprite("./../../client/media/GAME-Assets/r-typesheet9.gif");
+  this->_bullet[0]->addRessource("DEFAULT", std::vector<Cut *>{new Cut(70, 72, 30, 28)});
+  this->_bullet[1] = new SFMLSprite("./../../client/media/GAME-Assets/r-typesheet43.gif");
+  this->_bullet[1]->addRessource("DEFAULT", std::vector<Cut *>{new Cut(135, 0, 12, 11)});
+  for (uint8_t i = 0; i < 2; ++i)
+  {
+	this->_bullet[i]->setAnimated(false);
+	this->_bullet[i]->setAnimTime(500);
+	this->_bullet[i]->setLoop(true);
+  }
+
+  this->_monster = new SFMLSprite("./../../client/media/GAME-Assets/r-typesheet23.gif");
+  this->_monster->addRessource("DEFAULT", std::vector<Cut *>{
+		  new Cut(0, 0, 33, 35)/*,
+						new Cut(33, 0, 33, 35),
+						new Cut(66, 0, 33, 35),
+						new Cut(99, 0, 33, 35),
+						new Cut(132, 0, 33, 35),
+						new Cut(165, 0, 33, 35),
+						new Cut(196, 0, 33, 35),
+						new Cut(229, 0, 33, 35)*/
+  });
+  this->_monster->setAnimated(false);
+  this->_monster->setAnimTime(500);
+  this->_monster->setLoop(true);
 }
 
 bool		ClientStates::gameState(void)
@@ -106,9 +220,11 @@ bool		ClientStates::gameState(void)
   std::vector<uint16_t>::iterator it;
   RType::eType objType;
 
+  this->loadSprites();
   _inputQueue.resize(10, 0);
   _mutex->lock();
   _ref = _clock.now();
+  this->controller->scoreAction(0);
   while (!_stop)
   {
     _waiting = true;
@@ -155,69 +271,15 @@ bool		ClientStates::gameState(void)
         if (packet->getType() == APacket::GAME_ELEM_INFO)
         {
           GameDataPacket *pak = (GameDataPacket *) packet;
+		  this->controller->scoreAction(pak->getScore());
           for (GameElement* ptr : pak->getGameElements())
           {
 			if (ptr->getType() == RType::PLAYER)
-			{
-			  if (!this->_player1)
-			  {
-#ifndef NDEBUG
-          std::cout << "I PASS HERE BITCH4" << std::endl;
-#endif
-				this->_player1 = new SFMLSprite("./../../client/media/GAME-Assets/r-typesheet42.gif");
-				//this->_player1->addRessource("CYAN_DOWN", std::vector<Cut *>{new Cut(0, 0, 33, 19), new Cut(33, 0, 33, 19)});
-				this->_player1->addRessource("CYAN", std::vector<Cut *>{new Cut(66, 0, 33, 19)});
-				//this->_player1->addRessource("CYAN_UP", std::vector<Cut *>{new Cut(99, 0, 33, 19), new Cut(132, 0, 33, 19)});
-				this->_player1->setAnimated(false);
-				this->_player1->setAnimTime(500);
-				this->_player1->setLoop(true);
-			  }
-			  sprite = this->_player1;
-			}
+			  sprite = this->_player[ptr->getId() - 1];
 			else if (ptr->getType() == RType::BULLET)
-			{
-#ifndef NDEBUG
-			  std::cout << "I PASS HERE BITCH3" << std::endl;
-#endif
-			  if (!this->_bullet)
-			  {
-				this->_bullet = new SFMLSprite("./../../client/media/GAME-Assets/r-typesheet9.gif");
-				this->_bullet->addRessource("DEFAULT", std::vector<Cut *>{
-						new Cut(70, 72, 30, 28)
-				});
-				this->_bullet->setAnimated(false);
-				this->_bullet->setAnimTime(500);
-				this->_bullet->setLoop(true);
-			  }
-			  sprite = this->_bullet;
-			}
+			  sprite = this->_bullet[ptr->getAngle() != 90];
 			else if (ptr->getType() == RType::MONSTER)
-			{
-#ifndef NDEBUG
-			  std::cout << "I PASS HERE BITCH1" << std::endl;
-#endif
-			  if (!this->_monster)
-			  {
-#ifndef NDEBUG
-				std::cout << "I PASS HERE BITCH2" << std::endl;
-#endif
-				this->_monster = new SFMLSprite("./../../client/media/GAME-Assets/r-typesheet23.gif");
-				this->_monster->addRessource("DEFAULT", std::vector<Cut *>{
-						new Cut(0, 0, 33, 35)/*,
-						new Cut(33, 0, 33, 35),
-						new Cut(66, 0, 33, 35),
-						new Cut(99, 0, 33, 35),
-						new Cut(132, 0, 33, 35),
-						new Cut(165, 0, 33, 35),
-						new Cut(196, 0, 33, 35),
-						new Cut(229, 0, 33, 35)*/
-				});
-				this->_monster->setAnimated(false);
-				this->_monster->setAnimTime(500);
-				this->_monster->setLoop(true);
-			  }
 			  sprite = this->_monster;
-			}
 			objType = (RType::eType) ptr->getType();
 			//if (objType == RType::PLAYER || objType == RType::BULLET || objType == RType::MONSTER)
               this->controller->elementAction(
@@ -229,8 +291,11 @@ bool		ClientStates::gameState(void)
                 ptr->getSpeed(),
 				sprite
             );
+			delete ptr;
           }
+		  //this->controller->scoreAction(120);
           this->controller->elementAction(0, RType::SET, 0, 0, 0, 10);
+		  // this->run(SCORE); <-- GAME OVER SCREEN
         }
         delete packet;
       }
@@ -242,12 +307,27 @@ bool		ClientStates::gameState(void)
 
 bool	ClientStates::scoreState(void)
 {
+	Event			*event = NULL;
+
+	while (!event || event->type != Event::QUIT) {
+		this->controller->elementAction(0, RType::BACKGROUND, 0, 0, 0, 10);
+		if (event = this->controller->eventAction())
+		{
+			if (std::string(event->name) == "ENTER")
+				return this->run(MENU);
+		}
+		#ifdef __linux__ 
+				usleep(20);
+		#elif _WIN32
+				Sleep(20);
+		#endif
+	}
 	return true;
 }
 
 bool	ClientStates::endState(void)
 {
-	std::cout << "Bye Bye !" << std::endl;
+	std::cout << "Good Bye !" << std::endl;
 	return true;
 }
 
@@ -275,21 +355,21 @@ bool	ClientStates::testState(void)
 
 		testTtl++;
 
-		this->controller->elementAction(1, RType::PLAYER, player->x, player->y, angle, 0);
-		this->controller->elementAction(2, RType::PLAYER, 100, 50, 0, 0);
-		this->controller->elementAction(3, RType::PLAYER, 150, 50, 0, 0);
+		//this->controller->elementAction(1, RType::PLAYER, player->x, player->y, angle, 0);
+		//this->controller->elementAction(2, RType::PLAYER, 100, 50, 0, 0);
+		//this->controller->elementAction(3, RType::PLAYER, 150, 50, 0, 0);
 
-		this->controller->elementAction(8, RType::MONSTER, 400, 50, 0, 0);
+		//this->controller->elementAction(8, RType::MONSTER, 400, 50, 0, 0);
 
-		if (testTtl < 100)
-			this->controller->elementAction(4, RType::MISSILE, 200, 50, 0, 0);
+		//if (testTtl < 100)
+		//	this->controller->elementAction(4, RType::MISSILE, 200, 50, 0, 0);
 
-		this->controller->elementAction(5, RType::OBSTACLE, 250, 0, 0, 0);
+		//this->controller->elementAction(5, RType::OBSTACLE, 250, 0, 0, 0);
 
-		this->controller->elementAction(9, RType::TEXT, 100, 0, 0, 0);
+		//this->controller->elementAction(9, RType::TEXT, 100, 0, 0, 0);
 
+		this->controller->scoreAction(120);
 		this->controller->elementAction(0, RType::SET, 0, 0, 0, 10);
-
 
 		if (event = this->controller->eventAction()) {
 			std::cout << "[EVENT] " << event->name << std::endl;
@@ -306,6 +386,7 @@ bool	ClientStates::testState(void)
 			case Event::RESIZE: windowSize = event->size; break;
 			default: break;
 			}
+			return this->run(SCORE);
 		}
 #ifdef __linux__ 
 		usleep(20);
@@ -315,45 +396,6 @@ bool	ClientStates::testState(void)
 	}
 	return this->run(END);
 }
-
-bool	ClientStates::Menu(void)
-{
-	Event			*event = NULL;
-	Coords			*player = new Coords(50, 50);
-	float			angle = 0;
-	Coords			*windowSize = new Coords(800, 450);
-
-	std::cout << "=================================" << std::endl;
-	std::cout << "============  Menu  =============" << std::endl;
-	std::cout << "=================================" << std::endl << std::endl;
-
-	this->controller = new GraphicalController(SFML, windowSize->x, windowSize->y, "R-type - Graphical tests");
-	this->controller->initAction();
-
-	while (!event || event->type != Event::QUIT) {
-
-		this->controller->elementAction(9, RType::TEXT, 0, 0, 0, 0);
-		this->controller->elementAction(0, RType::SET, 0, 0, 0, 10);
-
-		if (event = this->controller->eventAction())
-		{
-			this->controller->addText(9, std::string(event->name));
-			if (std::string(event->name) == "ENTER")
-			{
-				std::string ip = this->controller->getIp(9);
-				
-				std::cout << "  IP = " << ip << std::endl;
-			}
-		}
-#ifdef __linux__ 
-		usleep(20);
-#elif _WIN32
-		Sleep(20);
-#endif
-	}
-	return this->run(END);
-}
-
 
 void ClientStates::update(IObservable *o, int status)
 {
@@ -386,37 +428,4 @@ void ClientStates::update(IObservable *o, int status)
     {
     }
   }
-}
-
-bool ClientStates::init()
-{
-  Dictionary dic;
-  std::string error;
-
-  if (!_dlManager.handler.loadAll(error))
-  {
-    std::cout << "Failed loading library module : " << error << std::endl;
-    return false;
-  }
-  std::cout << "Library load success" << std::endl;
-  if ((dic = _dlManager.handler.getDictionaryByName("threadpool")) != NULL
-      && !(*_dic.insert(_dic.end(), dic))->empty()
-      && (_pool = reinterpret_cast<IThreadPool *(*)(size_t)>(_dic.back()->at("instantiate"))(4)) != nullptr
-      && ((_cond = _pool->createCondVar()) != nullptr)
-      && ((_mutex = _pool->createMutex()) != nullptr))
-    std::cout << "pool spawned" << std::endl;
-  else
-    return false;
-  if ((dic = _dlManager.handler.getDictionaryByName("rtype_network")) != NULL
-      && !(*_dic.insert(_dic.end(), dic))->empty()
-      && (_socketFactory = reinterpret_cast<ISocketFactory *(*)(IThreadPool*)>(_dic.back()->at("instantiate"))(_pool)) != nullptr)
-    std::cout << "_socketFactory spawned" << std::endl;
-  else
-    return false;
-  if ((_socket = _socketFactory->createSocketUDP(this, RTYPE_CLIENT_PORT_UDP)) == nullptr)
-    return false;
-  if (!_socketFactory->hintSockaddr(std::string(RTYPE_CLIENT_DEFAULT_TARGET_IP), _sockaddr, RTYPE_CLIENT_DEFAULT_TARGET_PORT))
-    return false;
-  _init = true;
-  return (true);
 }

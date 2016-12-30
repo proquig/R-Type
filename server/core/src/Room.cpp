@@ -149,8 +149,15 @@ void Room::handle()
         std::cout << "ELEM DELETED WITH ID" << elem->getId() << std::endl;
 #endif
       }
-      else
-        elem->setX(elem->getX() + (elem->getSpeed() * (elem->getAngle() == (float)90 ? 1 : -1)));
+	  else
+	  {
+		  elem->move();
+		  if (typeid(elem).name() == "TripleShot" && ((TripleShot*)elem)->isActivated())
+		  {
+			  _gameController->getElementFactory()->createShot(elem->getIdFrom(), elem->getX(), elem->getY() + 25, elem->getSizeX(), elem->getSizeY(), elem->getDamage(), elem->getAngle(), elem->getSpeed());
+			  _gameController->getElementFactory()->createShot(elem->getIdFrom(), elem->getX(), elem->getY() - 25, elem->getSizeX(), elem->getSizeY(), elem->getDamage(), elem->getAngle(), elem->getSpeed());
+		  }
+	  }
   }
   std::set<RType::IElement*> unique(del.begin(), del.end());
   for (RType::IElement* elem : unique)
