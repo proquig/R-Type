@@ -99,7 +99,12 @@ void	Text::setMaxLength(int len)
 
 void	Text::setString(std::string str)
 {
-	//std::cout << "strlen() = " << _maxLen << " str = " << str << std::endl;
+	if (str == "SUPPR")
+	{
+		if (_str.size() > 39)
+			_str.pop_back();
+		return;
+	}
 	if (str.size() < _maxLen && str.size() == 1 && (str.size() + _str.size()) < _maxLen)
 		_str += str;
 	return;

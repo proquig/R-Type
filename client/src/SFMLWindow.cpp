@@ -212,7 +212,11 @@ void	SFMLWindow::pollEvent(void)
 						this->eventQueue->push(new Event(Event::KEYPRESS, RType::ENTER, "9", _x, _y, _w, _h));
 						break;
 					case sf::Keyboard::Period:
+					case sf::Keyboard::SemiColon:
 						this->eventQueue->push(new Event(Event::KEYPRESS, RType::ENTER, ".", _x, _y, _w, _h));
+						break;
+					case sf::Keyboard::BackSpace:
+						this->eventQueue->push(new Event(Event::KEYPRESS, RType::ENTER, "SUPPR", _x, _y, _w, _h));
 						break;
 					default:
 						break;
