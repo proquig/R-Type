@@ -21,3 +21,6 @@ add_subdirectory(parser_test)
 
 #Monster
 add_subdirectory(monster_test)
+
+#Bildo
+add_subdirectory(bildo_test)

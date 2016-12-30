@@ -27,3 +27,6 @@ add_subdirectory(packet)
 
 #Monster
 add_subdirectory(monster)
+
+#Bildo
+add_subdirectory(Bildo)
