@@ -7,7 +7,6 @@ void		Text::loadSprites(GLib lib)
 	{
 	case SFML:
 		this->sprite = new SFMLSprite("./../../client/media/GAME-Assets/button.png");
-		std::cout << "loaded" << std::endl;
 		break;
 	}
 	_str = "Enter an IP adress then press enter : \n";
@@ -15,7 +14,7 @@ void		Text::loadSprites(GLib lib)
 	{
 		new Cut(0, 0, 900, 506)
 	});
-	_txt.setPosition(sf::Vector2f(140, 400));
+	_txt.setPosition(sf::Vector2f(140, 330));
 	return;
 }
 
@@ -77,6 +76,7 @@ void	Text::setSize(Coords *_size)
 
 void	Text::setFont(std::string path)
 {
+	_isReady = true;
 	if (!_font.loadFromFile(path))
 	{
 		_fontPath = path;

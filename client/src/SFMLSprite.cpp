@@ -82,18 +82,12 @@ void				SFMLSprite::addRessource(std::string name, const std::vector<Cut *> piec
 	//Add une suite d'element a jouer
 	std::vector<sf::IntRect> *vect = new std::vector<sf::IntRect>();
 
-#ifndef NDEBUG
-	std::cout << "NAME = " << name << "pieces = " << pieces.size() << std::endl;
-#endif
 		for (Cut *c : pieces)
 	{
 		vect->push_back(sf::IntRect(c->begin.x, c->begin.y, c->end.x, c->end.y));
 	}
 	_anim[name] = vect;
 	_curr = _anim[name]->at(0);
-#ifndef NDEBUG
-	std::cout << "lol ?" << std::endl;
-#endif
 	return;
 }
 

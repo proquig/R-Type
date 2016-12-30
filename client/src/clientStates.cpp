@@ -54,7 +54,7 @@ bool	ClientStates::run(state to)
 	switch (to) {
 	case LAUNCH: return this->launchState();
 		break;
-	case MENU: return this->menuState();
+	case MENU: return this->Menu();
 		break;
 	case GAME: return this->gameState();
 		break;
@@ -320,7 +320,7 @@ bool	ClientStates::Menu(void)
 
 	while (!event || event->type != Event::QUIT) {
 
-		this->controller->elementAction(9, RType::TEXT, 0, 0, 0, 0);
+		this->controller->elementAction(9, RType::TEXT, 0, -50, 0, 0);
 		this->controller->elementAction(0, RType::SET, 0, 0, 0, 10);
 
 		if (event = this->controller->eventAction())
