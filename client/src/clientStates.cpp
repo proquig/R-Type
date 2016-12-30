@@ -127,20 +127,10 @@ bool ClientStates::init(std::string ip)
 bool	ClientStates::Menu(void)
 {
 	Event			*event = NULL;
-	//Coords			*player = new Coords(50, 50);
-	//float			angle = 0;
-	//Coords			*windowSize = new Coords(800, 450);
 	std::string		ip;
 
-	std::cout << "=================================" << std::endl;
-	std::cout << "============  Menu  =============" << std::endl;
-	std::cout << "=================================" << std::endl << std::endl;
-
-	//this->controller = new GraphicalController(SFML, windowSize->x, windowSize->y, "R-type - Graphical tests");
-	//this->controller->initAction();
 	this->controller->elementAction(9, RType::TEXT, 0, -50, 0, 0);
 	this->controller->rmText(9);
-
 	while (!event || event->type != Event::QUIT) {
 
 		this->controller->elementAction(9, RType::TEXT, 0, -50, 0, 0);
@@ -153,17 +143,17 @@ bool	ClientStates::Menu(void)
 			{
 				ip = this->controller->getIp(9);
 
-				std::cout << "  IP = " << ip << std::endl;
+				std::cout << "[IP] " << ip << std::endl;
 				if (!this->controller->checkIp(ip) || (!_init && !init(ip)))
 					return this->run(MENU);
 				return this->run(GAME);
 			}
 		}
-#ifdef __linux__ 
-		usleep(20);
-#elif _WIN32
-		Sleep(20);
-#endif
+			#ifdef __linux__ 
+					usleep(20);
+			#elif _WIN32
+					Sleep(20);
+			#endif
 	}
 }
 
@@ -296,6 +286,7 @@ bool		ClientStates::gameState(void)
           }
 		  this->controller->scoreAction(120);
           this->controller->elementAction(0, RType::SET, 0, 0, 0, 10);
+		  // this->run(SCORE); <-- GAME OVER SCREEN
         }
         delete packet;
       }
@@ -307,12 +298,27 @@ bool		ClientStates::gameState(void)
 
 bool	ClientStates::scoreState(void)
 {
+	Event			*event = NULL;
+
+	while (!event || event->type != Event::QUIT) {
+		this->controller->elementAction(0, RType::BACKGROUND, 0, 0, 0, 10);
+		if (event = this->controller->eventAction())
+		{
+			if (std::string(event->name) == "ENTER")
+				return this->run(MENU);
+		}
+		#ifdef __linux__ 
+				usleep(20);
+		#elif _WIN32
+				Sleep(20);
+		#endif
+	}
 	return true;
 }
 
 bool	ClientStates::endState(void)
 {
-	std::cout << "Bye Bye !" << std::endl;
+	std::cout << "Good Bye !" << std::endl;
 	return true;
 }
 
@@ -371,6 +377,7 @@ bool	ClientStates::testState(void)
 			case Event::RESIZE: windowSize = event->size; break;
 			default: break;
 			}
+			return this->run(SCORE);
 		}
 #ifdef __linux__ 
 		usleep(20);

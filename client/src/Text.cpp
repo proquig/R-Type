@@ -107,7 +107,7 @@ void	Text::setString(std::string str)
 
 void	Text::rmString()
 {
-	_str = "Couldn't connect Re-enter IP : \n";
+	_str = "Enter an IP adress then press enter : \n";
 	return;
 }
 

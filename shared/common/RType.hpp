@@ -47,6 +47,7 @@ enum eType
   //UI
   TEXT = 1 << 7,
   SCORE = 1 << 8,
+  BACKGROUND = 1 << 9,
 };
 
 };

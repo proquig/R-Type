@@ -40,9 +40,7 @@ void											SFMLWindow::renderScene(void)
   elements = this->elementQueue->popAll();
 
 	for (element = this->scene.begin(); element != this->scene.end(); ) {
-		if ((*element)->getTtl() <= (float)0.0 && (*element)->getId() != 0) {
-            //(*element)->destroy();
-            //delete (*element);
+		if ((*element)->getTtl() <= (float)0.0 && (*element)->getType() != RType::SET && (*element)->getType() != RType::SCORE) {
             element = this->scene.erase(element);
 		}
 		else

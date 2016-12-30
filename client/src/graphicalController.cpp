@@ -47,9 +47,7 @@ void	GraphicalController::elementAction(unsigned int id, RType::eType type, int 
 	if (this->scene.size()) {
 		for (elem = this->scene.begin(); elem != this->scene.end(); ) {
 			(*elem)->live();
-            if ((*elem)->getTtl() <= 0  && (*elem)->getId() != 0) {
-				//delete (*elem);
-				//       std::cout << "Delete -> TYPE:" << (*elem)->getType() << "\tID:" << (*elem)->getId() << std::endl;
+            if ((*elem)->getTtl() <= 0 && (*elem)->getType() != RType::SET && (*elem)->getType() != RType::SCORE) {
                 elem = this->scene.erase(elem);
             }else
 				++elem;
@@ -94,9 +92,7 @@ void	GraphicalController::elementAction(unsigned int id, RType::eType type, int 
 	if (this->scene.size()) {
 		for (elem = this->scene.begin(); elem != this->scene.end(); ) {
 			(*elem)->live();
-            if ((*elem)->getTtl() <= 0  && (*elem)->getId() != 0) {
-				//delete (*elem);
-				//       std::cout << "Delete -> TYPE:" << (*elem)->getType() << "\tID:" << (*elem)->getId() << std::endl;
+            if ((*elem)->getTtl() <= 0  && (*elem)->getType() != RType::SET && (*elem)->getType() != RType::SCORE) {
                 elem = this->scene.erase(elem);
             }else
 				++elem;
