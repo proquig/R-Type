@@ -46,9 +46,9 @@ enum eType
   BONUS = 1 << 6,
   //UI
   TEXT = 1 << 7,
-    BOSS = 1 << 8,
-    C3PO = 1 << 9,
-    BILDO = 1 << 10
+    BOSS = 1 << 10,
+    C3PO = 1 << 11,
+    BILDO = 1 << 12
 
 };
 
