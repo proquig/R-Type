@@ -24,21 +24,20 @@ ClientStates::ClientStates()
 
 ClientStates::~ClientStates()
 {
-  if (_socketFactory)
-  {
-    _socketFactory->stopPoller();
-    reinterpret_cast<void *(*)(ISocketFactory *)>(_dic[1]->at("destroy"))(_socketFactory);
-  }
-  if (_pool)
-  {
-    _pool->stop();
-    reinterpret_cast<void *(*)(IThreadPool *)>(_dic[0]->at("destroy"))(_pool);
-  }
-  for (Dictionary dic : _dic)
-  {
-    if (dic)
-      delete dic;
-  }
+	if (_pool)
+		_pool->stop();
+	if (_socketFactory)
+	{
+		_socketFactory->stopPoller();
+		reinterpret_cast<void *(*)(ISocketFactory *)>(_dic[1]->at("destroy"))(_socketFactory);
+	}
+	if (_pool)
+		reinterpret_cast<void *(*)(IThreadPool *)>(_dic[0]->at("destroy"))(_pool);
+	for (Dictionary dic : _dic)
+	{
+		if (dic)
+			delete dic;
+	}
 }
 
 bool	ClientStates::run(state to)
