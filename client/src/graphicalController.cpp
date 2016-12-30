@@ -27,7 +27,7 @@ void GraphicalController::setProperty(IWindow::eProperty prop, bool flag)
 
 bool	GraphicalController::initAction(void)
 {
-	this->score = 0;
+	this->score = -1;
 	this->scene = std::vector<AElement *>();
 	this->windowThread = new std::thread(&GraphicalController::windowAction, this);
 	return (true);
@@ -136,6 +136,30 @@ Event *		GraphicalController::eventAction(void)
 
 void		GraphicalController::scoreAction(int _score)
 {
+  if (!this->score_elem)
+  {
+	this->score_elem = ElementFactory::create(0, RType::SCORE);
+	this->score_elem->setCoords(new Coords(0, 410));
+	this->score_elem->setAngle(0);
+	this->score_elem->setSpeed(std::chrono::milliseconds(0));
+  }
+  if (_score == this->score)
+	return;
+  std::ostringstream	ss;
+  std::vector<AElement *>::iterator elem;
+  ss << _score;
+
+  this->score = _score;
+  ((Score*)this->score_elem)->setString(ss.str());
+  this->elementAction(0, RType::SCORE, 0, 410, 0, 0);
+  this->scene.push_back(this->score_elem);
+  this->windowQueue->push(this->score_elem);
+  return;
+}
+
+/*
+void		GraphicalController::scoreAction(int _score)
+{
 	if (_score == this->score)
 		return;
 	std::ostringstream	ss;
@@ -155,6 +179,7 @@ void		GraphicalController::scoreAction(int _score)
 	this->elementAction(0, RType::SCORE, 0, 410, 0, 0);
 	return;
 }
+*/
 
 void		GraphicalController::setText(unsigned int id, std::string txt)
 {
