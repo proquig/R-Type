@@ -150,7 +150,7 @@ void Room::handle()
 #endif
       }
       else
-        elem->setX(elem->getX() + (elem->getSpeed() * (elem->getAngle() == (float)90 ? 1 : -1)));
+		elem->move();
   }
   std::set<RType::IElement*> unique(del.begin(), del.end());
   for (RType::IElement* elem : unique)

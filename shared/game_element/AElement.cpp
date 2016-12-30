@@ -138,3 +138,8 @@ std::vector<RType::IElement*>					RType::AElement::collideWith(RType::IElement* 
 {
 	return std::vector<RType::IElement*>();
 }
+
+bool											RType::AElement::move()
+{
+	return true;
+}

@@ -8,6 +8,12 @@ Shot::~Shot()
 {
 }
 
+bool									Shot::move()
+{
+	this->setX(this->getX() + (this->getSpeed() * (this->getAngle() == (float)90 ? 1 : -1)));
+	return true;
+}
+
 std::vector<RType::IElement*>			Shot::collideWith(RType::IElement* elem)
 {
 	return std::vector<RType::IElement*>();

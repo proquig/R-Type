@@ -35,6 +35,7 @@ public:
   virtual void setSpeed(char) = 0;
 
   virtual std::vector<IElement *> collideWith(IElement *) = 0;
+  virtual bool						move() = 0;
 };
 };
 
