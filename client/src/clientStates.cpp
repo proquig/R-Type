@@ -18,6 +18,8 @@ ClientStates::ClientStates()
   memset(&_sockaddr, '0', sizeof(_sockaddr));
   _dlManager.add(0, "threadpool", "");
   _dlManager.add(0, "rtype_network", "");
+  soundLoader = new SFMLSoundLoader();
+  soundLoader->initSoundMap();
 }
 
 ClientStates::~ClientStates()
@@ -56,7 +58,9 @@ bool	ClientStates::run(state to)
 		break;
 	case MENU: return this->Menu();
 		break;
-	case GAME: return this->gameState();
+	case GAME: 
+		soundLoader->getSound(ASound::eMain)->play();
+		return this->gameState();
 		break;
 	case SCORE: return this->scoreState();
 		break;
