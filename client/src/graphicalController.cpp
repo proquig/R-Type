@@ -174,3 +174,16 @@ std::string		GraphicalController::getIp(unsigned int id)
 	}
 	return (ret);
 }
+
+bool			GraphicalController::checkIp(std::string ip)
+{
+	size_t n = std::count(ip.begin(), ip.end(), '.');
+
+	if ((n < 3 || n > 3) || ip.size() < 7)
+	{
+		std::cout << "IP  non VALIDE" << std::endl;
+		return (false);
+	}
+	std::cout << "ip valide" << std::endl;
+	return (true);
+}

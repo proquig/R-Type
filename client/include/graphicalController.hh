@@ -48,6 +48,7 @@ public:
 	void	addText(unsigned int, std::string);
 	void	rmText(unsigned int);
 	std::string	getIp(unsigned int);
+	bool	checkIp(std::string);
 
 };
 

@@ -158,7 +158,7 @@ bool	ClientStates::Menu(void)
 				ip = this->controller->getIp(9);
 
 				std::cout << "  IP = " << ip << std::endl;
-				if (!_init && !init(ip))
+				if (!this->controller->checkIp(ip) || (!_init && !init(ip)))
 					return this->run(MENU);
 				return this->run(GAME);
 			}
