@@ -36,7 +36,7 @@ class GraphicalController : public Observable
 	std::vector<AElement *>		scene;
 
 	int							score;
-
+	AElement*					score_elem;
 
 public:
 
