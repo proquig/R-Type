@@ -216,6 +216,9 @@ void	SFMLWindow::pollEvent(void)
 					case sf::Keyboard::Period:
 						this->eventQueue->push(new Event(Event::KEYPRESS, RType::ENTER, ".", _x, _y, _w, _h));
 						break;
+					case sf::Keyboard::BackSpace:
+						this->eventQueue->push(new Event(Event::KEYPRESS, RType::ENTER, "SUPPR", _x, _y, _w, _h));
+						break;
 					default:
 						break;
 				}
