@@ -83,7 +83,7 @@ void GameController::handleMonsters()
   if (!rand)
   {
 	//if ((_monster = reinterpret_cast<Monster *(*)(int, int, ElementFactory*)>((*_dicMonster)->at("new"))(900, (std::rand() % 450), &this->_elemFact)) != nullptr)
-	if ((_bildo = reinterpret_cast<Bildo *(*)(int, int, ElementFactory*)>((*_dicBildo)->at("new"))(900, (std::rand() % 450), &this->_elemFact)) != nullptr)
+	if ((_bildo = reinterpret_cast<Bildo *(*)(int, int, ElementFactory*)>((*_dicBildo)->at("new"))(750, (std::rand() % 450), &this->_elemFact)) != nullptr)
 	{
 	  this->_bildo->setType(RType::MONSTER);
 	  this->_game->addElem(this->_bildo);

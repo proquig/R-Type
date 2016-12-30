@@ -130,8 +130,11 @@ void Server::loop()
   if ((vector = _packets.popAll()) != nullptr && vector->size() != 0)
     for (std::pair<std::string, struct sockaddr *> pair : (*vector))
       if ((packet = APacket::create(pair.first)) != nullptr)
+      {
         if (packet->getType() == APacket::INPUT_DATA)
           this->handleSocket(pair.second, packet);
+        delete packet;
+      }
   for (Room* room : this->_rooms)
 	room->handle();
 }
@@ -256,7 +259,7 @@ void Server::realizeMovement(Room *room, Player *player)
     RType::AElement *elem;
     elem = room->getGameController()->getElementFactory()->create(player->getId(), -1, RType::MISSILE,
                                                                   player->getX() + (player->getSizeX() / 2) + 1,
-                                                                  player->getY(), 100, 5, 5, 100, 90,
+                                                                  player->getY(), 100, 11, 11, 100, 90,
                                                                   player->getSpeed() + 1);
     room->getGameController()->getGame()->addElem(elem);
   }
