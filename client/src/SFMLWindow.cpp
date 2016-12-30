@@ -40,7 +40,7 @@ void											SFMLWindow::renderScene(void)
   elements = this->elementQueue->popAll();
 
 	for (element = this->scene.begin(); element != this->scene.end(); ) {
-		if ((*element)->getTtl() <= (float)0.0 && (*element)->getType() != RType::SET) {
+		if ((*element)->getTtl() <= (float)0.0 && (*element)->getId() != 0) {
             //(*element)->destroy();
             //delete (*element);
             element = this->scene.erase(element);
@@ -53,7 +53,7 @@ void											SFMLWindow::renderScene(void)
 		return;
 	for (element = elements->begin(); element != elements->end(); ++element) {
 		for (elem = this->scene.begin(); elem != this->scene.end(); ++elem) {
-			if ((*elem)->getId() == (*element)->getId()) {
+			if ((*elem)->getId() == (*element)->getId() && (*element)->getType() == (*elem)->getType()) {
 				position = (*element)->getCoords();
 				(*elem)->move(position->x, position->y, (*element)->getAngle(), (*element)->getSpeed());
 				match = true;

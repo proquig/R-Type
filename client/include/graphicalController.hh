@@ -11,7 +11,8 @@
 # include "window.hh"
 # include "hookEvent.hh"
 # include "coords.hh"
-#include "Text.hh"
+# include "Text.hh"
+# include "Score.hh"
 # include <thread>
 # include <vector>
 
@@ -34,6 +35,8 @@ class GraphicalController : public Observable
 	// std::vector<ASprite *>	ressources;
 	std::vector<AElement *>		scene;
 
+	int							score;
+
 
 public:
 
@@ -42,9 +45,11 @@ public:
   void setProperty(IWindow::eProperty, bool);
 	bool	initAction(void);
 	void	windowAction(void);
+	void	scoreAction(int);
 	void	elementAction(unsigned int, RType::eType, int, int, float, int);
   	void	elementAction(unsigned int, RType::eType, int, int, float, int, ASprite* sprite);
 	Event	*eventAction(void);
+	void	setText(unsigned int, std::string);
 	void	addText(unsigned int, std::string);
 	void	rmText(unsigned int);
 	std::string	getIp(unsigned int);

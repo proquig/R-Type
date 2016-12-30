@@ -46,6 +46,7 @@ enum eType
   BONUS = 1 << 6,
   //UI
   TEXT = 1 << 7,
+  SCORE = 1 << 8,
 };
 
 };

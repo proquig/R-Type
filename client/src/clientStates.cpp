@@ -114,16 +114,12 @@ bool	ClientStates::launchState(void)
 
 bool ClientStates::init(std::string ip)
 {
-	std::cout << "HERE ..." << std::endl;
 	if (!ip.size())
 		ip = std::string(RTYPE_CLIENT_DEFAULT_TARGET_IP);
-	std::cout << "HERE ... (bis)" << std::endl;
 	if ((_socket = _socketFactory->createSocketUDP(this, RTYPE_CLIENT_PORT_UDP)) == nullptr)
 		return false;
-	std::cout << "HERE ... (ter)" << std::endl;
 	if (!_socketFactory->hintSockaddr(ip, _sockaddr, RTYPE_CLIENT_DEFAULT_TARGET_PORT))
 		return false;
-	std::cout << "... HERE" << std::endl;
 	_init = true;
 	return (true);
 }
@@ -298,6 +294,7 @@ bool		ClientStates::gameState(void)
 				sprite
             );
           }
+		  this->controller->scoreAction(120);
           this->controller->elementAction(0, RType::SET, 0, 0, 0, 10);
         }
         delete packet;
@@ -343,21 +340,21 @@ bool	ClientStates::testState(void)
 
 		testTtl++;
 
-		this->controller->elementAction(1, RType::PLAYER, player->x, player->y, angle, 0);
-		this->controller->elementAction(2, RType::PLAYER, 100, 50, 0, 0);
-		this->controller->elementAction(3, RType::PLAYER, 150, 50, 0, 0);
+		//this->controller->elementAction(1, RType::PLAYER, player->x, player->y, angle, 0);
+		//this->controller->elementAction(2, RType::PLAYER, 100, 50, 0, 0);
+		//this->controller->elementAction(3, RType::PLAYER, 150, 50, 0, 0);
 
-		this->controller->elementAction(8, RType::MONSTER, 400, 50, 0, 0);
+		//this->controller->elementAction(8, RType::MONSTER, 400, 50, 0, 0);
 
-		if (testTtl < 100)
-			this->controller->elementAction(4, RType::MISSILE, 200, 50, 0, 0);
+		//if (testTtl < 100)
+		//	this->controller->elementAction(4, RType::MISSILE, 200, 50, 0, 0);
 
-		this->controller->elementAction(5, RType::OBSTACLE, 250, 0, 0, 0);
+		//this->controller->elementAction(5, RType::OBSTACLE, 250, 0, 0, 0);
 
-		this->controller->elementAction(9, RType::TEXT, 100, 0, 0, 0);
+		//this->controller->elementAction(9, RType::TEXT, 100, 0, 0, 0);
 
+		this->controller->scoreAction(120);
 		this->controller->elementAction(0, RType::SET, 0, 0, 0, 10);
-
 
 		if (event = this->controller->eventAction()) {
 			std::cout << "[EVENT] " << event->name << std::endl;
