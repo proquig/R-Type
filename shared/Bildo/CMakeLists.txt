@@ -4,9 +4,8 @@ cmake_minimum_required(VERSION 3.2)
 project(bildo VERSION 1.0 LANGUAGES CXX)
 
 add_library(bildo MODULE
-        instantiate.cpp
         Bildo.cpp
-        Bildo.hh    
+        Bildo.hh
         )
 
 target_include_directories(bildo PUBLIC .)

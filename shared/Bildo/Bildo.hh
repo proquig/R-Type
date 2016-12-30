@@ -19,7 +19,6 @@ private:
     uint8_t				_mov;
     ElementFactory      *_factory;
     bool                _pattern;
-    bool                _action;
 
 
 public:

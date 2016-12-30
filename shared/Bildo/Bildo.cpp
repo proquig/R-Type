@@ -11,7 +11,6 @@ Bildo::Bildo(uint32_t idFrom, uint16_t type, uint16_t x, uint16_t y, uint16_t hp
     _direction = 1;
     _mov = 0;
     _pattern = false;
-    _action = false;
 }
 
 Bildo::Bildo(uint16_t x, uint16_t y, ElementFactory *factory) :
