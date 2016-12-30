@@ -54,11 +54,14 @@ bool	ClientStates::run(state to)
 	else
 		this->history.push_back(to);
 	switch (to) {
-	case LAUNCH: return this->launchState();
+	case LAUNCH: 
+		soundLoader->getSound(ASound::eMenu)->play();
+		return this->launchState();
 		break;
 	case MENU: return this->Menu();
 		break;
 	case GAME: 
+		soundLoader->getSound(ASound::eMenu)->stop();
 		soundLoader->getSound(ASound::eMain)->play();
 		return this->gameState();
 		break;

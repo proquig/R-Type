@@ -24,9 +24,9 @@ bool				SFMLSoundLoader::initSoundMap()
 		_buffers[ASound::eShoot] = (*(new sf::SoundBuffer()));
 		_buffers[ASound::eMain] = (*(new sf::SoundBuffer()));
 		_buffers[ASound::eMenu] = (*(new sf::SoundBuffer()));
-		_soundMap[ASound::eShoot] = new SFMLSound("../../Client/Assets/shoot.wav", _buffers[ASound::eShoot], false, false);
-	//	_soundMap[ASound::eMenu] = new SFMLSound("../../Client/Assets/menu.wav", _buffers[ASound::eMenu], true, false);
-		_soundMap[ASound::eMain] = new SFMLSound("../../Client/Assets/main.ogg", _buffers[ASound::eMain], true, true);
+		_soundMap[ASound::eShoot] = new SFMLSound("../../client/media/sounds/shoot.wav", _buffers[ASound::eShoot], false, false);
+		_soundMap[ASound::eMenu] = new SFMLSound("../../client/media/sounds/menu.wav", _buffers[ASound::eMenu], true, true);
+		_soundMap[ASound::eMain] = new SFMLSound("../../client/media/sounds/main.wav", _buffers[ASound::eMain], true, true);
 	}
 	catch (std::exception)
 	{
