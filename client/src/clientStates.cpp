@@ -222,6 +222,7 @@ bool		ClientStates::gameState(void)
   _inputQueue.resize(10, 0);
   _mutex->lock();
   _ref = _clock.now();
+  this->controller->scoreAction(0);
   while (!_stop)
   {
     _waiting = true;
@@ -268,6 +269,7 @@ bool		ClientStates::gameState(void)
         if (packet->getType() == APacket::GAME_ELEM_INFO)
         {
           GameDataPacket *pak = (GameDataPacket *) packet;
+		  this->controller->scoreAction(pak->getScore());
           for (GameElement* ptr : pak->getGameElements())
           {
 			if (ptr->getType() == RType::PLAYER)
@@ -288,7 +290,7 @@ bool		ClientStates::gameState(void)
 				sprite
             );
           }
-		  this->controller->scoreAction(120);
+		  //this->controller->scoreAction(120);
           this->controller->elementAction(0, RType::SET, 0, 0, 0, 10);
 		  // this->run(SCORE); <-- GAME OVER SCREEN
         }

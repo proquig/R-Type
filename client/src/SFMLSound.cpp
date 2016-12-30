@@ -21,7 +21,8 @@ SFMLSound::SFMLSound(const std::string&  path, sf::SoundBuffer& buff, bool loop,
 		_music = new sf::Music();
 		if (!_music->openFromFile(path))
 		{
-			throw new std::exception();
+			//throw new std::exception();
+			return;
 		}
 		_music->setVolume(100);
 		_music->setLoop(loop);
