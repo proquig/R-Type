@@ -101,7 +101,8 @@ void	Text::setString(std::string str)
 {
 	if (str == "SUPPR")
 	{
-		_str.pop_back();
+		if (_str.size() > 39)
+			_str.pop_back();
 		return;
 	}
 	if (str.size() < _maxLen && str.size() == 1 && (str.size() + _str.size()) < _maxLen)
