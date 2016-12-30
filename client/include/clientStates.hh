@@ -15,6 +15,7 @@
 # include "DLManager.hh"
 # include "IObserver.hpp"
 #include "SFMLSprite.hh"
+# include "SFMLSoundLoader.hh"
 
 # define Y_SPEED	10
 # define X_SPEED	10
@@ -45,8 +46,11 @@ private:
 	std::vector<state>	history;
 	std::string			error;
 
+	std::string			ip;
+
 	// Controllers
 	GraphicalController	*controller;
+	ISoundLoader*		soundLoader;
 
 	//Bool
 	bool _init;
@@ -72,8 +76,8 @@ private:
 	//Timer
 	std::chrono::high_resolution_clock _clock;
 	std::chrono::high_resolution_clock::time_point _ref;
-  	SFMLSprite*	_player1;
-  	SFMLSprite*	_bullet;
+  	SFMLSprite*	_player[4];
+  	SFMLSprite*	_bullet[2];
   	SFMLSprite*	_monster;
 
 public:
@@ -95,8 +99,9 @@ public:
 	bool	testState(void);
 	bool	Menu(void);
 	virtual void update(IObservable*, int);
+  	void	loadSprites(void);
 protected:
-	bool init();
+	bool init(std::string);
 };
 
 

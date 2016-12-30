@@ -15,12 +15,14 @@ void	SFMLWindow::run(WorkQueue<AElement *> *_elemqueue, WorkQueue<Event *> *_eve
 	if (!this->handler)
 		this->handler = new sf::RenderWindow(sf::VideoMode(this->width, this->height), this->name);
 	this->handler->clear(sf::Color::Black);
+  	this->handler->setFramerateLimit(0);
+  	//this->handler->setVerticalSyncEnabled(true);
 	while (this->handler->isOpen())
 	{
 		this->pollEvent();
-		this->renderScene();
-		this->render();
-		//std::this_thread::sleep_for(std::chrono::milliseconds(2));
+	  	this->renderScene();
+	  	this->render();
+		std::this_thread::sleep_for(std::chrono::milliseconds(2));
 	}
 	//delete this->handler;
 }
@@ -33,17 +35,12 @@ void											SFMLWindow::renderScene(void)
 	bool										match = false;
 	Coords										*position;
 
-	elements = this->elementQueue->popAll();
-	if (!elements->size())
-		return;
+  if (!this->elementQueue->getQueue().size())
+	return;
+  elements = this->elementQueue->popAll();
 
-#ifndef NDEBUG
-  std::cout << "SFMLWindow:" << this->scene.size() << "workQ:" << this->elementQueue->getQueue().size() << std::endl;
-#endif
 	for (element = this->scene.begin(); element != this->scene.end(); ) {
-		if ((*element)->getTtl() <= (float)0.0 && (*element)->getType() != RType::SET) {
-            //(*element)->destroy();
-            //delete (*element);
+		if ((*element)->getTtl() <= (float)0.0 && (*element)->getType() != RType::SET && (*element)->getType() != RType::SCORE) {
             element = this->scene.erase(element);
 		}
 		else
@@ -54,7 +51,7 @@ void											SFMLWindow::renderScene(void)
 		return;
 	for (element = elements->begin(); element != elements->end(); ++element) {
 		for (elem = this->scene.begin(); elem != this->scene.end(); ++elem) {
-			if ((*elem)->getId() == (*element)->getId()) {
+			if ((*elem)->getId() == (*element)->getId() && (*element)->getType() == (*elem)->getType()) {
 				position = (*element)->getCoords();
 				(*elem)->move(position->x, position->y, (*element)->getAngle(), (*element)->getSpeed());
 				match = true;
@@ -77,8 +74,10 @@ void											SFMLWindow::render(void)
 	Coords										*target;
 	Coords										*distance;
 
-	this->handler->clear();
-	if (this->scene.size()) {
+	if (!this->scene.size())
+	  return;
+	  //std::cout << "SIZESIZE=" << this->scene.size() << std::endl;
+	  this->handler->clear();
 		for (element = this->scene.begin(); element != this->scene.end(); ++element)
 		{
 			coords = (*element)->getCoords();
@@ -86,17 +85,19 @@ void											SFMLWindow::render(void)
 			distance = (*element)->getDistance();
 			//coords->x = target->x;
 			//coords->y = target->y;
-			if (coords->x < target->x)
+		  	if (coords->x != target->x || coords->y != target->y || (*element)->getType())
+			{
+			  if (coords->x < target->x)
 				coords->x += distance->x;
-			else if (coords->x > target->x)
+			  else if (coords->x > target->x)
 				coords->x += distance->x;
 			if (coords->y < target->y)
 				coords->y += distance->y;
 			else if (coords->y > target->y)
 				coords->y += distance->y;
 			(*element)->print((void *)this->handler);
+			}
 		}
-	}
 	this->handler->display();
 }
 
@@ -171,37 +172,51 @@ void	SFMLWindow::pollEvent(void)
 						this->eventQueue->push(new Event(Event::KEYRELEASE, RType::ENTER, "ENTER", _x, _y, _w, _h));
 						break;
 					case sf::Keyboard::Num0:
+					case sf::Keyboard::Numpad0:
 						this->eventQueue->push(new Event(Event::KEYPRESS, RType::ENTER, "0", _x, _y, _w, _h));
 						break;
 					case sf::Keyboard::Num1:
+					case sf::Keyboard::Numpad1:
 						this->eventQueue->push(new Event(Event::KEYPRESS, RType::ENTER, "1", _x, _y, _w, _h));
 						break;
 					case sf::Keyboard::Num2:
+					case sf::Keyboard::Numpad2:
 						this->eventQueue->push(new Event(Event::KEYPRESS, RType::ENTER, "2", _x, _y, _w, _h));
 						break;
 					case sf::Keyboard::Num3:
+					case sf::Keyboard::Numpad3:
 						this->eventQueue->push(new Event(Event::KEYPRESS, RType::ENTER, "3", _x, _y, _w, _h));
 						break;
 					case sf::Keyboard::Num4:
+					case sf::Keyboard::Numpad4:
 						this->eventQueue->push(new Event(Event::KEYPRESS, RType::ENTER, "4", _x, _y, _w, _h));
 						break;
 					case sf::Keyboard::Num5:
+					case sf::Keyboard::Numpad5:
 						this->eventQueue->push(new Event(Event::KEYPRESS, RType::ENTER, "5", _x, _y, _w, _h));
 						break;
 					case sf::Keyboard::Num6:
+					case sf::Keyboard::Numpad6:
 						this->eventQueue->push(new Event(Event::KEYPRESS, RType::ENTER, "6", _x, _y, _w, _h));
 						break;
 					case sf::Keyboard::Num7:
+					case sf::Keyboard::Numpad7:
 						this->eventQueue->push(new Event(Event::KEYPRESS, RType::ENTER, "7", _x, _y, _w, _h));
 						break;
 					case sf::Keyboard::Num8:
+					case sf::Keyboard::Numpad8:
 						this->eventQueue->push(new Event(Event::KEYPRESS, RType::ENTER, "8", _x, _y, _w, _h));
 						break;
 					case sf::Keyboard::Num9:
+					case sf::Keyboard::Numpad9:
 						this->eventQueue->push(new Event(Event::KEYPRESS, RType::ENTER, "9", _x, _y, _w, _h));
 						break;
 					case sf::Keyboard::Period:
+					case sf::Keyboard::SemiColon:
 						this->eventQueue->push(new Event(Event::KEYPRESS, RType::ENTER, ".", _x, _y, _w, _h));
+						break;
+					case sf::Keyboard::BackSpace:
+						this->eventQueue->push(new Event(Event::KEYPRESS, RType::ENTER, "SUPPR", _x, _y, _w, _h));
 						break;
 					default:
 						break;
@@ -232,6 +247,7 @@ int		SFMLWindow::getHeight(void)
 
 void SFMLWindow::setProperty(IWindow::eProperty property, bool flag)
 {
+  /*
   switch (property)
   {
     case KEY_REPEAT:
@@ -240,4 +256,5 @@ void SFMLWindow::setProperty(IWindow::eProperty property, bool flag)
     default:
       break;
   }
+   */
 }

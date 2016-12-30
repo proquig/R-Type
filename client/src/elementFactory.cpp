@@ -5,6 +5,8 @@
 #include "obstacle.hh"
 #include "set.hh"
 #include "Text.hh"
+#include "Score.hh"
+#include "Background.hh"
 
 AElement *					ElementFactory::create(unsigned int _id, RType::eType type)
 {
@@ -50,6 +52,15 @@ AElement *					ElementFactory::create(unsigned int _id, RType::eType type)
 		((Text *)element)->setFont("./../../client/media/GAME-Assets/space.otf");
 		((Text *)element)->setFontSize(20);
 		((Text *)element)->setMaxLength(16);
+		break;
+	case RType::SCORE:
+		element = new Score();
+		((Score *)element)->setFont("./../../client/media/GAME-Assets/space.otf");
+		((Score *)element)->setFontSize(17);
+		((Score *)element)->setMaxLength(16);
+		break;
+	case RType::BACKGROUND:
+		element = new Background(Background::GAME_OVER);
 		break;
 	default:
 		// unknown TO-DO

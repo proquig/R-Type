@@ -6,7 +6,7 @@ namespace RType
 //Default network properties for client
 # define RTYPE_CLIENT_PORT_TCP 0
 # define RTYPE_CLIENT_PORT_UDP 0
-# define RTYPE_CLIENT_DEFAULT_TARGET_IP "localhost"
+# define RTYPE_CLIENT_DEFAULT_TARGET_IP "10.29.126.27"
 # define RTYPE_CLIENT_DEFAULT_TARGET_PORT 4242
 //Default network properties for server
 # define RTYPE_SERVER_PORT_TCP 5496
@@ -46,10 +46,11 @@ enum eType
   BONUS = 1 << 6,
   //UI
   TEXT = 1 << 7,
+  SCORE = 1 << 8,
+  BACKGROUND = 1 << 9,
     BOSS = 1 << 10,
     C3PO = 1 << 11,
     BILDO = 1 << 12
-
 };
 
 };

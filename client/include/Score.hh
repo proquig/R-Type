@@ -1,11 +1,11 @@
-#ifndef TEXT_HH_
-#define TEXT_HH_
+#ifndef SCORE_HH_
+#define SCORE_HH_
 
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include "element.hh"
 
-class Text : public AElement
+class Score : public AElement
 {
 public:
 
@@ -50,4 +50,4 @@ private:
 };
 
 
-#endif // !TEXT_HH_
+#endif // !SCORE_HH_
