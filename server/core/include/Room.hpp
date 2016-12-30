@@ -12,6 +12,7 @@
 # include	"APacket.hh"
 # include	"Player.hh"
 # include   "DLManager.hh"
+# include	"TripleShot.hh"
 
 # define	MAX_PLAYERS	4
 
