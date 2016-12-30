@@ -18,6 +18,9 @@ ClientStates::ClientStates()
   memset(&_sockaddr, '0', sizeof(_sockaddr));
   _dlManager.add(0, "threadpool", "");
   _dlManager.add(0, "rtype_network", "");
+  //soundLoader = new SFMLSoundLoader();
+  //soundLoader->initSoundMap();
+  //soundLoader->getSound(ASound::eMain)->play();
 }
 
 ClientStates::~ClientStates()
