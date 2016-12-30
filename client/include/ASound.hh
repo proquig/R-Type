@@ -2,6 +2,14 @@
 
 class ASound
 {
+public:
+	enum eSound {
+		eMain,
+		eShoot,
+		eExplode,
+		eMenu
+	};
+
 private:
 	void*			_sound;
 

@@ -15,6 +15,7 @@
 # include "DLManager.hh"
 # include "IObserver.hpp"
 #include "SFMLSprite.hh"
+# include "SFMLSoundLoader.hh"
 
 # define Y_SPEED	10
 # define X_SPEED	10
@@ -49,6 +50,7 @@ private:
 
 	// Controllers
 	GraphicalController	*controller;
+	ISoundLoader*		soundLoader;
 
 	//Bool
 	bool _init;
