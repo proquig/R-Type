@@ -94,7 +94,7 @@ void	Score::setMaxLength(int len)
 	return;
 }
 
-void	Score::setString(std::string str)
+void	Score::setString(const std::string& str)
 {
 	_str = "Score : " + str;
 	_txt.setString(_str);

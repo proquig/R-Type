@@ -5,9 +5,8 @@
 #include <sstream>
 
 GraphicalController::GraphicalController(GLib lib, int _w, int _h, std::string _n)
-	: windowSize(new Coords(_w, _h))
+	: windowSize(new Coords(_w, _h)), score_elem(nullptr), score(-1)
 {
-
 	switch (lib)
 	{
 	case SFML:
@@ -146,7 +145,6 @@ void		GraphicalController::scoreAction(int _score)
   if (_score == this->score)
 	return;
   std::ostringstream	ss;
-  std::vector<AElement *>::iterator elem;
   ss << _score;
 
   this->score = _score;
