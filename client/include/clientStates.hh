@@ -72,7 +72,7 @@ private:
 	//Timer
 	std::chrono::high_resolution_clock _clock;
 	std::chrono::high_resolution_clock::time_point _ref;
-  	SFMLSprite*	_player1;
+  	SFMLSprite*	_player[4];
   	SFMLSprite*	_bullet;
   	SFMLSprite*	_monster;
 
@@ -95,6 +95,7 @@ public:
 	bool	testState(void);
 	bool	Menu(void);
 	virtual void update(IObservable*, int);
+  	void	loadSprites(void);
 protected:
 	bool init();
 };

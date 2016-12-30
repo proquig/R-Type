@@ -15,6 +15,7 @@ void				SFMLSprite::init()
 {
 	if (_isLoaded == false)
 	{
+	  std::cout << "NAME = " << this->_name << std::endl;
 		//if (_tex.loadFromFile(_path));
 		if (_img.loadFromFile(_path))
 		{

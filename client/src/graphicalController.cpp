@@ -122,7 +122,7 @@ void	GraphicalController::elementAction(unsigned int id, RType::eType type, int 
 		AElement									*element;
 
 		element = ElementFactory::create(id, type);
-	  	element->setSprite((ASprite *) sprite);
+	  	element->setSprite(sprite);
 		element->setCoords(new Coords(x, y));
 		element->setAngle(angle);
 		element->setSpeed(std::chrono::milliseconds(speed));

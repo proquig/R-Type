@@ -13,7 +13,7 @@ ClientStates::ClientStates()
     : _init(false), _stop(false), _waiting(false), _input(0),
     _cond(nullptr), _mutex(nullptr), _pool(nullptr),
     _socketFactory(nullptr), _socket(nullptr),
-	_player1(nullptr), _bullet(nullptr), _monster(nullptr)//, _player2(nullptr), _player3(nullptr), _player4(nullptr), _bullet(nullptr)
+	_bullet(nullptr), _monster(nullptr)
 {
   memset(&_sockaddr, '0', sizeof(_sockaddr));
   _dlManager.add(0, "threadpool", "");
@@ -81,7 +81,7 @@ std::string	ClientStates::getErr(void) const
 
 bool	ClientStates::launchState(void)
 {
-	this->controller	= new GraphicalController(SFML, 800, 450, "R-type");
+  this->controller	= new GraphicalController(SFML, 800, 450, "R-type");
 
   controller->addObserver(this);
 	this->controller->initAction();
@@ -98,6 +98,43 @@ bool	ClientStates::menuState(void)
 	return this->run(GAME);
 }
 
+void		ClientStates::loadSprites(void)
+{
+  for (uint8_t i = 0; i < 4; ++i)
+	this->_player[i] = new SFMLSprite("./../../client/media/GAME-Assets/r-typesheet42.gif");
+  this->_player[0]->addRessource("CYAN", std::vector<Cut *>{new Cut(66, 0, 33, 19)});
+  this->_player[1]->addRessource("VIOLET", std::vector<Cut *>{new Cut(66, 17, 33, 19)});
+  this->_player[2]->addRessource("GREEN", std::vector<Cut *>{new Cut(66, 34, 33, 19)});
+  this->_player[3]->addRessource("RED", std::vector<Cut *>{new Cut(66, 51, 33, 19)});
+  for (uint8_t i = 0; i < 4; ++i)
+  {
+	this->_player[i]->setAnimated(false);
+  	this->_player[i]->setAnimTime(500);
+  	this->_player[i]->setLoop(true);
+  }
+
+  this->_bullet = new SFMLSprite("./../../client/media/GAME-Assets/r-typesheet9.gif");
+  this->_bullet->addRessource("DEFAULT", std::vector<Cut *>{new Cut(70, 72, 30, 28)});
+  this->_bullet->setAnimated(false);
+  this->_bullet->setAnimTime(500);
+  this->_bullet->setLoop(true);
+
+  this->_monster = new SFMLSprite("./../../client/media/GAME-Assets/r-typesheet23.gif");
+  this->_monster->addRessource("DEFAULT", std::vector<Cut *>{
+		  new Cut(0, 0, 33, 35)/*,
+						new Cut(33, 0, 33, 35),
+						new Cut(66, 0, 33, 35),
+						new Cut(99, 0, 33, 35),
+						new Cut(132, 0, 33, 35),
+						new Cut(165, 0, 33, 35),
+						new Cut(196, 0, 33, 35),
+						new Cut(229, 0, 33, 35)*/
+  });
+  this->_monster->setAnimated(false);
+  this->_monster->setAnimTime(500);
+  this->_monster->setLoop(true);
+}
+
 bool		ClientStates::gameState(void)
 {
   SFMLSprite*	sprite;
@@ -106,6 +143,7 @@ bool		ClientStates::gameState(void)
   std::vector<uint16_t>::iterator it;
   RType::eType objType;
 
+  this->loadSprites();
   _inputQueue.resize(10, 0);
   _mutex->lock();
   _ref = _clock.now();
@@ -158,54 +196,11 @@ bool		ClientStates::gameState(void)
           for (GameElement* ptr : pak->getGameElements())
           {
 			if (ptr->getType() == RType::PLAYER)
-			{
-			  if (!this->_player1)
-			  {
-				this->_player1 = new SFMLSprite("./../../client/media/GAME-Assets/r-typesheet42.gif");
-				//this->_player1->addRessource("CYAN_DOWN", std::vector<Cut *>{new Cut(0, 0, 33, 19), new Cut(33, 0, 33, 19)});
-				this->_player1->addRessource("CYAN", std::vector<Cut *>{new Cut(66, 0, 33, 19)});
-				//this->_player1->addRessource("CYAN_UP", std::vector<Cut *>{new Cut(99, 0, 33, 19), new Cut(132, 0, 33, 19)});
-				this->_player1->setAnimated(false);
-				this->_player1->setAnimTime(500);
-				this->_player1->setLoop(true);
-			  }
-			  sprite = this->_player1;
-			}
+			  sprite = this->_player[ptr->getId() - 1];
 			else if (ptr->getType() == RType::BULLET)
-			{
-			  if (!this->_bullet)
-			  {
-				this->_bullet = new SFMLSprite("./../../client/media/GAME-Assets/r-typesheet9.gif");
-				this->_bullet->addRessource("DEFAULT", std::vector<Cut *>{
-						new Cut(70, 72, 30, 28)
-				});
-				this->_bullet->setAnimated(false);
-				this->_bullet->setAnimTime(500);
-				this->_bullet->setLoop(true);
-			  }
 			  sprite = this->_bullet;
-			}
 			else if (ptr->getType() == RType::MONSTER)
-			{
-			  if (!this->_monster)
-			  {
-				this->_monster = new SFMLSprite("./../../client/media/GAME-Assets/r-typesheet23.gif");
-				this->_monster->addRessource("DEFAULT", std::vector<Cut *>{
-						new Cut(0, 0, 33, 35)/*,
-						new Cut(33, 0, 33, 35),
-						new Cut(66, 0, 33, 35),
-						new Cut(99, 0, 33, 35),
-						new Cut(132, 0, 33, 35),
-						new Cut(165, 0, 33, 35),
-						new Cut(196, 0, 33, 35),
-						new Cut(229, 0, 33, 35)*/
-				});
-				this->_monster->setAnimated(false);
-				this->_monster->setAnimTime(500);
-				this->_monster->setLoop(true);
-			  }
 			  sprite = this->_monster;
-			}
 			objType = (RType::eType) ptr->getType();
 			//if (objType == RType::PLAYER || objType == RType::BULLET || objType == RType::MONSTER)
               this->controller->elementAction(
