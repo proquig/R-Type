@@ -48,6 +48,9 @@ enum eType
   TEXT = 1 << 7,
   SCORE = 1 << 8,
   BACKGROUND = 1 << 9,
+    BOSS = 1 << 10,
+    C3PO = 1 << 11,
+    BILDO = 1 << 12
 };
 
 };
