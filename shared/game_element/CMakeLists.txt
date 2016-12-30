@@ -19,9 +19,11 @@ add_library(rtype_game_element
 	Rectangle.hh
         ../monster/Monster.cpp
         ../monster/Monster.hh
-    )
+		../Bildo/Bildo.cpp
+		../Bildo/Bildo.hh
+		)
 
-target_include_directories(rtype_game_element PUBLIC . ../monster)
+target_include_directories(rtype_game_element PUBLIC . ../monster ../Bildo)
 
 target_link_libraries(rtype_game_element PUBLIC rtype_common)
 

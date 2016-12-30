@@ -27,3 +27,12 @@ add_subdirectory(packet)
 
 #Monster
 add_subdirectory(monster)
+
+#Bildo
+add_subdirectory(Bildo)
+
+#C3PO
+add_subdirectory(C3-PO)
+
+#Boss
+add_subdirectory(boss)

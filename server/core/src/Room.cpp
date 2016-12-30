@@ -2,21 +2,24 @@
 // Created by proqui_g on 12/19/16.
 //
 
+#include <set>
 #include "Room.hpp"
 #include "ISocket.hpp"
 #include "GameDataPacket.hh"
 
-Room::Room()
+Room::Room(Dictionary* dicMonster, Dictionary* dicBildo)
 {
   this->_gameController = this->_cf.create(new File(""));
+  this->_gameController->setDicMonster(dicMonster);
+  this->_gameController->setDicBildo(dicBildo);
 }
 
-Room::Room(Player *player)
+Room::Room(Dictionary* dicMonster, Dictionary* dicBildo, Player *player)
 {
   this->_gameController = this->_cf.create(new File(""));
+  this->_gameController->setDicMonster(dicMonster);
+  this->_gameController->setDicBildo(dicBildo);
   this->_players.push_back(player);
-  //this->_players.insert(std::pair<struct sockaddr*, Player*>(sock, player));
-  // 800 x 600
   player->setX(100);
   player->setY(this->_players.size() * 100);
   player->setSizeX(30);
@@ -121,9 +124,38 @@ void Room::sendNotification(ISocket *sock)
   std::vector<GameElement*>	vec;
   for (RType::IElement* gameElement : this->_gameController->getGame()->getMap())
     vec.push_back((GameElement *&&) gameElement);
-  GameDataPacket packet(vec, 0);
+  GameDataPacket packet(vec, this->_gameController->getGame()->getScore());
   packet.setHeader(APacket::GAME_ELEM_INFO, APacket::ACK_DONE, MAGIC, 4, 42, 100, 12);
   std::string	str = packet.serialize();
   for (uint8_t i = 0; i < this->_players.size(); ++i)
 	sock->write(std::vector<unsigned char>(str.begin(), str.end()), this->_players[i]->getAddr());
+}
+
+void Room::handle()
+{
+  std::vector<RType::IElement*>	del;
+
+  this->_gameController->handleMonsters();
+  this->_gameController->handleCollisions();
+  for (RType::IElement* elem : this->_gameController->getGame()->getMap())
+  {
+    if (elem->getType() == RType::BULLET)
+      if (elem->getX() > 799 || ((int16_t) elem->getX()) < 0)
+      {
+        //room->getGameController()->getGame()->deleteElem(elem);
+        //delete elem;
+        del.push_back(elem);
+#ifndef NDEBUG
+        std::cout << "ELEM DELETED WITH ID" << elem->getId() << std::endl;
+#endif
+      }
+      else
+		elem->move();
+  }
+  std::set<RType::IElement*> unique(del.begin(), del.end());
+  for (RType::IElement* elem : unique)
+  {
+    this->_gameController->getGame()->deleteElem(elem);
+    delete elem;
+  }
 }

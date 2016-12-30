@@ -4,8 +4,9 @@
 
 Game::Game(int id, const Rectangle& bounds) : _cadre(bounds)
 {
-	_id = id;
-	_running = false;
+  this->_id = id;
+  this->_running = false;
+  this->_score = 0;
 }
 
 Game::~Game()
@@ -132,4 +133,14 @@ bool 				Game::deleteElem(RType::IElement* element)
 const Rectangle&				Game::getCadre() const
 {
 	return _cadre;
+}
+
+void Game::updateScore(uint16_t score)
+{
+  this->_score += score;
+}
+
+uint16_t Game::getScore() const
+{
+  return (this->_score);
 }

@@ -21,6 +21,8 @@ class IGame
 	virtual void						addElems(std::vector<RType::IElement*>) = 0;
 	virtual void						addElem(RType::IElement*) = 0;
   	virtual bool						deleteElem(RType::IElement *element) = 0;
+  	virtual void 						updateScore(uint16_t score) = 0;
+  	virtual uint16_t					getScore() const = 0;
 };
 
 #endif

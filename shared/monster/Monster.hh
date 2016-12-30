@@ -26,8 +26,8 @@ public:
 
     std::vector<IElement*>					collideWith(IElement*);
 
-    bool                                    move();
-    Shot                                    *shot();
+   	virtual bool                                    move();
+	virtual Shot                                    *shot();
 };
 
 

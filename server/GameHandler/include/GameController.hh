@@ -8,6 +8,7 @@
 #include			"File.hh"
 #include			"ElementFactory.hh"
 #include			"Parser.hh"
+#include			"DLManager.hh"
 
 class ISocket;
 class ITimer;
@@ -26,11 +27,17 @@ private:
   	ITimer 			*_timer;
 	int				_delta;
 	int				_tick;
+  	Dictionary*		_dicMonster;
+  	Dictionary*		_dicBildo;
+  	Monster*		_monster;
+  	Bildo*			_bildo;
 
 public:
 	GameController(IGame*, ISocket* = nullptr, ITimer* = nullptr);
 	virtual ~GameController();
 
+  	void 				setDicMonster(Dictionary* dic);
+	void 				setDicBildo(Dictionary* dic);
 	void				handleCollisions();
 	void				setGame(IGame*);
 	bool				initGame(File*);
@@ -43,6 +50,7 @@ public:
 	ElementFactory*		getElementFactory();
   virtual ISocket*		getSocket();
 	IGame*				getGame() const;
+  void handleMonsters();
 };
 
 #endif

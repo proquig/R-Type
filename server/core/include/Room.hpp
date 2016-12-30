@@ -7,10 +7,11 @@
 
 # include	<algorithm>
 # include	<map>
-# include "GameController.hh"
-# include "ControllerFactory.hh"
+# include   "GameController.hh"
+# include   "ControllerFactory.hh"
 # include	"APacket.hh"
 # include	"Player.hh"
+# include   "DLManager.hh"
 
 # define	MAX_PLAYERS	4
 
@@ -24,8 +25,8 @@ private:
   GameController*       _gameController;
 
 public:
-  Room();
-  Room(Player* player);
+  Room(Dictionary* dicMonster, Dictionary* dicBildo);
+  Room(Dictionary* dicMonster, Dictionary* dicBildo, Player *player);
   ~Room();
   GameController*       getGameController() const;
   bool 					setPlayers(std::vector<Player*> players);
@@ -42,6 +43,7 @@ public:
   bool					isFull();
   //void					sendNotification(ISocket *sock, const std::string &data);
   void					sendNotification(ISocket *sock);
+  void handle();
 };
 
 
