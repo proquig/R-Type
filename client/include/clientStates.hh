@@ -45,6 +45,8 @@ private:
 	std::vector<state>	history;
 	std::string			error;
 
+	std::string			ip;
+
 	// Controllers
 	GraphicalController	*controller;
 
@@ -97,7 +99,7 @@ public:
 	virtual void update(IObservable*, int);
   	void	loadSprites(void);
 protected:
-	bool init();
+	bool init(std::string);
 };
 
 

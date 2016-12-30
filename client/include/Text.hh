@@ -25,6 +25,7 @@ public:
 	void			setFontSize(int);
 	void			setMaxLength(int);
 	void			setString(std::string);
+	void			rmString();
 
 
 	//////////////////////////////////////////////

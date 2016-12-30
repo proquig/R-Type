@@ -46,6 +46,7 @@ public:
   	void	elementAction(unsigned int, RType::eType, int, int, float, int, ASprite* sprite);
 	Event	*eventAction(void);
 	void	addText(unsigned int, std::string);
+	void	rmText(unsigned int);
 	std::string	getIp(unsigned int);
 
 };

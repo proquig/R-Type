@@ -81,14 +81,94 @@ std::string	ClientStates::getErr(void) const
 
 bool	ClientStates::launchState(void)
 {
-  this->controller	= new GraphicalController(SFML, 800, 450, "R-type");
+	this->controller	= new GraphicalController(SFML, 800, 450, "R-type");
 
-  controller->addObserver(this);
 	this->controller->initAction();
-  if (!_init && !init())
-      return false;
-  //controller->setProperty(IWindow::KEY_REPEAT, false);
-  return this->run(MENU);
+	Dictionary dic;
+	std::string error;
+
+	if (!_dlManager.handler.loadAll(error))
+	{
+		std::cout << "Failed loading library module : " << error << std::endl;
+		return false;
+	}
+	std::cout << "Library load success" << std::endl;
+	if ((dic = _dlManager.handler.getDictionaryByName("threadpool")) != NULL
+		&& !(*_dic.insert(_dic.end(), dic))->empty()
+		&& (_pool = reinterpret_cast<IThreadPool *(*)(size_t)>(_dic.back()->at("instantiate"))(4)) != nullptr
+		&& ((_cond = _pool->createCondVar()) != nullptr)
+		&& ((_mutex = _pool->createMutex()) != nullptr))
+		std::cout << "pool spawned" << std::endl;
+	else
+		return false;
+	if ((dic = _dlManager.handler.getDictionaryByName("rtype_network")) != NULL
+		&& !(*_dic.insert(_dic.end(), dic))->empty()
+		&& (_socketFactory = reinterpret_cast<ISocketFactory *(*)(IThreadPool*)>(_dic.back()->at("instantiate"))(_pool)) != nullptr)
+		std::cout << "_socketFactory spawned" << std::endl;
+	else
+		return false;
+	controller->addObserver(this);
+	//controller->setProperty(IWindow::KEY_REPEAT, false);
+	return this->run(MENU);
+}
+
+bool ClientStates::init(std::string ip)
+{
+	std::cout << "HERE ..." << std::endl;
+	if (!ip.size())
+		ip = std::string(RTYPE_CLIENT_DEFAULT_TARGET_IP);
+	std::cout << "HERE ... (bis)" << std::endl;
+	if ((_socket = _socketFactory->createSocketUDP(this, RTYPE_CLIENT_PORT_UDP)) == nullptr)
+		return false;
+	std::cout << "HERE ... (ter)" << std::endl;
+	if (!_socketFactory->hintSockaddr(ip, _sockaddr, RTYPE_CLIENT_DEFAULT_TARGET_PORT))
+		return false;
+	std::cout << "... HERE" << std::endl;
+	_init = true;
+	return (true);
+}
+
+bool	ClientStates::Menu(void)
+{
+	Event			*event = NULL;
+	//Coords			*player = new Coords(50, 50);
+	//float			angle = 0;
+	//Coords			*windowSize = new Coords(800, 450);
+	std::string		ip;
+
+	std::cout << "=================================" << std::endl;
+	std::cout << "============  Menu  =============" << std::endl;
+	std::cout << "=================================" << std::endl << std::endl;
+
+	//this->controller = new GraphicalController(SFML, windowSize->x, windowSize->y, "R-type - Graphical tests");
+	//this->controller->initAction();
+	this->controller->elementAction(9, RType::TEXT, 0, -50, 0, 0);
+	this->controller->rmText(9);
+
+	while (!event || event->type != Event::QUIT) {
+
+		this->controller->elementAction(9, RType::TEXT, 0, -50, 0, 0);
+		this->controller->elementAction(0, RType::SET, 0, 0, 0, 10);
+
+		if (event = this->controller->eventAction())
+		{
+			this->controller->addText(9, std::string(event->name));
+			if (std::string(event->name) == "ENTER")
+			{
+				ip = this->controller->getIp(9);
+
+				std::cout << "  IP = " << ip << std::endl;
+				if (!_init && !init(ip))
+					return this->run(MENU);
+				return this->run(GAME);
+			}
+		}
+#ifdef __linux__ 
+		usleep(20);
+#elif _WIN32
+		Sleep(20);
+#endif
+	}
 }
 
 bool	ClientStates::menuState(void)
@@ -304,45 +384,6 @@ bool	ClientStates::testState(void)
 	return this->run(END);
 }
 
-bool	ClientStates::Menu(void)
-{
-	Event			*event = NULL;
-	Coords			*player = new Coords(50, 50);
-	float			angle = 0;
-	Coords			*windowSize = new Coords(800, 450);
-
-	std::cout << "=================================" << std::endl;
-	std::cout << "============  Menu  =============" << std::endl;
-	std::cout << "=================================" << std::endl << std::endl;
-
-	this->controller = new GraphicalController(SFML, windowSize->x, windowSize->y, "R-type - Graphical tests");
-	this->controller->initAction();
-
-	while (!event || event->type != Event::QUIT) {
-
-		this->controller->elementAction(9, RType::TEXT, 0, -50, 0, 0);
-		this->controller->elementAction(0, RType::SET, 0, 0, 0, 10);
-
-		if (event = this->controller->eventAction())
-		{
-			this->controller->addText(9, std::string(event->name));
-			if (std::string(event->name) == "ENTER")
-			{
-				std::string ip = this->controller->getIp(9);
-				
-				std::cout << "  IP = " << ip << std::endl;
-			}
-		}
-#ifdef __linux__ 
-		usleep(20);
-#elif _WIN32
-		Sleep(20);
-#endif
-	}
-	return this->run(END);
-}
-
-
 void ClientStates::update(IObservable *o, int status)
 {
   if (controller && o == controller)
@@ -374,37 +415,4 @@ void ClientStates::update(IObservable *o, int status)
     {
     }
   }
-}
-
-bool ClientStates::init()
-{
-  Dictionary dic;
-  std::string error;
-
-  if (!_dlManager.handler.loadAll(error))
-  {
-    std::cout << "Failed loading library module : " << error << std::endl;
-    return false;
-  }
-  std::cout << "Library load success" << std::endl;
-  if ((dic = _dlManager.handler.getDictionaryByName("threadpool")) != NULL
-      && !(*_dic.insert(_dic.end(), dic))->empty()
-      && (_pool = reinterpret_cast<IThreadPool *(*)(size_t)>(_dic.back()->at("instantiate"))(4)) != nullptr
-      && ((_cond = _pool->createCondVar()) != nullptr)
-      && ((_mutex = _pool->createMutex()) != nullptr))
-    std::cout << "pool spawned" << std::endl;
-  else
-    return false;
-  if ((dic = _dlManager.handler.getDictionaryByName("rtype_network")) != NULL
-      && !(*_dic.insert(_dic.end(), dic))->empty()
-      && (_socketFactory = reinterpret_cast<ISocketFactory *(*)(IThreadPool*)>(_dic.back()->at("instantiate"))(_pool)) != nullptr)
-    std::cout << "_socketFactory spawned" << std::endl;
-  else
-    return false;
-  if ((_socket = _socketFactory->createSocketUDP(this, RTYPE_CLIENT_PORT_UDP)) == nullptr)
-    return false;
-  if (!_socketFactory->hintSockaddr(std::string(RTYPE_CLIENT_DEFAULT_TARGET_IP), _sockaddr, RTYPE_CLIENT_DEFAULT_TARGET_PORT))
-    return false;
-  _init = true;
-  return (true);
 }

@@ -148,15 +148,26 @@ void		GraphicalController::addText(unsigned int id, std::string txt)
 	}
 }
 
+void		GraphicalController::rmText(unsigned int id)
+{
+	std::vector<AElement *>::iterator elem;
+
+	for (elem = this->scene.begin(); elem != this->scene.end(); ++elem) {
+		if ((*elem)->getId() == id) {
+			((Text*)(*elem))->rmString();
+		}
+	}
+}
+
 std::string		GraphicalController::getIp(unsigned int id)
 {
 	std::vector<AElement *>::iterator elem;
 	std::string ret;
+
 	for (elem = this->scene.begin(); elem != this->scene.end(); ++elem) {
 		if ((*elem)->getId() == id) {
-			//ret = ((Text*)(*elem))->getString();
+			ret = ((Text*)(*elem))->getString();
 			std::size_t pos = ret.find(" : ") + 4;
-
 			std::string str3;
 			ret = ret.substr(pos);
 		}
