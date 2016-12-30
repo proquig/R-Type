@@ -19,6 +19,7 @@ Bildo::Bildo(uint16_t x, uint16_t y, ElementFactory *factory) :
     _factory = factory;
     _direction = 1;
     _mov = 0;
+    _pattern = false;
 }
 
 Bildo::~Bildo()
