@@ -18,11 +18,13 @@
 
 GameDataPacket::GameDataPacket()
 {
+  this->_score = 0;
 }
 
-GameDataPacket::GameDataPacket(std::vector<GameElement*> gameElements)
+GameDataPacket::GameDataPacket(std::vector<GameElement*> gameElements, uint32_t score)
 {
   this->_gameElements = gameElements;
+  this->_score = score;
 }
 
 GameDataPacket::~GameDataPacket()
@@ -34,6 +36,7 @@ std::string GameDataPacket::serialize()
   // TODO: ADD UP TO 4 PLAYER & OTHER ELEMENTS
   // TODO: ADD TIMER !!!
   APacket::serialize();
+  *this << this->_score;
   for (RType::IElement* elem : this->_gameElements)
   	if (elem)
 	  *this << elem->getId()
@@ -50,7 +53,8 @@ bool GameDataPacket::unserialize(const std::string &data)
   if (!(GameDataPacket::checkData(data) && APacket::unserialize(data)))
 	return (false);
   this->_gameElements.clear();
-  for (uint32_t i = APacket::getHeaderSize(); i < data.size(); i += GameDataPacket::getGameElementSize())
+  this->_score = htonl(*(uint32_t *) &data[APacket::getHeaderSize()]);
+  for (uint32_t i = (APacket::getHeaderSize() + sizeof(GameDataPacket::_score)); i < data.size(); i += GameDataPacket::getGameElementSize())
   {
 	this->_gameElements.push_back(new GameElement);
 	uint8_t j = 0;
@@ -79,7 +83,7 @@ bool GameDataPacket::checkHeader(const std::string &data)
 bool GameDataPacket::checkData(const std::string &data)
 {
   return (GameDataPacket::checkHeader(data)
-		  && !((data.size() - APacket::getHeaderSize()) % GameDataPacket::getGameElementSize()));
+		  && !((data.size() - APacket::getHeaderSize() - sizeof(GameDataPacket::_score)) % GameDataPacket::getGameElementSize()));
 }
 
 void GameDataPacket::putGameElement(GameElement *gameElement)
@@ -124,4 +128,14 @@ bool GameDataPacket::deleteGameElement(GameElement* gameElement)
 	return (false);
   this->_gameElements.erase(it);
   return (true);
+}
+
+void GameDataPacket::setScore(uint32_t score)
+{
+  this->_score = score;
+}
+
+uint32_t GameDataPacket::getScore() const
+{
+  return (this->_score);
 }
