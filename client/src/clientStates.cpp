@@ -292,6 +292,7 @@ bool		ClientStates::gameState(void)
                 ptr->getSpeed(),
 				sprite
             );
+			delete ptr;
           }
 		  //this->controller->scoreAction(120);
           this->controller->elementAction(0, RType::SET, 0, 0, 0, 10);
