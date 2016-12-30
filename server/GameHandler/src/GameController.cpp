@@ -63,6 +63,8 @@ void			GameController::handleCollisions()
 	  del.push_back(element.first);
 	if (std::find(del.begin(), del.end(), element.second) == del.end())
 	  del.push_back(element.second);
+	if (element.first->getType() == RType::MONSTER || element.second->getType() == RType::MONSTER)
+	  this->_game->updateScore(10);
   }
   for (RType::IElement* elem : del)
   {

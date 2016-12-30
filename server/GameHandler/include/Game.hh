@@ -15,6 +15,7 @@ private:
 	int							_id;
 	bool						_running;
 	std::vector<RType::IElement*> 		_map;
+  	uint16_t					_score;
 
 public:
 	Game(int, const Rectangle&);
@@ -36,6 +37,8 @@ public:
 	virtual const Rectangle&			getCadre() const;
   	virtual bool						deleteElem(RType::IElement *element);
   	virtual bool						isPresent(RType::IElement *element);
+  	virtual void 						updateScore(uint16_t score);
+  	virtual uint16_t					getScore() const;
 };
 
 #endif

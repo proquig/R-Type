@@ -124,7 +124,7 @@ void Room::sendNotification(ISocket *sock)
   std::vector<GameElement*>	vec;
   for (RType::IElement* gameElement : this->_gameController->getGame()->getMap())
     vec.push_back((GameElement *&&) gameElement);
-  GameDataPacket packet(vec);
+  GameDataPacket packet(vec, this->_gameController->getGame()->getScore());
   packet.setHeader(APacket::GAME_ELEM_INFO, APacket::ACK_DONE, MAGIC, 4, 42, 100, 12);
   std::string	str = packet.serialize();
   for (uint8_t i = 0; i < this->_players.size(); ++i)
