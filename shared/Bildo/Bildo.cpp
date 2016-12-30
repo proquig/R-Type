@@ -10,6 +10,8 @@ Bildo::Bildo(uint32_t idFrom, uint16_t type, uint16_t x, uint16_t y, uint16_t hp
     _factory = factory;
     _direction = 1;
     _mov = 0;
+    _pattern = false;
+    _action = false;
 }
 
 Bildo::Bildo(uint16_t x, uint16_t y, ElementFactory *factory) :
@@ -35,19 +37,28 @@ std::vector<RType::IElement*>			 Bildo::collideWith(RType::IElement* elem)
 
 bool    Bildo::move()
 {
-    static int i = 0;
-
-    if (i % 2 == 0) {
-        this->_mov++;
-        _direction = (uint8_t) (!(this->_mov % 5) ? -_direction : _direction);
-        this->_y += 10 * _direction;
-        this->_x -= 5 + i;
-    } else {
-        this->_mov++;
-        this->_y += 10 * _direction;
-        this->_x += 5;
-    }
-    return ((this->_mov % 3) != 0);
+     if (!_pattern && this->_mov % 2 == 0) {
+         this->_y += 30;
+         this->_x -= 30;
+         this->_mov++;
+         _pattern = true;
+         return ((this->_mov % 5) != 0);
+     } else if (_pattern && this->_mov % 2 != 0) {
+         this->_y -= 30;
+         this->_x -= 30;
+         this->_mov++;
+         return ((this->_mov % 5) != 0);
+     } else if (_pattern && this->_mov % 2 == 0) {
+         this->_y -= 30;
+         this->_x += 30;
+         this->_mov++;
+         _pattern = false;
+         return ((this->_mov % 5) != 0);
+     }
+    this->_y += 30;
+    this->_mov++;
+    _pattern = false;
+    return ((this->_mov % 5) != 0);
 }
 
 

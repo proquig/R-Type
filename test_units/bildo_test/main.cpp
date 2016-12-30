@@ -38,16 +38,16 @@ int main(int ac, char **av)
             {
                 for (std::map<std::string, void *>::iterator sit = dic->begin(); sit != dic->end(); sit++)
                     std::cout << "key=" << sit->first.c_str() << std::endl;
-                if ((monster = reinterpret_cast<Bildo *(*)(int, int, int, void *)>(dic->at("new"))(4,0,0, elementFactory)) != nullptr)
+                if ((monster = reinterpret_cast<Bildo *(*)(int, int, int, void *)>(dic->at("new"))(40,40,0, elementFactory)) != nullptr)
                 {
                     for (int i = 0; i < 20; i++)
                     {
-                        monster->collideWith(decor);
+                      /*  monster->collideWith(decor);
                         std::cout << decor->getX() << ":" << decor->getY() << std::endl;
-                        std::cout << "X=" << monster->getX() << ":" << "Y=" << monster->getY() << std::endl;
+                        */std::cout << "X=" << monster->getX() << ":" << "Y=" << monster->getY() << std::endl;
                         if (!monster->move()) {
                             monster->shot();
-                            std::cout << "Shot at :" << monster->getX() << ":" << monster->getY() << std::endl;
+                            //std::cout << "Shot at :" << monster->getX() << ":" << monster->getY() << std::endl;
                         }
                     }
                 }
