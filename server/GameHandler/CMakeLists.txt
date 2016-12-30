@@ -17,6 +17,7 @@ add_library(rtype_gamehandler
 target_include_directories(rtype_gamehandler PUBLIC include)
 target_include_directories(rtype_gamehandler PRIVATE ${CMAKE_SOURCE_DIR}/shared/network/include)
 target_include_directories(rtype_gamehandler PRIVATE ${CMAKE_SOURCE_DIR}/shared/timer/include)
+target_include_directories(rtype_gamehandler PRIVATE ${CMAKE_SOURCE_DIR}/shared/dlloader/include)
 target_link_libraries(rtype_gamehandler PUBLIC rtype_game_element rtype_observer)
 
 # Flags for different platforms

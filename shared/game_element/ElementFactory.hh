@@ -1,6 +1,7 @@
 #pragma once
 
 #include        "Monster.hh"
+#include		"Bildo.hh"
 #include		"Player.hh"
 #include		"Shot.hh"
 #include		"Decor.hh"

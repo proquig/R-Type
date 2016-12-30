@@ -35,7 +35,6 @@ std::vector<RType::IElement*>			 Monster::collideWith(RType::IElement* elem)
 
 bool    Monster::move()
 {
-    //this->_mov = (uint8_t) ((this->_mov + 1) % 3);
     this->_mov++;
     _direction = (uint8_t) (!(this->_mov % 5) ? -_direction : _direction);
     this->_y += 10 * _direction;
