@@ -236,7 +236,6 @@ bool		ClientStates::gameState(void)
   _mutex->lock();
   _ref = _clock.now();
   //this->controller->elementAction(0, RType::SET, 0, 0, 0, 10, this->_backgroud);
-  this->controller->scoreAction(0);
   while (!_stop)
   {
     _waiting = true;
@@ -285,6 +284,7 @@ bool		ClientStates::gameState(void)
 		  GameDataPacket *pak = (GameDataPacket *) packet;
 		  if (!(_stop = this->checkEnd(pak)))
 		  {
+			this->controller->scoreAction(pak->getScore());
 			this->controller->resetScene();
 			for (GameElement *ptr : pak->getGameElements())
 			{
