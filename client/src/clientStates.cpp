@@ -236,7 +236,7 @@ bool		ClientStates::gameState(void)
   _mutex->lock();
   _ref = _clock.now();
   //this->controller->elementAction(0, RType::SET, 0, 0, 0, 10, this->_backgroud);
-  //this->controller->scoreAction(0);
+  this->controller->scoreAction(0);
   while (!_stop)
   {
     _waiting = true;
