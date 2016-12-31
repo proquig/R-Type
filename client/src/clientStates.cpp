@@ -321,9 +321,15 @@ bool 	ClientStates::checkEnd(GameDataPacket* packet)
 bool	ClientStates::scoreState(void)
 {
 	Event			*event = NULL;
+	AElement		*back = NULL;
 
+	std::cout << "Je passe la END" << std::endl;
+	back = this->controller->elementAction(1, RType::BACKGROUND, 0, 0, 0,
+		0);
+	back->loadSprites(SFML);
 	while (!event || event->type != Event::QUIT) {
 		//this->controller->elementAction(0, RType::BACKGROUND, 0, 0, 0, 10);
+		
 		if (event = this->controller->eventAction())
 		{
 			if (std::string(event->name) == "ENTER")
@@ -340,7 +346,43 @@ bool	ClientStates::scoreState(void)
 
 bool	ClientStates::endState(void)
 {
-	std::cout << "Good Bye !" << std::endl;
+/*	std::cout << "Good Bye !" << std::endl;
+	Event			*event = NULL;
+	
+
+	while (!event || event->type != Event::QUIT) {
+		//this->controller->elementAction(0, RType::BACKGROUND, 0, 0, 0, 10);
+		if (event = this->controller->eventAction())
+		{
+			if (std::string(event->name) == "ENTER")
+				return this->run(MENU);
+		}
+#ifdef __linux__ 
+		usleep(20);
+#elif _WIN32
+		Sleep(20);
+#endif
+	}
+	return true;
+	return true;*/
+	Event			*event = NULL;
+	AElement		*back = NULL;
+
+	back = this->controller->elementAction(1, RType::BACKGROUND, 0, 0, 0,
+		0);
+	back->loadSprites(SFML);
+	while (!event || event->type != Event::QUIT) {
+		if (event = this->controller->eventAction())
+		{
+			if (std::string(event->name) == "ENTER")
+				return this->run(MENU);
+		}
+		#ifdef __linux__ 
+			usleep(20);
+		#elif _WIN32
+			Sleep(20);
+		#endif
+	}
 	return true;
 }
 

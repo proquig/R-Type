@@ -17,6 +17,7 @@
 # include "IObserver.hpp"
 #include "SFMLSprite.hh"
 # include "SFMLSoundLoader.hh"
+# include "Background.hh"
 
 # define Y_SPEED	10
 # define X_SPEED	10
