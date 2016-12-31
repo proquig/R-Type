@@ -282,30 +282,25 @@ bool		ClientStates::gameState(void)
       {
         if (packet->getType() == APacket::GAME_ELEM_INFO)
         {
-		  this->controller->resetScene();
-          GameDataPacket *pak = (GameDataPacket *) packet;
-		  this->controller->scoreAction(pak->getScore());
-          for (GameElement* ptr : pak->getGameElements())
-          {
-			if (ptr->getType() == RType::PLAYER)
-			  sprite = this->_player[ptr->getId() - 1];
-			else if (ptr->getType() == RType::BULLET)
-			  sprite = this->_bullet[ptr->getAngle() != 90];
-			else if (ptr->getType() == RType::MONSTER)
-			  sprite = this->_monster;
-			objType = (RType::eType) ptr->getType();
-			//if (objType == RType::PLAYER || objType == RType::BULLET || objType == RType::MONSTER)
-			this->controller->elementAction(
-                ptr->getId(),
-                objType,
-                ptr->getX(),
-                ptr->getY(),
-                ptr->getAngle(),
-                ptr->getSpeed(),
-				sprite
-            );
-			delete ptr;
-          }
+		  GameDataPacket *pak = (GameDataPacket *) packet;
+		  if (!(_stop = this->checkEnd(pak)))
+		  {
+			this->controller->resetScene();
+			for (GameElement *ptr : pak->getGameElements())
+			{
+			  if (ptr->getType() == RType::PLAYER)
+				sprite = this->_player[ptr->getId() - 1];
+			  else if (ptr->getType() == RType::BULLET)
+				sprite = this->_bullet[ptr->getAngle() != 90];
+			  else if (ptr->getType() == RType::MONSTER)
+				sprite = this->_monster;
+			  objType = (RType::eType) ptr->getType();
+			  //if (objType == RType::PLAYER || objType == RType::BULLET || objType == RType::MONSTER)
+			  this->controller->elementAction(ptr->getId(), objType, ptr->getX(), ptr->getY(), ptr->getAngle(),
+											  ptr->getSpeed(), sprite);
+			  delete ptr;
+			}
+		  }
         }
         delete packet;
       }
@@ -315,12 +310,20 @@ bool		ClientStates::gameState(void)
   return this->run(END);
 }
 
+bool 	ClientStates::checkEnd(GameDataPacket* packet)
+{
+  for (GameElement* elem : packet->getGameElements())
+	if (elem->getType() == RType::PLAYER)
+	  return (false);
+  return (true);
+}
+
 bool	ClientStates::scoreState(void)
 {
 	Event			*event = NULL;
 
 	while (!event || event->type != Event::QUIT) {
-		this->controller->elementAction(0, RType::BACKGROUND, 0, 0, 0, 10);
+		//this->controller->elementAction(0, RType::BACKGROUND, 0, 0, 0, 10);
 		if (event = this->controller->eventAction())
 		{
 			if (std::string(event->name) == "ENTER")

@@ -10,6 +10,7 @@
 # include <chrono>
 # include <iostream>
 # include <vector>
+#include <GameDataPacket.hh>
 # include "graphicalController.hh"
 # include "element.hh"
 # include "DLManager.hh"
@@ -103,6 +104,7 @@ public:
   	void	loadSprites(void);
 protected:
 	bool init(std::string);
+  	bool checkEnd(GameDataPacket* packet);
 };
 
 
