@@ -87,9 +87,6 @@ std::string	ClientStates::getErr(void) const
 
 bool	ClientStates::launchState(void)
 {
-	this->controller	= new GraphicalController(SFML, 800, 450, "R-type");
-
-	this->controller->initAction();
 	Dictionary dic;
 	std::string error;
 
@@ -113,7 +110,11 @@ bool	ClientStates::launchState(void)
 		std::cout << "_socketFactory spawned" << std::endl;
 	else
 		return false;
-	controller->addObserver(this);
+
+  	this->controller	= new GraphicalController(SFML, 800, 450, "R-type");
+  	this->controller->initAction();
+
+  	controller->addObserver(this);
 	//controller->setProperty(IWindow::KEY_REPEAT, false);
 	return this->run(MENU);
 }
@@ -132,37 +133,39 @@ bool ClientStates::init(std::string ip)
 
 bool	ClientStates::Menu(void)
 {
-	Event			*event = NULL;
-	std::string		ip;
+  Text *text;
 
-	this->controller->elementAction(9, RType::TEXT, 0, -50, 0, 0);
-	this->controller->rmText(9);
-	while (!event || event->type != Event::QUIT) {
+  Event *event = NULL;
+  std::string ip;
 
-		this->controller->elementAction(9, RType::TEXT, 0, -50, 0, 0);
-		this->controller->elementAction(0, RType::SET, 0, 0, 0, 10);
-
-		if (event = this->controller->eventAction())
+  this->loadSprites();
+  this->controller->elementAction(0, RType::SET, 0, 0, 0, 10, this->_backgroud);
+  text = (Text *) this->controller->elementAction(0, RType::TEXT, 0, -50, 0, 0);
+  text->loadSprites(SFML);
+  text->rmString();
+  while (!event || event->type != Event::QUIT)
+  {
+	if ((event = this->controller->eventAction()))
+	{
+	  text->setString(std::string(event->name));
+	  if (std::string(event->name) == "ENTER")
+	  {
+		ip = text->getString().substr(text->getString().find(" : ") + 4);
+		std::cout << "[IP] " << ip << std::endl;
+		if (this->controller->checkIp(ip) && (!_init && init(ip)))
 		{
-			this->controller->addText(9, std::string(event->name));
-			if (std::string(event->name) == "ENTER")
-			{
-				ip = this->controller->getIp(9);
-
-				std::cout << "[IP] " << ip << std::endl;
-				if (!this->controller->checkIp(ip) || (!_init && !init(ip)))
-					return this->run(MENU);
-				return this->run(GAME);
-			}
+		  this->controller->removeElement(text);
+		  return this->run(GAME);
 		}
-			#ifdef __linux__ 
-					usleep(20);
-			#elif _WIN32
-					Sleep(20);
-			#endif
+	  }
 	}
+#ifdef __linux__
+	usleep(20);
+#elif _WIN32
+	Sleep(20);
+#endif
+  }
 }
-
 bool	ClientStates::menuState(void)
 {
 	std::cout << "Menu ..." << std::endl;
@@ -210,10 +213,18 @@ void		ClientStates::loadSprites(void)
   this->_monster->setAnimated(false);
   this->_monster->setAnimTime(500);
   this->_monster->setLoop(true);
+
+  this->_backgroud = new SFMLSprite("./../../client/media/GAME-Assets/WASTE_LAND.png");
+  this->_backgroud->addRessource("WASTE_LAND", std::vector<Cut *>{new Cut(0, 0, 1000, 300)});
+  this->_backgroud->setAnimated(false);
+  this->_backgroud->setAnimTime(500);
+  this->_backgroud->setLoop(false);
 }
 
 bool		ClientStates::gameState(void)
 {
+  //ip = std::string();
+  //this->init(ip);
   SFMLSprite*	sprite;
   Event *event = nullptr;
   IPacket *packet;
@@ -224,7 +235,8 @@ bool		ClientStates::gameState(void)
   _inputQueue.resize(10, 0);
   _mutex->lock();
   _ref = _clock.now();
-  this->controller->scoreAction(0);
+  //this->controller->elementAction(0, RType::SET, 0, 0, 0, 10, this->_backgroud);
+  //this->controller->scoreAction(0);
   while (!_stop)
   {
     _waiting = true;
@@ -270,6 +282,7 @@ bool		ClientStates::gameState(void)
       {
         if (packet->getType() == APacket::GAME_ELEM_INFO)
         {
+		  this->controller->resetScene();
           GameDataPacket *pak = (GameDataPacket *) packet;
 		  this->controller->scoreAction(pak->getScore());
           for (GameElement* ptr : pak->getGameElements())
@@ -282,7 +295,7 @@ bool		ClientStates::gameState(void)
 			  sprite = this->_monster;
 			objType = (RType::eType) ptr->getType();
 			//if (objType == RType::PLAYER || objType == RType::BULLET || objType == RType::MONSTER)
-              this->controller->elementAction(
+			this->controller->elementAction(
                 ptr->getId(),
                 objType,
                 ptr->getX(),
@@ -293,9 +306,6 @@ bool		ClientStates::gameState(void)
             );
 			delete ptr;
           }
-		  //this->controller->scoreAction(120);
-          this->controller->elementAction(0, RType::SET, 0, 0, 0, 10);
-		  // this->run(SCORE); <-- GAME OVER SCREEN
         }
         delete packet;
       }

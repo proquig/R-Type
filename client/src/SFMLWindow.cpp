@@ -6,99 +6,35 @@
 // WINDOW
 ////////////////////////////////////////////////////////////////////
 
-void	SFMLWindow::run(WorkQueue<AElement *> *_elemqueue, WorkQueue<Event *> *_eventqueue, IObservable* _obs)
+void	SFMLWindow::run(WorkQueue<AElement*> *_scene, WorkQueue<Event *> *_eventqueue, IObservable* _obs)
 {
-	this->elementQueue = _elemqueue;
-	this->eventQueue = _eventqueue;
+	this->elementQueue = _scene;
+  	this->eventQueue = _eventqueue;
 	this->obs = _obs;
-	this->scene = std::vector<AElement *>();
 	if (!this->handler)
 		this->handler = new sf::RenderWindow(sf::VideoMode(this->width, this->height), this->name);
 	this->handler->clear(sf::Color::Black);
   	this->handler->setFramerateLimit(0);
-  	//this->handler->setVerticalSyncEnabled(true);
 	while (this->handler->isOpen())
 	{
-		this->pollEvent();
-	  	this->renderScene();
-	  	this->render();
-		std::this_thread::sleep_for(std::chrono::milliseconds(2));
+	  this->pollEvent();
+	  this->render();
+	  std::this_thread::sleep_for(std::chrono::milliseconds(2));
 	}
-	//delete this->handler;
-}
-
-void											SFMLWindow::renderScene(void)
-{
-	std::vector<AElement *>						*elements;
-	std::vector<AElement *>::const_iterator		element;
-	std::vector<AElement *>::const_iterator		elem;
-	bool										match = false;
-	Coords										*position;
-
-  if (!this->elementQueue->getQueue().size())
-	return;
-  elements = this->elementQueue->popAll();
-
-	for (element = this->scene.begin(); element != this->scene.end(); ) {
-		if ((*element)->getTtl() <= (float)0.0 && (*element)->getType() != RType::SET && (*element)->getType() != RType::SCORE) {
-            element = this->scene.erase(element);
-		}
-		else
-			element++;
-	}
-
-	if (!elements->size())
-		return;
-	for (element = elements->begin(); element != elements->end(); ++element) {
-		for (elem = this->scene.begin(); elem != this->scene.end(); ++elem) {
-			if ((*elem)->getId() == (*element)->getId() && (*element)->getType() == (*elem)->getType()) {
-				position = (*element)->getCoords();
-				(*elem)->move(position->x, position->y, (*element)->getAngle(), (*element)->getSpeed());
-				match = true;
-			}
-		}
-
-		if (!match) {
-			(*element)->loadSprites(SFML);
-			this->scene.push_back(*element);
-		}
-		match = false;
-	}
-	delete elements;
 }
 
 void											SFMLWindow::render(void)
 {
-	std::vector<AElement *>::const_iterator		element;
-	Coords										*coords;
-	Coords										*target;
-	Coords										*distance;
+  std::vector<AElement *> *elements;
 
-	if (!this->scene.size())
-	  return;
-	  //std::cout << "SIZESIZE=" << this->scene.size() << std::endl;
-	  this->handler->clear();
-		for (element = this->scene.begin(); element != this->scene.end(); ++element)
-		{
-			coords = (*element)->getCoords();
-			target = (*element)->getTarget();
-			distance = (*element)->getDistance();
-			//coords->x = target->x;
-			//coords->y = target->y;
-		  	if (coords->x != target->x || coords->y != target->y || (*element)->getType())
-			{
-			  if (coords->x < target->x)
-				coords->x += distance->x;
-			  else if (coords->x > target->x)
-				coords->x += distance->x;
-			if (coords->y < target->y)
-				coords->y += distance->y;
-			else if (coords->y > target->y)
-				coords->y += distance->y;
-			(*element)->print((void *)this->handler);
-			}
-		}
-	this->handler->display();
+  elements = this->elementQueue->popAll();
+  this->elementQueue->lock();
+  this->handler->clear();
+  for (AElement* element : *elements)
+	element->print((void*)this->handler);
+  delete elements;
+  this->handler->display();
+  this->elementQueue->unlock();
 }
 
 ////////////////////////////////////////////////////////////////////

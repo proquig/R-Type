@@ -15,6 +15,8 @@
 # include "Score.hh"
 # include <thread>
 # include <vector>
+# include "ICondVar.hh"
+# include "IMutex.hh"
 
 class GraphicalController : public Observable
 {
@@ -24,37 +26,37 @@ class GraphicalController : public Observable
 	///////////////////////////////////////
 	AWindow					*window;
 	WorkQueue<AElement *>	*windowQueue;
+  	std::vector<AElement *>	*oldWindowQueue;
 
-	///////////////////////////////////////
+
+  ///////////////////////////////////////
 	AHookEvent				*hooker;
 	WorkQueue<Event *>		*eventQueue;
 
 	std::thread				*windowThread;
 
+  	//Vec<AElement*>			vec;
+
 	///////////////////////////////////////
 	// std::vector<ASprite *>	ressources;
-	std::vector<AElement *>		scene;
 
 	int							score;
 	AElement*					score_elem;
 
 public:
 
-	GraphicalController(GLib, int, int, std::string);
+  GraphicalController(GLib, int, int, std::string);
 
   void setProperty(IWindow::eProperty, bool);
 	bool	initAction(void);
 	void	windowAction(void);
 	void	scoreAction(int);
-	void	elementAction(unsigned int, RType::eType, int, int, float, int);
-  	void	elementAction(unsigned int, RType::eType, int, int, float, int, ASprite* sprite);
+  	AElement	*elementAction(unsigned int, RType::eType, int, int, float, int, ASprite* sprite = nullptr);
 	Event	*eventAction(void);
-	void	setText(unsigned int, std::string);
-	void	addText(unsigned int, std::string);
-	void	rmText(unsigned int);
-	std::string	getIp(unsigned int);
 	bool	checkIp(std::string);
-
+  	void 	resetScene();
+  	//void	addMutex(IMutex* mutex);
+  void removeElement(AElement *element);
 };
 
 #endif /* !GRAPHICAL_CONTROLLER_HH__ */

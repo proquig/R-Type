@@ -40,9 +40,8 @@ public:
 		KEY_REPEAT,
 	};
 
-	virtual void	run(WorkQueue<AElement *> *, WorkQueue<Event *> *, IObservable* = nullptr) = 0;
+	virtual void	run(WorkQueue<AElement*>*, WorkQueue<Event *> *, IObservable* = nullptr) = 0;
 	virtual void	pollEvent(void) = 0;
-	virtual void	renderScene(void) = 0;
 	virtual void	render(void) = 0;
 	virtual void setProperty(IWindow::eProperty, bool) = 0;
 
@@ -65,11 +64,12 @@ protected:
 	int						height;
 	std::string				name;
 
-	std::vector<AElement *>	scene;
+	//std::vector<AElement *>	*scene;
 
 	WorkQueue<AElement *>	*elementQueue;
 	WorkQueue<Event *>		*eventQueue;
-
+  	//Vec<AElement*>			*vec;
+	std::vector<AElement*>	*scene;
 public:
 
 	AWindow(int _w, int _h, std::string _name) : width(_w), height(_h), name(_name) {}

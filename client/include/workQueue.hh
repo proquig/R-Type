@@ -9,13 +9,18 @@ class WorkQueue
 {
 	std::mutex		access;
 	std::list<T>	queue;
+
 public:
-	const std::list<T> &getQueue() const {
-		return queue;
+
+  	void lock()
+	{
+	  this->access.lock();
 	}
 
-
-public:
+   void unlock()
+   {
+	 this->access.unlock();
+   }
 
 	bool empty(void)
 	{
@@ -29,6 +34,17 @@ public:
 		this->access.lock();
 		this->queue.push_back(obj);
 		this->access.unlock();
+	}
+
+  	void	remove(T t)
+	{
+	  this->access.lock();
+	  for (typename std::list<T>::iterator it = this->queue.begin(); it != this->queue.end();)
+		if ((*it) == t)
+		  it = this->queue.erase(it);
+	  	else
+		  ++it;
+	  this->access.unlock();
 	}
 
 	T		pop(void) {
@@ -60,10 +76,12 @@ public:
 		std::vector<T>	*res = new std::vector<T>();
 
 		this->access.lock();
-		while (this->queue.size()) {
+		/*while (this->queue.size()) {
 			res->push_back(this->queue.back());
 			this->queue.pop_back();
-		}
+		}*/
+	  	for (typename std::list<T>::iterator it = this->queue.begin(); it != this->queue.end(); ++it)
+		  res->push_back(*it);
 		this->access.unlock();
 		return (res);
 	}
