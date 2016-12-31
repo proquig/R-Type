@@ -45,6 +45,7 @@ public:
   //void					sendNotification(ISocket *sock, const std::string &data);
   void					sendNotification(ISocket *sock);
   void handle();
+  void initPlayer(Player* player);
 };
 
 
