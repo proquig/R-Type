@@ -4,6 +4,7 @@
 
 #include <set>
 #include "Room.hpp"
+#include "IElement.hh"
 #include "ISocket.hpp"
 #include "GameDataPacket.hh"
 
@@ -32,7 +33,8 @@ Room::Room(Dictionary* dicMonster, Dictionary* dicBildo, Dictionary* dicC3po, Di
 
 Room::~Room()
 {
-
+  if (_gameController)
+  	delete this->_gameController;
 }
 
 void Room::initPlayer(Player *player)
@@ -137,15 +139,21 @@ void Room::sendNotification(ISocket *sock)
 	sock->write(std::vector<unsigned char>(str.begin(), str.end()), this->_players[i]->getAddr());
 }
 
-void Room::handle()
+bool Room::handle()
 {
   std::vector<RType::IElement*>	del;
+  uint8_t						count = 0;
 
+  for (Player* player : this->_players)
+	if (player->isAlive())
+	  count++;
+  if (!count)
+	return (false);
   this->_gameController->handleMonsters();
   this->_gameController->handleCollisions();
   for (RType::IElement* elem : this->_gameController->getGame()->getMap())
   {
-      if (elem->getType() == RType::PLAYER)
+	if (elem->getType() == RType::PLAYER)
           ((Player *)elem)->stop_invincible();
     if (elem->getType() == RType::BULLET)
       if (elem->getX() > 799 || ((int16_t) elem->getX()) < 0)
@@ -174,4 +182,5 @@ void Room::handle()
     this->_gameController->getGame()->deleteElem(elem);
     delete elem;
   }
+  return (true);
 }

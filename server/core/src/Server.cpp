@@ -149,8 +149,14 @@ void Server::loop()
       }
   if (vector)
 	delete vector;
-  for (Room* room : this->_rooms)
-	room->handle();
+  for (std::vector<Room*>::iterator it = this->_rooms.begin(); it != this->_rooms.end();)
+	if (!(*it)->handle())
+	{
+	  this->_rooms.erase(it);
+	  delete *it;
+	}
+  	else
+	  ++it;
 }
 
 void Server::stop(unsigned int delay)
