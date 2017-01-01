@@ -59,19 +59,12 @@ void			GameController::handleCollisions()
 	aEntity = _collisionHandler.foundCollisions(_game->getMap(), &destructElementId);
 	for (std::pair<RType::IElement*, RType::IElement*> element : aEntity)
 	{
-        /*if (std::find(del.begin(), del.end(), element.first) == del.end())
+	  if (std::find(del.begin(), del.end(), element.first) == del.end())
             del.push_back(element.first);
-        if (std::find(del.begin(), del.end(), element.second) == del.end())
-            del.push_back(element.second);*/
-        if ((element.first->getType() >= RType::MONSTER && element.second->getType() < RType::MONSTER)
-				|| (element.first->getType() >= RType::MONSTER && element.second->getType() < RType::MONSTER))
-		{
-		  if (std::find(del.begin(), del.end(), element.first) == del.end())
-			del.push_back(element.first);
-		  if (std::find(del.begin(), del.end(), element.second) == del.end())
-			del.push_back(element.second);
+	  if (std::find(del.begin(), del.end(), element.second) == del.end())
+            del.push_back(element.second);
+	  if (element.first->getType() >= RType::MONSTER || element.second->getType() >= RType::MONSTER)
 		  this->_game->updateScore(10);
-		}
 	}
     for (RType::IElement* elem : del)
 	{
