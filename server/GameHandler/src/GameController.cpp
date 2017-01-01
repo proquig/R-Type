@@ -3,7 +3,7 @@
 #include "ITimer.hpp"
 
 GameController::GameController(IGame* game, ISocket *socket, ITimer *timer)
-	: _collisionHandler(1920, 1080), _game(game), _socket(socket), _timer(timer), _monster(nullptr), _dicMonster(nullptr), _dicBildo(nullptr)
+	: _collisionHandler(1920, 1080), _game(game), _socket(socket), _timer(timer), _monster(nullptr), _dicMonster(nullptr), _dicBildo(nullptr), _dicBoss(nullptr)
 {
 	if (_socket)
 		_socket->addObserver(this);
@@ -15,11 +15,11 @@ GameController::GameController(IGame* game, ISocket *socket, ITimer *timer)
 
 GameController::~GameController()
 {
-  if (_monster)
-  	reinterpret_cast<void *(*)(Monster *)>((*_dicMonster)->at("destroy"))(_monster);
-  if (_bildo)
-	reinterpret_cast<void *(*)(Bildo *)>((*_dicBildo)->at("destroy"))(_bildo);
-  if (_socket)
+	if (_monster)
+		reinterpret_cast<void *(*)(Monster *)>((*_dicMonster)->at("destroy"))(_monster);
+	if (_bildo)
+		reinterpret_cast<void *(*)(Bildo *)>((*_dicBildo)->at("destroy"))(_bildo);
+	if (_socket)
 		_socket->removeObserver(this);
 	if (_timer)
 		_timer->removeObserver(this);
@@ -52,60 +52,76 @@ void			GameController::startGame()
 
 void			GameController::handleCollisions()
 {
-  std::vector<int>			destructElementId;
-  std::vector<std::pair<RType::IElement*, RType::IElement*> >		aEntity;
-  std::vector<RType::IElement*>	del;
+	std::vector<int>			destructElementId;
+	std::vector<std::pair<RType::IElement*, RType::IElement*> >		aEntity;
+	std::vector<RType::IElement*>	del;
 
-  aEntity = _collisionHandler.foundCollisions(_game->getMap(), &destructElementId);
-  for (std::pair<RType::IElement*, RType::IElement*> element : aEntity)
-  {
-	if (std::find(del.begin(), del.end(), element.first) == del.end())
-	  del.push_back(element.first);
-	if (std::find(del.begin(), del.end(), element.second) == del.end())
-	  del.push_back(element.second);
-	if (element.first->getType() == RType::MONSTER || element.second->getType() == RType::MONSTER)
-	  this->_game->updateScore(10);
-  }
-  for (RType::IElement* elem : del)
-  {
-	this->_game->deleteElem(elem);
-	if (elem->getType() != RType::PLAYER)
-	  delete elem;
-	else
-	  ((Player*)elem)->kill();
-  }
+	aEntity = _collisionHandler.foundCollisions(_game->getMap(), &destructElementId);
+	for (std::pair<RType::IElement*, RType::IElement*> element : aEntity)
+	{
+		if (std::find(del.begin(), del.end(), element.first) == del.end())
+			del.push_back(element.first);
+		if (std::find(del.begin(), del.end(), element.second) == del.end())
+			del.push_back(element.second);
+		if (element.first->getType() == RType::MONSTER || element.second->getType() == RType::MONSTER)
+			this->_game->updateScore(10);
+	}
+	for (RType::IElement* elem : del)
+	{
+		this->_game->deleteElem(elem);
+		if (elem->getType() != RType::PLAYER)
+			delete elem;
+		else
+			((Player*)elem)->kill();
+	}
 }
 
 void GameController::handleMonsters()
 {
-  uint16_t rand;
-  rand = (uint16_t)(std::rand() % 42);
-  if (!rand)
-  {
-	//if ((_monster = reinterpret_cast<Monster *(*)(int, int, ElementFactory*)>((*_dicMonster)->at("new"))(900, (std::rand() % 450), &this->_elemFact)) != nullptr)
-	if ((_bildo = reinterpret_cast<Bildo *(*)(int, int, ElementFactory*)>((*_dicBildo)->at("new"))(750, (std::rand() % 450), &this->_elemFact)) != nullptr)
+	uint16_t rand;
+	rand = (uint16_t)(std::rand() % 42);
+	if (!rand && ((_game->getScore() < 300 || _boss == DEAD)))
 	{
-	  this->_bildo->setType(RType::MONSTER);
-	  this->_game->addElem(this->_bildo);
-	  std::cout << "_monster spawned" << std::endl;
+		if (rand % 2 == 0)
+		{
+			//if ((_monster = reinterpret_cast<Monster *(*)(int, int, ElementFactory*)>((*_dicMonster)->at("new"))(900, (std::rand() % 450), &this->_elemFact)) != nullptr)
+			if ((_monster = reinterpret_cast<Monster *(*)(int, int, ElementFactory*)>((*_dicMonster)->at("new"))(750, (std::rand() % 450), &this->_elemFact)) != nullptr)
+			{
+				this->_monster->setType(RType::MONSTER);
+				this->_game->addElem(this->_monster);
+				std::cout << "_monster spawned" << std::endl;
+			}
+		}
+		else
+		{
+			//if ((_monster = reinterpret_cast<Monster *(*)(int, int, ElementFactory*)>((*_dicMonster)->at("new"))(900, (std::rand() % 450), &this->_elemFact)) != nullptr)
+			if ((_bildo = reinterpret_cast<Bildo *(*)(int, int, ElementFactory*)>((*_dicBildo)->at("new"))(750, (std::rand() % 450), &this->_elemFact)) != nullptr)
+			{
+				this->_bildo->setType(RType::BILDO);
+				this->_game->addElem(this->_bildo);
+				std::cout << "_monster spawned" << std::endl;
+			}
+		}
 	}
-	//if ((_monster = reinterpret_cast<Monster *(*)(int, int, ElementFactory*)>((*_dicMonster)->at("new"))(900, (std::rand() % 450), &this->_elemFact)) != nullptr)
-	if ((_bildo = reinterpret_cast<Bildo *(*)(int, int, ElementFactory*)>((*_dicBildo)->at("new"))(750, (std::rand() % 450), &this->_elemFact)) != nullptr)
+	else if (_game->getScore() >= 300 && _boss == NS)
 	{
-		this->_bildo->setType(RType::MONSTER);
-		this->_game->addElem(this->_bildo);
-		std::cout << "_monster spawned" << std::endl;
+		_boss = ALIVE;
+		if ((_Boss = reinterpret_cast<Boss *(*)(int, int, ElementFactory*)>((*_dicBoss)->at("new"))(750, (std::rand() % 400), &this->_elemFact)) != nullptr)
+		{
+			this->_Boss->setType(RType::MONSTER);
+			this->_game->addElem(this->_Boss);
+			std::cout << "Boss spawned" << std::endl;
+		}
 	}
-  }
-  for (RType::IElement* elem : this->_game->getMap())
-	if (elem->getType() == RType::MONSTER)
-	  if (((int16_t)elem->getX()) < 0)
-	  {
-		this->_game->deleteElem(elem);
-		delete elem;
-	  }
-	  else if (!((Monster*)elem)->move())
-		this->_game->addElem(((Monster*)elem)->shot());
+	for (RType::IElement* elem : this->_game->getMap())
+		if (elem->getType() == RType::MONSTER)
+			if (((int16_t)elem->getX()) < 0)
+			{
+				this->_game->deleteElem(elem);
+				delete elem;
+			}
+			else if (!((Monster*)elem)->move())
+				this->_game->addElem(((Monster*)elem)->shot());
 }
 
 void GameController::update(int timer)
@@ -167,10 +183,10 @@ IGame* GameController::getGame() const
 
 void GameController::setDicMonster(Dictionary *dic)
 {
-  this->_dicMonster = dic;
+	this->_dicMonster = dic;
 }
 
 void GameController::setDicBildo(Dictionary *dic)
 {
-  this->_dicBildo = dic;
+	this->_dicBildo = dic;
 }

@@ -18,6 +18,12 @@ class ITimer;
 class GameController : public IObserver
 {
 private:
+	enum bossState {
+		NS,
+		ALIVE,
+		DEAD
+	};
+
 	ElementFactory	_elemFact;
 	CollisionHandler _collisionHandler;
 	IGame*			_game;
@@ -29,8 +35,11 @@ private:
 	int				_tick;
   	Dictionary*		_dicMonster;
   	Dictionary*		_dicBildo;
+	Dictionary*		_dicBoss;
   	Monster*		_monster;
   	Bildo*			_bildo;
+	Boss*			_Boss;
+	bool			_boss;
 
 public:
 	GameController(IGame*, ISocket* = nullptr, ITimer* = nullptr);

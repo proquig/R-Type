@@ -2,6 +2,7 @@
 
 #include        "Monster.hh"
 #include		"Bildo.hh"
+#include		"Boss.hh"
 #include		"Player.hh"
 #include		"Shot.hh"
 #include		"Decor.hh"
