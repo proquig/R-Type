@@ -39,11 +39,7 @@ public:
   	void	remove(T t)
 	{
 	  this->access.lock();
-	  for (typename std::list<T>::iterator it = this->queue.begin(); it != this->queue.end();)
-		if ((*it) == t)
-		  it = this->queue.erase(it);
-	  	else
-		  ++it;
+	  this->queue.remove(t);
 	  this->access.unlock();
 	}
 

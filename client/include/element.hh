@@ -65,10 +65,14 @@ public:
 
 	AElement() : coords(new Coords(0, 0)), size(new Coords(0, 0)), target(new Coords(0, 0)), distance(new Coords(0, 0)), ttl(10) {}
 ~AElement(){
-	//delete coords;
-	//delete size;
-	//delete target;
-	//delete distance;
+  if (coords)
+  	delete coords;
+  if (size)
+	delete size;
+  if (target)
+	delete target;
+  if (distance)
+	delete distance;
 }
 	void	move(int _x, int _y, float _angle, std::chrono::milliseconds _speed) {
 		this->target->x = _x;

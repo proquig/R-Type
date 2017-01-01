@@ -39,33 +39,19 @@ void	GraphicalController::windowAction(void)
 
 void 	GraphicalController::resetScene()
 {
-  int count = 0;
   this->windowQueue->lock();
   if (this->oldWindowQueue)
   {
-	std::cout << "OLDQ SIZE = " << this->oldWindowQueue->size() << std::endl;
 	for (AElement *element : *this->oldWindowQueue)
 	  if (element->getId())
-	  {
-		count++;
 		delete element;
-	  }
-	std::cout << "DELETED OLDQ SIZE = " << count << std::endl;
-	this->oldWindowQueue->clear();
+	delete this->oldWindowQueue;
   }
   this->windowQueue->unlock();
   this->oldWindowQueue = this->windowQueue->popAll();
-  //this->windowQueue->lock();
-  count = 0;
-  std::cout << "NEWQ SIZE = " << this->oldWindowQueue->size() << std::endl;
   for (AElement* element : *this->oldWindowQueue)
 	if (element->getId())
-	{
 	  this->windowQueue->remove(element);
-	  count++;
-	}
-  std::cout << "CREATED NEWQ SIZE = " << count << std::endl;
-  //this->windowQueue->unlock();
 }
 
 AElement*	GraphicalController::elementAction(unsigned int id, RType::eType type, int x, int y, float angle, int speed, ASprite* sprite)
@@ -74,7 +60,8 @@ AElement*	GraphicalController::elementAction(unsigned int id, RType::eType type,
 
   AElement									*element;
 
-  element = ElementFactory::create(id, type);
+  if ((element = ElementFactory::create(id, type)) == nullptr)
+	return (element);
   if (sprite)
 	element->setSprite(sprite);
   element->setCoords(new Coords(x, y));
@@ -103,20 +90,19 @@ void		GraphicalController::scoreAction(int _score)
 {
   if (!this->score_elem)
   {
+	  std::cout << "coucou " << std::endl;
 	this->score_elem = ElementFactory::create(0, RType::SCORE);
 	this->score_elem->setCoords(new Coords(0, 410));
 	this->score_elem->setAngle(0);
 	this->score_elem->setSpeed(std::chrono::milliseconds(0));
 	this->score_elem->loadSprites(SFML);
+	this->windowQueue->push(this->score_elem);
   }
-  if (_score == this->score)
-	return;
   std::ostringstream	ss;
   ss << _score;
 
   this->score = _score;
   ((Score*)this->score_elem)->setString(ss.str());
-  this->windowQueue->push(this->score_elem);
   return;
 }
 
