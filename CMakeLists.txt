@@ -11,6 +11,22 @@ set(CMAKE_POSITION_INDEPENDENT_CODE True)
 # CMake module path
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 
+# Set files for copy
+file(
+  GLOB rtype_files
+if (MSVC)
+  ${PROJECT_SOURCE_DIR}/SFML/extlibs/bin/x86/openal32.dll
+endif()
+)
+
+# Add target for copying files
+add_custom_target(rtype_install)
+foreach(FileToCopy ${rtype_files})
+  add_custom_command(TARGET rtype_install PRE_BUILD
+                     COMMAND ${CMAKE_COMMAND} -E
+                         copy ${FileToCopy} ${PROJECT_BINARY_DIR}/bin)
+endforeach()
+
 # SFML detection
 set(SFML_EXTERNAL False)
 find_package(SFML 2.4 QUIET COMPONENTS system window graphics audio)

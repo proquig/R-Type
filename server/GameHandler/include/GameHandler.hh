@@ -3,8 +3,9 @@
 
 #include <iostream>
 #include <map>
-#include "IGame.hh"
-#include "GameController.hh"
+
+class GameController;
+class IGame;
 
 class GameHandler
 {

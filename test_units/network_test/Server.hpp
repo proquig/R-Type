@@ -16,7 +16,7 @@ class Server : public IObserver
 {
 protected:
   ICondVar *_cond;
-  ISocketFactory *_factory;
+  ISocketFactory *_socketFactory;
   bool _init;
   IListener *_listener;
   IMutex *_mutex;

@@ -8,7 +8,7 @@
 #include "IThreadPool.hh"
 
 Server::Server(ISocketFactory *factory, IThreadPool *pool)
-    : _cond(nullptr), _factory(factory), _init(false), _listener(nullptr),
+    : _cond(nullptr), _socketFactory(factory), _init(false), _listener(nullptr),
     _mutex(nullptr), _pool(pool), _stop(false), _udpSocket(nullptr),
     _waiting(false)
 {
@@ -18,8 +18,8 @@ Server::Server(ISocketFactory *factory, IThreadPool *pool)
     _mutex = _pool->createMutex();
     if (_cond && _mutex)
     {
-      _listener = _factory->createListener();
-      _udpSocket = _factory->createSocketUDP(this, 4242);
+      _listener = _socketFactory->createListener();
+      _udpSocket = _socketFactory->createSocketUDP(this, 4242);
       if (_listener && _udpSocket)
       {
         _listener->addObserver(this);
@@ -33,6 +33,7 @@ Server::~Server()
 {
   if (_pool)
   {
+    _pool->stop();
     if (_cond)
       _pool->deleteCondVar(_cond);
     if (_mutex)
@@ -114,11 +115,17 @@ void Server::update(IObservable *o, int status)
 
 void Server::stop(unsigned int delay)
 {
-  std::this_thread::sleep_for(std::chrono::seconds(delay));
-  if (!_stop)
+  if (_cond && _mutex)
   {
-    _stop = true;
-    if (_waiting)
-      _cond->signal();
+    _mutex->lock();
+    _cond->wait(_mutex, 1000 * delay);
+    _mutex->unlock();
+    if (!_stop)
+    {
+      std::cout << "Stopping server after " << delay << " seconds" << std::endl;
+      _stop = true;
+      if (_waiting)
+        _cond->signal();
+    }
   }
 }

@@ -8,7 +8,8 @@
 # include	<vector>
 # include	<algorithm>
 # include	"APacket.hh"
-# include	"GameElement.hpp"
+
+class GameElement;
 
 class GameDataPacket : public APacket
 {
@@ -21,12 +22,13 @@ private:
 	uint16_t 		y;
 	float			angle;
 	uint8_t			speed;
+	uint16_t		type;
   }					t_element;
-
+  uint32_t			_score;
   std::vector<GameElement*>	_gameElements;
 public:
   GameDataPacket();
-  GameDataPacket(std::vector<GameElement *> gameElements);
+  GameDataPacket(std::vector<GameElement *> gameElements, uint32_t score);
   ~GameDataPacket();
   std::string		serialize();
   bool				unserialize(const std::string& data);
@@ -38,6 +40,8 @@ public:
   static uint16_t	getGameElementSize();
   void				clearGameElements();
   bool				deleteGameElement(GameElement* gameElement);
+  void				setScore(uint32_t score);
+  uint32_t			getScore() const;
 };
 
 #endif
