@@ -39,20 +39,32 @@ void	GraphicalController::windowAction(void)
 
 void 	GraphicalController::resetScene()
 {
+  int count = 0;
   this->windowQueue->lock();
   if (this->oldWindowQueue)
   {
+	std::cout << "OLDQ SIZE = " << this->oldWindowQueue->size() << std::endl;
 	for (AElement *element : *this->oldWindowQueue)
 	  if (element->getId())
+	  {
+		count++;
 		delete element;
+	  }
+	std::cout << "DELETED OLDQ SIZE = " << count << std::endl;
 	this->oldWindowQueue->clear();
   }
   this->windowQueue->unlock();
   this->oldWindowQueue = this->windowQueue->popAll();
   //this->windowQueue->lock();
+  count = 0;
+  std::cout << "NEWQ SIZE = " << this->oldWindowQueue->size() << std::endl;
   for (AElement* element : *this->oldWindowQueue)
 	if (element->getId())
+	{
 	  this->windowQueue->remove(element);
+	  count++;
+	}
+  std::cout << "CREATED NEWQ SIZE = " << count << std::endl;
   //this->windowQueue->unlock();
 }
 

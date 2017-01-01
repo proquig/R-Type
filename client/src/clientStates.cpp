@@ -152,8 +152,9 @@ bool	ClientStates::Menu(void)
 	  {
 		ip = text->getString().substr(text->getString().find(" : ") + 4);
 		std::cout << "[IP] " << ip << std::endl;
-		if (this->controller->checkIp(ip) && (!_init && init(ip)))
+		if (this->controller->checkIp(ip) && init(ip))
 		{
+		  std::cout << "Connection to server OK" << std::endl;
 		  this->controller->removeElement(text);
 		  return this->run(GAME);
 		}
@@ -235,6 +236,7 @@ bool		ClientStates::gameState(void)
   _inputQueue.resize(10, 0);
   _mutex->lock();
   _ref = _clock.now();
+  this->_stop = false;
   //this->controller->elementAction(0, RType::SET, 0, 0, 0, 10, this->_backgroud);
   while (!_stop)
   {
@@ -333,7 +335,10 @@ bool	ClientStates::scoreState(void)
 		if (event = this->controller->eventAction())
 		{
 			if (std::string(event->name) == "ENTER")
-				return this->run(MENU);
+			{
+			  this->controller->removeElement(back);
+			  return this->run(MENU);
+			}
 		}
 		#ifdef __linux__ 
 				usleep(20);
@@ -368,7 +373,7 @@ bool	ClientStates::endState(void)
 	Event			*event = NULL;
 	AElement		*back = NULL;
 
-	back = this->controller->elementAction(1, RType::BACKGROUND, 0, 0, 0,
+	back = this->controller->elementAction(0, RType::BACKGROUND, 0, 0, 0,
 		0);
 	back->loadSprites(SFML);
 	while (!event || event->type != Event::QUIT) {
