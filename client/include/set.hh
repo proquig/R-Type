@@ -8,6 +8,7 @@ class Set : public AElement
 
 	std::string					land;
 	std::chrono::milliseconds	tic;
+	Coords						*_coord;
 
 public:
 

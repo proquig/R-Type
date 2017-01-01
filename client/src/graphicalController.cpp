@@ -90,20 +90,19 @@ void		GraphicalController::scoreAction(int _score)
 {
   if (!this->score_elem)
   {
+	  std::cout << "coucou " << std::endl;
 	this->score_elem = ElementFactory::create(0, RType::SCORE);
 	this->score_elem->setCoords(new Coords(0, 410));
 	this->score_elem->setAngle(0);
 	this->score_elem->setSpeed(std::chrono::milliseconds(0));
 	this->score_elem->loadSprites(SFML);
+	this->windowQueue->push(this->score_elem);
   }
-/*  if (_score == this->score)
-	return;*/
   std::ostringstream	ss;
   ss << _score;
 
   this->score = _score;
   ((Score*)this->score_elem)->setString(ss.str());
-  this->windowQueue->push(this->score_elem);
   return;
 }
 

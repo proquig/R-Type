@@ -13,6 +13,7 @@ Set::Set(Land land)
 		break;
 	}
 	this->tic = std::chrono::milliseconds::zero();
+	_coord = new Coords(0, 0);
 }
 
 void	Set::loadSprites(GLib lib)
@@ -43,8 +44,10 @@ void							Set::print(void * window)
 			this->coords->x = 0;
 		}
 	}
+	_coord->x = this->coords->x + this->size->x;
 	this->sprite->setAnimation(this->land, this->coords, this->scale);
 	this->sprite->print(window);
-	this->sprite->setAnimation(this->land, new Coords(this->coords->x + this->size->x, 0), this->scale);
+	//this->sprite->setAnimation(this->land, new Coords(this->coords->x + this->size->x, 0), this->scale);
+	this->sprite->setAnimation(this->land, _coord, this->scale);
 	this->sprite->print(window);
 }
