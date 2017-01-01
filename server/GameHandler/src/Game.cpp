@@ -130,6 +130,11 @@ bool 				Game::deleteElem(RType::IElement* element)
   return (true);
 }
 
+std::vector<RType::IElement*>::iterator Game::deleteElem(const std::vector<RType::IElement*>::iterator &it)
+{
+  return this->_map.erase(it);;
+}
+
 const Rectangle&				Game::getCadre() const
 {
 	return _cadre;

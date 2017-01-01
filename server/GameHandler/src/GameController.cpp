@@ -113,15 +113,30 @@ void GameController::handleMonsters()
 			std::cout << "Boss spawned" << std::endl;
 		}
 	}
-	for (RType::IElement* elem : this->_game->getMap())
-		if (elem->getType() == RType::MONSTER)
-			if (((int16_t)elem->getX()) < 0)
-			{
-				this->_game->deleteElem(elem);
-				delete elem;
-			}
-			else if (!((Monster*)elem)->move())
-				this->_game->addElem(((Monster*)elem)->shot());
+  std::vector<RType::IElement*>& ref = this->_game->getMap();
+  std::vector<RType::IElement*>::iterator it = ref.begin();
+  std::vector<RType::IElement*> tmp;
+  while (it != ref.end())
+  {
+    if ((*it)->getType() == RType::MONSTER)
+    {
+      if (((int16_t)(*it)->getX()) < 0)
+        it = ref.erase(it);
+      else
+      {
+        if (!((Monster*)(*it))->move())
+        {
+          RType::IElement* ptr = ((Monster*)(*it))->shot();
+          if (ptr)
+            tmp.push_back(ptr);
+        }
+        ++it;
+      }
+    }
+    else
+      ++it;
+  }
+  this->_game->addElems(tmp);
 }
 
 void GameController::update(int timer)

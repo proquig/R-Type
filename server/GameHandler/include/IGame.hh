@@ -20,8 +20,9 @@ class IGame
 	virtual std::vector<RType::IElement*>&		getMap() = 0;
 	virtual void						addElems(std::vector<RType::IElement*>) = 0;
 	virtual void						addElem(RType::IElement*) = 0;
-  	virtual bool						deleteElem(RType::IElement *element) = 0;
-  	virtual void 						updateScore(uint16_t score) = 0;
+  virtual bool						deleteElem(RType::IElement *element) = 0;
+  virtual std::vector<RType::IElement*>::iterator deleteElem(const std::vector<RType::IElement*>::iterator &) = 0;
+  virtual void 						updateScore(uint16_t score) = 0;
   	virtual uint16_t					getScore() const = 0;
 };
 

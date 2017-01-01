@@ -36,6 +36,7 @@ public:
 	virtual void						addElem(RType::IElement*);
 	virtual const Rectangle&			getCadre() const;
   	virtual bool						deleteElem(RType::IElement *element);
+    virtual std::vector<RType::IElement*>::iterator deleteElem(const std::vector<RType::IElement*>::iterator &);
   	virtual bool						isPresent(RType::IElement *element);
   	virtual void 						updateScore(uint16_t score);
   	virtual uint16_t					getScore() const;
