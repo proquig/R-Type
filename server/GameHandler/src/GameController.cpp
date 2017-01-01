@@ -3,7 +3,8 @@
 #include "ITimer.hpp"
 
 GameController::GameController(IGame* game, ISocket *socket, ITimer *timer)
-	: _collisionHandler(1920, 1080), _game(game), _socket(socket), _timer(timer), _monster(nullptr), _dicMonster(nullptr), _dicBildo(nullptr), _dicBoss(nullptr)
+	: _collisionHandler(1920, 1080), _game(game), _socket(socket), _timer(timer), _monster(nullptr), _bildo(nullptr),
+	  _Boss(nullptr), _dicMonster(nullptr), _dicBildo(nullptr), _dicBoss(nullptr)
 {
 	if (_socket)
 		_socket->addObserver(this);
@@ -16,13 +17,26 @@ GameController::GameController(IGame* game, ISocket *socket, ITimer *timer)
 GameController::~GameController()
 {
 	if (_monster)
-		reinterpret_cast<void *(*)(Monster *)>((*_dicMonster)->at("destroy"))(_monster);
+	{
+	  reinterpret_cast<void *(*)(Monster *)>((*_dicMonster)->at("destroy"))(_monster);
+	  this->_game->deleteElem(_monster);
+	}
 	if (_bildo)
-		reinterpret_cast<void *(*)(Bildo *)>((*_dicBildo)->at("destroy"))(_bildo);
+	{
+	  reinterpret_cast<void *(*)(Bildo *)>((*_dicBildo)->at("destroy"))(_bildo);
+	  this->_game->deleteElem(_bildo);
+	}
+  	if (_Boss)
+	{
+	  reinterpret_cast<void *(*)(Boss *)>((*_dicBoss)->at("destroy"))(_Boss);
+	  this->_game->deleteElem(_Boss);
+	}
 	if (_socket)
 		_socket->removeObserver(this);
 	if (_timer)
 		_timer->removeObserver(this);
+  	if (_game)
+	  delete this->_game;
 }
 
 void			GameController::setGame(IGame* game)
@@ -64,7 +78,7 @@ void			GameController::handleCollisions()
 	  if (std::find(del.begin(), del.end(), element.second) == del.end())
             del.push_back(element.second);
 	  if (element.first->getType() >= RType::MONSTER || element.second->getType() >= RType::MONSTER)
-		  this->_game->updateScore(100);
+		  this->_game->updateScore(10);
 	}
     for (RType::IElement* elem : del)
 	{

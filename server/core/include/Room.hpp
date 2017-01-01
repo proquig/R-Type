@@ -44,7 +44,7 @@ public:
   bool					isFull();
   //void					sendNotification(ISocket *sock, const std::string &data);
   void					sendNotification(ISocket *sock);
-  void handle();
+  bool handle();
   void initPlayer(Player* player);
 };
 

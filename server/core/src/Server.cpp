@@ -23,7 +23,7 @@ Server::Server(unsigned short port)
   _dlManager.add(0, "monster", "");
   _dlManager.add(0, "bildo", "");
   _dlManager.add(0, "C3PO", "");
-  _dlManager.add(0, "Boss", "");
+  _dlManager.add(0, "boss", "");
 }
 
 Server::~Server()
@@ -100,7 +100,7 @@ bool Server::init()
 	  std::cout << "C3PO loaded" << std::endl;
   else
 	  return false;
-  if ((dic = _dlManager.handler.getDictionaryByName("Boss")) != NULL
+  if ((dic = _dlManager.handler.getDictionaryByName("boss")) != NULL
 	  && !(*_dic.insert(_dic.end(), dic))->empty())
 	  std::cout << "Boss loaded" << std::endl;
   else
@@ -149,8 +149,14 @@ void Server::loop()
       }
   if (vector)
 	delete vector;
-  for (Room* room : this->_rooms)
-	room->handle();
+  for (std::vector<Room*>::iterator it = this->_rooms.begin(); it != this->_rooms.end();)
+	if (!(*it)->handle())
+	{
+	  this->_rooms.erase(it);
+	  delete *it;
+	}
+  	else
+	  ++it;
 }
 
 void Server::stop(unsigned int delay)
