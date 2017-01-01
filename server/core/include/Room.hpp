@@ -26,8 +26,8 @@ private:
   GameController*       _gameController;
 
 public:
-  Room(Dictionary* dicMonster, Dictionary* dicBildo);
-  Room(Dictionary* dicMonster, Dictionary* dicBildo, Player *player);
+  Room(Dictionary* dicMonster, Dictionary* dicBildo, Dictionary* dicC3po, Dictionary *dicBoss);
+  Room(Dictionary* dicMonster, Dictionary* dicBildo, Dictionary* dicC3po, Dictionary *dicBoss, Player *player);
   ~Room();
   GameController*       getGameController() const;
   bool 					setPlayers(std::vector<Player*> players);

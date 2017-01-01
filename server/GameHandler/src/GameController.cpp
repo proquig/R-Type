@@ -64,7 +64,7 @@ void			GameController::handleCollisions()
         if (std::find(del.begin(), del.end(), element.second) == del.end())
             del.push_back(element.second);
         if (element.first->getType() == RType::MONSTER || element.second->getType() == RType::MONSTER)
-            this->_game->updateScore(10);
+            this->_game->updateScore(100);
 	}
     for (RType::IElement* elem : del)
 	{
@@ -104,7 +104,7 @@ void GameController::handleMonsters()
 			{
 				this->_bildo->setType(RType::BILDO);
 				this->_game->addElem(this->_bildo);
-				std::cout << "_monster spawned" << std::endl;
+				std::cout << "_bildo spawned" << std::endl;
 			}
 		}
 	}
@@ -209,4 +209,12 @@ void GameController::setDicMonster(Dictionary *dic)
 void GameController::setDicBildo(Dictionary *dic)
 {
 	this->_dicBildo = dic;
+}
+
+void 			GameController::setDicBoss(Dictionary *_dicBoss) {
+	GameController::_dicBoss = _dicBoss;
+}
+
+void 			GameController::setDicC3PO(Dictionary *_dicC3PO) {
+	GameController::_dicC3PO = _dicC3PO;
 }

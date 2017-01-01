@@ -215,7 +215,7 @@ void Server::handleSocket(struct sockaddr *addr, APacket* packet)
 
 void Server::createRoom(struct sockaddr *sock)
 {
-  Room*		room = new Room(&_dic[2], &_dic[3]);
+  Room*		room = new Room(&_dic[2], &_dic[3], &_dic[4], &_dic[5]);
   Player*	player = new Player(sock);
 
   room->addPlayer(player);
@@ -267,7 +267,7 @@ void Server::realizeMovement(Room *room, Player *player)
   }
   if (input & RType::SPACE)
   {
-    std::cout << "BULLET" << std::endl;
+//    std::cout << "BULLET" << std::endl;
     RType::AElement *elem;
     elem = room->getGameController()->getElementFactory()->create(player->getId(), -1, RType::MISSILE,
                                                                   player->getX() + (player->getSizeX() / 2) + 1,

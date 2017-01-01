@@ -9,18 +9,23 @@
 
 #include <typeinfo>
 
-Room::Room(Dictionary* dicMonster, Dictionary* dicBildo)
+Room::Room(Dictionary* dicMonster, Dictionary* dicBildo, Dictionary* dicC3po, Dictionary *dicBoss)
 {
   this->_gameController = this->_cf.create(new File(""));
   this->_gameController->setDicMonster(dicMonster);
   this->_gameController->setDicBildo(dicBildo);
+    this->_gameController->setDicC3PO(dicC3po);
+    this->_gameController->setDicBoss(dicBoss);
+
 }
 
-Room::Room(Dictionary* dicMonster, Dictionary* dicBildo, Player *player)
+Room::Room(Dictionary* dicMonster, Dictionary* dicBildo, Dictionary* dicC3po, Dictionary *dicBoss, Player *player)
 {
   this->_gameController = this->_cf.create(new File(""));
   this->_gameController->setDicMonster(dicMonster);
   this->_gameController->setDicBildo(dicBildo);
+    this->_gameController->setDicC3PO(dicC3po);
+    this->_gameController->setDicBoss(dicBoss);
   this->_players.push_back(player);
   this->initPlayer(player);
 }
@@ -148,9 +153,9 @@ void Room::handle()
         //room->getGameController()->getGame()->deleteElem(elem);
         //delete elem;
         del.push_back(elem);
-#ifndef NDEBUG
+/*#ifndef NDEBUG
         std::cout << "ELEM DELETED WITH ID" << elem->getId() << std::endl;
-#endif
+#endif*/
       }
 	  else
 	  {
