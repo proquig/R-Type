@@ -221,7 +221,7 @@ void		ClientStates::loadSprites(void)
 
 	this->_boss = new SFMLSprite("./../../client/media/GAME-Assets/r-typesheet38.gif");
 	this->_boss->addRessource("DEFAULT", std::vector<Cut *>{
-			new Cut(0, 0, 179, 125)
+			new Cut(0, 0, 179, 146)
 	});
 	this->_boss->setAnimated(false);
 	this->_boss->setAnimTime(500);
