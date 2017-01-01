@@ -7,6 +7,8 @@
 #include "ISocket.hpp"
 #include "GameDataPacket.hh"
 
+#include <typeinfo>
+
 Room::Room(Dictionary* dicMonster, Dictionary* dicBildo)
 {
   this->_gameController = this->_cf.create(new File(""));
@@ -20,6 +22,16 @@ Room::Room(Dictionary* dicMonster, Dictionary* dicBildo, Player *player)
   this->_gameController->setDicMonster(dicMonster);
   this->_gameController->setDicBildo(dicBildo);
   this->_players.push_back(player);
+  this->initPlayer(player);
+}
+
+Room::~Room()
+{
+
+}
+
+void Room::initPlayer(Player *player)
+{
   player->setX(100);
   player->setY(this->_players.size() * 100);
   player->setSizeX(30);
@@ -28,11 +40,7 @@ Room::Room(Dictionary* dicMonster, Dictionary* dicBildo, Player *player)
   player->setSpeed(10);
   player->setId(this->_players.size());
   player->setIdFrom(0);
-}
-
-Room::~Room()
-{
-
+  player->setHp(100);
 }
 
 GameController *Room::getGameController() const
@@ -59,14 +67,7 @@ bool 					Room::addPlayer(Player* player)
 	return (false);
   //this->_players.insert(std::pair<struct sockaddr*, Player*>(sock, player));
   this->_players.push_back(player);
-  player->setX(100);
-  player->setY(this->_players.size() * 100);
-  player->setSizeX(30);
-  player->setSizeY(10);
-  player->setAngle(0);
-  player->setSpeed(10);
-  player->setId(this->_players.size());
-  player->setIdFrom(0);
+  this->initPlayer(player);
   return (true);
 }
 
@@ -149,8 +150,16 @@ void Room::handle()
         std::cout << "ELEM DELETED WITH ID" << elem->getId() << std::endl;
 #endif
       }
-      else
-		elem->move();
+	  else
+	  {
+		  elem->move();
+		 if (typeid(elem).name() == "TripleShot" && ((TripleShot*)elem)->isActivated())
+		  {
+			  _gameController->getElementFactory()->createShot(elem->getIdFrom(), elem->getX(), elem->getY() + 25, elem->getSizeX(), elem->getSizeY(), elem->getDamage(), elem->getAngle(), elem->getSpeed());
+			  _gameController->getElementFactory()->createShot(elem->getIdFrom(), elem->getX(), elem->getY() - 25, elem->getSizeX(), elem->getSizeY(), elem->getDamage(), elem->getAngle(), elem->getSpeed());
+		  }
+
+	  }
   }
   std::set<RType::IElement*> unique(del.begin(), del.end());
   for (RType::IElement* elem : unique)

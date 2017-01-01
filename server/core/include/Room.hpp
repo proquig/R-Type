@@ -12,6 +12,7 @@
 # include	"APacket.hh"
 # include	"Player.hh"
 # include   "DLManager.hh"
+# include	"TripleShot.hh"
 
 # define	MAX_PLAYERS	4
 
@@ -44,6 +45,7 @@ public:
   //void					sendNotification(ISocket *sock, const std::string &data);
   void					sendNotification(ISocket *sock);
   void handle();
+  void initPlayer(Player* player);
 };
 
 
