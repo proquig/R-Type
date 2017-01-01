@@ -81,7 +81,9 @@ private:
   	SFMLSprite*	_player[4];
   	SFMLSprite*	_bullet[2];
   	SFMLSprite*	_monster;
-  	SFMLSprite*	_backgroud;
+  	SFMLSprite*	_boss;
+  	SFMLSprite*	_bildo;
+	SFMLSprite*	_backgroud;
 
 public:
 	ClientStates();

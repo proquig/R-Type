@@ -202,18 +202,30 @@ void		ClientStates::loadSprites(void)
 
   this->_monster = new SFMLSprite("./../../client/media/GAME-Assets/r-typesheet23.gif");
   this->_monster->addRessource("DEFAULT", std::vector<Cut *>{
-		  new Cut(0, 0, 33, 35)/*,
-						new Cut(33, 0, 33, 35),
-						new Cut(66, 0, 33, 35),
-						new Cut(99, 0, 33, 35),
-						new Cut(132, 0, 33, 35),
-						new Cut(165, 0, 33, 35),
-						new Cut(196, 0, 33, 35),
-						new Cut(229, 0, 33, 35)*/
+		  new Cut(0, 0, 33, 35)
   });
   this->_monster->setAnimated(false);
   this->_monster->setAnimTime(500);
   this->_monster->setLoop(true);
+
+
+	this->_bildo = new SFMLSprite("./../../client/media/GAME-Assets/r-typesheet26.gif");
+	this->_bildo->addRessource("DEFAULT", std::vector<Cut *>{
+			new Cut(0, 0, 65, 50)
+	});
+	this->_bildo->setAnimated(false);
+	this->_bildo->setAnimTime(500);
+	this->_bildo->setLoop(true);
+
+
+
+	this->_boss = new SFMLSprite("./../../client/media/GAME-Assets/r-typesheet38.gif");
+	this->_boss->addRessource("DEFAULT", std::vector<Cut *>{
+			new Cut(0, 0, 179, 125)
+	});
+	this->_boss->setAnimated(false);
+	this->_boss->setAnimTime(500);
+	this->_boss->setLoop(true);
 
   this->_backgroud = new SFMLSprite("./../../client/media/GAME-Assets/WASTE_LAND.png");
   this->_backgroud->addRessource("WASTE_LAND", std::vector<Cut *>{new Cut(0, 0, 1000, 300)});
@@ -296,8 +308,15 @@ bool		ClientStates::gameState(void)
 				sprite = this->_bullet[ptr->getAngle() != 90];
 			  else if (ptr->getType() == RType::MONSTER)
 				sprite = this->_monster;
+			  else if (ptr->getType() == 4096) {
+				  sprite = this->_bildo;
+				  std::cout << "Je passe ici value of sprite:" << sprite << std::endl;
+			   }
+			  else if (ptr->getType() == RType::BOSS)
+				  sprite = this->_boss;
 			  objType = (RType::eType) ptr->getType();
 			  //if (objType == RType::PLAYER || objType == RType::BULLET || objType == RType::MONSTER)
+				std::cout << "Type:" << ptr->getType() << std::endl;
 			  this->controller->elementAction(ptr->getId(), objType, ptr->getX(), ptr->getY(), ptr->getAngle(),
 											  ptr->getSpeed(), sprite);
 			  delete ptr;
