@@ -111,7 +111,7 @@ void				Game::addElems(std::vector<RType::IElement*> elems)
 
 void				Game::addElem(RType::IElement* elem)
 {
-  if (!this->isPresent(elem))
+  if (elem && !this->isPresent(elem))
 	_map.push_back(elem);
 }
 

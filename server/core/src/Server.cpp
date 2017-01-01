@@ -147,6 +147,8 @@ void Server::loop()
           this->handleSocket(pair.second, packet);
         delete packet;
       }
+  if (vector)
+	delete vector;
   for (Room* room : this->_rooms)
 	room->handle();
 }
