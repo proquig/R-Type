@@ -64,18 +64,16 @@ void			GameController::handleCollisions()
 	  if (std::find(del.begin(), del.end(), element.second) == del.end())
             del.push_back(element.second);
 	  if (element.first->getType() >= RType::MONSTER || element.second->getType() >= RType::MONSTER)
-		  this->_game->updateScore(10);
+		  this->_game->updateScore(100);
 	}
     for (RType::IElement* elem : del)
 	{
 		if (elem->getType() != RType::PLAYER)
         {
 			if (elem->getType() == RType::BOSS) {
-				std::cout << "boss dead" << std::endl;
 				((Boss *) elem)->setHp(((Boss *) elem)->getHp() - 10);
 				if (!((Boss*)elem)->getHp())
 				{
-					std::cout << "boss dead" << std::endl;
 					this->_game->deleteElem(elem);
 					delete elem;
                     _boss = NS;
@@ -115,8 +113,8 @@ void GameController::handleMonsters()
 				std::cout << "_monster spawned" << std::endl;
 			}
 		}
-		/*else
-		//{
+		else
+		{
 			//if ((_monster = reinterpret_cast<Monster *(*)(int, int, ElementFactory*)>((*_dicMonster)->at("new"))(900, (std::rand() % 450), &this->_elemFact)) != nullptr)
 			if ((_bildo = reinterpret_cast<Bildo *(*)(int, int, ElementFactory*)>((*_dicBildo)->at("new"))(750, (std::rand() % 450), &this->_elemFact)) != nullptr)
 			{
@@ -124,12 +122,12 @@ void GameController::handleMonsters()
 				this->_game->addElem(this->_bildo);
 				std::cout << "_bildo spawned" << this->_bildo->getType() << std::endl;
 			}
-		//}*/
+		}
 	}
 	else if (_game->getScore() >= 300 && _boss == NS)
 	{
 		_boss = ALIVE;
-		if ((_Boss = reinterpret_cast<Boss *(*)(int, int, ElementFactory*)>((*_dicBoss)->at("new"))(750, (std::rand() % 400), &this->_elemFact)) != nullptr)
+		if ((_Boss = reinterpret_cast<Boss *(*)(int, int, ElementFactory*)>((*_dicBoss)->at("new"))(640, (std::rand() % 400), &this->_elemFact)) != nullptr)
 		{
 			this->_Boss->setType(RType::BOSS);
 			this->_game->addElem(this->_Boss);
@@ -141,7 +139,7 @@ void GameController::handleMonsters()
   std::vector<RType::IElement*> tmp;
   while (it != ref.end())
   {
-    if ((*it)->getType() == RType::MONSTER)
+    if ((*it)->getType() >= RType::MONSTER)
     {
       if (((int16_t)(*it)->getX()) < 0)
 	  {
