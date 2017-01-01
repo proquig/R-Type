@@ -84,10 +84,11 @@ void			GameController::handleCollisions()
 void GameController::handleMonsters()
 {
 	uint16_t rand;
+	int r = std::rand();
 	rand = (uint16_t)(std::rand() % 42);
 	if (!rand && ((_game->getScore() < 300 || _boss == DEAD)))
 	{
-		if (rand % 2 == 0)
+		if (r % 2 == 0)
 		{
 			//if ((_monster = reinterpret_cast<Monster *(*)(int, int, ElementFactory*)>((*_dicMonster)->at("new"))(900, (std::rand() % 450), &this->_elemFact)) != nullptr)
 			if ((_monster = reinterpret_cast<Monster *(*)(int, int, ElementFactory*)>((*_dicMonster)->at("new"))(750, (std::rand() % 450), &this->_elemFact)) != nullptr)
