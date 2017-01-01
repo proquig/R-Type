@@ -125,6 +125,7 @@ void	SFMLWindow::pollEvent(void)
 						break;
 					case sf::Keyboard::Num4:
 					case sf::Keyboard::Numpad4:
+					case sf::Keyboard::Quote:
 						this->eventQueue->push(new Event(Event::KEYPRESS, RType::ENTER, "4", _x, _y, _w, _h));
 						break;
 					case sf::Keyboard::Num5:
@@ -133,6 +134,7 @@ void	SFMLWindow::pollEvent(void)
 						break;
 					case sf::Keyboard::Num6:
 					case sf::Keyboard::Numpad6:
+					case sf::Keyboard::Dash:
 						this->eventQueue->push(new Event(Event::KEYPRESS, RType::ENTER, "6", _x, _y, _w, _h));
 						break;
 					case sf::Keyboard::Num7:
