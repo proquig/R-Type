@@ -36,21 +36,19 @@ enum eType
   MISSILE = 1 << 2,
   //Monster
   MONSTER = 1 << 3,
-  AI = 1 << 3,
+    BOSS = 1 << 4,
+    C3PO = 1 << 5,
+    BILDO = 1 << 6,
   //Decor
-  DECOR = 1 << 4,
-  SET = 1 << 4,
+  DECOR = 1 << 7,
+  SET = 1 << 8,
   //Obstacle
-  OBSTACLE = 1 << 5,
+  OBSTACLE = 1 << 9,
   //Bonus
-  BONUS = 1 << 6,
   //UI
-  TEXT = 1 << 7,
-  SCORE = 1 << 8,
-  BACKGROUND = 1 << 9,
-    BOSS = 1 << 10,
-    C3PO = 1 << 11,
-    BILDO = 1 << 12
+  TEXT = 1 << 10,
+  SCORE = 1 << 11,
+  BACKGROUND = 1 << 12
 };
 
 };
