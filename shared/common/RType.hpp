@@ -27,28 +27,28 @@ enum eKey
 //enum defining element type
 enum eType
 {
-    //None
-            EMPTY = 1 << 0,
-    //Player
-            PLAYER = 1 << 1,
-    //Bullet/missile
-            BULLET = 1 << 2,
-    MISSILE = 1 << 2,
-    //Monster
-            MONSTER = 1 << 3,
+  //None
+  EMPTY = 1 << 0,
+  //Player
+  PLAYER = 1 << 1,
+  //Bullet/missile
+  BULLET = 1 << 2,
+  MISSILE = 1 << 2,
+  //Monster
+  MONSTER = 1 << 3,
     BOSS = 1 << 4,
     C3PO = 1 << 5,
     BILDO = 1 << 6,
-    //Decor
-            DECOR = 1 << 7,
-    SET = 1 << 8,
-    //Obstacle
-            OBSTACLE = 1 << 9,
-    //Bonus
-    //UI
-            TEXT = 1 << 10,
-    SCORE = 1 << 11,
-    BACKGROUND = 1 << 12
+  //Decor
+  DECOR = 1 << 7,
+  SET = 1 << 8,
+  //Obstacle
+  OBSTACLE = 1 << 9,
+  //Bonus
+  //UI
+  TEXT = 1 << 10,
+  SCORE = 1 << 11,
+  BACKGROUND = 1 << 12
 };
 
 };

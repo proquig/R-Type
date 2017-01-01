@@ -36,7 +36,10 @@ private:
   	Dictionary*		_dicMonster;
   	Dictionary*		_dicBildo;
 	Dictionary*		_dicBoss;
-  	Monster*		_monster;
+	Dictionary*		_dicC3PO;
+
+private:
+	Monster*		_monster;
   	Bildo*			_bildo;
 	Boss*			_Boss;
 	bool			_boss;
@@ -47,6 +50,8 @@ public:
 
   	void 				setDicMonster(Dictionary* dic);
 	void 				setDicBildo(Dictionary* dic);
+	void				setDicBoss(Dictionary *_dicBoss);
+	void 				setDicC3PO(Dictionary *_dicC3PO);
 	void				handleCollisions();
 	void				setGame(IGame*);
 	bool				initGame(File*);

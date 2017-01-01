@@ -9,18 +9,23 @@
 
 #include <typeinfo>
 
-Room::Room(Dictionary* dicMonster, Dictionary* dicBildo)
+Room::Room(Dictionary* dicMonster, Dictionary* dicBildo, Dictionary* dicC3po, Dictionary *dicBoss)
 {
   this->_gameController = this->_cf.create(new File(""));
   this->_gameController->setDicMonster(dicMonster);
   this->_gameController->setDicBildo(dicBildo);
+    this->_gameController->setDicC3PO(dicC3po);
+    this->_gameController->setDicBoss(dicBoss);
+
 }
 
-Room::Room(Dictionary* dicMonster, Dictionary* dicBildo, Player *player)
+Room::Room(Dictionary* dicMonster, Dictionary* dicBildo, Dictionary* dicC3po, Dictionary *dicBoss, Player *player)
 {
   this->_gameController = this->_cf.create(new File(""));
   this->_gameController->setDicMonster(dicMonster);
   this->_gameController->setDicBildo(dicBildo);
+    this->_gameController->setDicC3PO(dicC3po);
+    this->_gameController->setDicBoss(dicBoss);
   this->_players.push_back(player);
   this->initPlayer(player);
 }
@@ -140,15 +145,17 @@ void Room::handle()
   this->_gameController->handleCollisions();
   for (RType::IElement* elem : this->_gameController->getGame()->getMap())
   {
+      if (elem->getType() == RType::PLAYER)
+          ((Player *)elem)->stop_invincible();
     if (elem->getType() == RType::BULLET)
       if (elem->getX() > 799 || ((int16_t) elem->getX()) < 0)
       {
         //room->getGameController()->getGame()->deleteElem(elem);
         //delete elem;
         del.push_back(elem);
-#ifndef NDEBUG
+/*#ifndef NDEBUG
         std::cout << "ELEM DELETED WITH ID" << elem->getId() << std::endl;
-#endif
+#endif*/
       }
 	  else
 	  {

@@ -13,7 +13,7 @@ Boss::Boss(uint32_t idFrom, uint16_t type, uint16_t x, uint16_t y, uint16_t hp, 
 }
 
 Boss::Boss(uint16_t x, uint16_t y, ElementFactory *factory) :
-        GameElement::GameElement(-1, (factory != nullptr ? factory->newID() : 0), RType::BOSS, x, y, 3, 10, 10, 1, 0, 10)
+        GameElement::GameElement(-1, (factory != nullptr ? factory->newID() : 0), RType::BOSS, x, y, 100, 10, 200, 1, 0, 10)
 {
     _factory = factory;
     _direction = 1;
@@ -35,17 +35,16 @@ std::vector<RType::IElement*>			 Boss::collideWith(RType::IElement* elem)
 
 bool    Boss::move()
 {
-    if (_x < 50) {
-        this->_x += 10;
-        return (false);
-    }
-    return (true);
+    return (false);
 }
 
 Shot                            *Boss::shot()
 {
+    if (_mov == 10)
+        _mov = 0;
+    _mov++;
     if (_factory)
-        return ((Shot *) _factory->create(this->_id, -1, RType::MISSILE, this->_x, this->_y, 10, 10, 10, 10, -90, 12));
+        return ((Shot *) _factory->create(this->_id, -1, RType::MISSILE, this->_x, this->_y + _mov, 10, 10, 10, 10, -90, 12));
     return nullptr;
 }
 

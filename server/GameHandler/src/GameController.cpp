@@ -59,30 +59,51 @@ void			GameController::handleCollisions()
 	aEntity = _collisionHandler.foundCollisions(_game->getMap(), &destructElementId);
 	for (std::pair<RType::IElement*, RType::IElement*> element : aEntity)
 	{
-		if (std::find(del.begin(), del.end(), element.first) == del.end())
-			del.push_back(element.first);
-		if (std::find(del.begin(), del.end(), element.second) == del.end())
-			del.push_back(element.second);
-		if (element.first->getType() == RType::MONSTER || element.second->getType() == RType::MONSTER)
-			this->_game->updateScore(10);
+	  if (std::find(del.begin(), del.end(), element.first) == del.end())
+            del.push_back(element.first);
+	  if (std::find(del.begin(), del.end(), element.second) == del.end())
+            del.push_back(element.second);
+	  if (element.first->getType() >= RType::MONSTER || element.second->getType() >= RType::MONSTER)
+		  this->_game->updateScore(100);
 	}
-	for (RType::IElement* elem : del)
+    for (RType::IElement* elem : del)
 	{
-		this->_game->deleteElem(elem);
 		if (elem->getType() != RType::PLAYER)
-			delete elem;
-		else
-			((Player*)elem)->kill();
+        {
+			if (elem->getType() == RType::BOSS) {
+				((Boss *) elem)->setHp(((Boss *) elem)->getHp() - 10);
+				if (!((Boss*)elem)->getHp())
+				{
+					this->_game->deleteElem(elem);
+					delete elem;
+                    _boss = NS;
+				}
+			}
+			else {
+				this->_game->deleteElem(elem);
+				delete elem;
+			}
+		}
+		else if (((Player *)elem)->get_invincible() == 0)
+        {
+			((Player*)elem)->setHp(((Player*)elem)->getHp() - 10);
+			if (!((Player*)elem)->getHp())
+			{
+				this->_game->deleteElem(elem);
+				((Player *) elem)->kill();
+			}
+        }
 	}
 }
 
 void GameController::handleMonsters()
 {
 	uint16_t rand;
+	int r = std::rand();
 	rand = (uint16_t)(std::rand() % 42);
 	if (!rand && ((_game->getScore() < 300 || _boss == DEAD)))
 	{
-		if (rand % 2 == 0)
+		if (r % 2 == 0)
 		{
 			//if ((_monster = reinterpret_cast<Monster *(*)(int, int, ElementFactory*)>((*_dicMonster)->at("new"))(900, (std::rand() % 450), &this->_elemFact)) != nullptr)
 			if ((_monster = reinterpret_cast<Monster *(*)(int, int, ElementFactory*)>((*_dicMonster)->at("new"))(750, (std::rand() % 450), &this->_elemFact)) != nullptr)
@@ -99,16 +120,16 @@ void GameController::handleMonsters()
 			{
 				this->_bildo->setType(RType::BILDO);
 				this->_game->addElem(this->_bildo);
-				std::cout << "_monster spawned" << std::endl;
+				std::cout << "_bildo spawned" << this->_bildo->getType() << std::endl;
 			}
 		}
 	}
 	else if (_game->getScore() >= 300 && _boss == NS)
 	{
 		_boss = ALIVE;
-		if ((_Boss = reinterpret_cast<Boss *(*)(int, int, ElementFactory*)>((*_dicBoss)->at("new"))(750, (std::rand() % 400), &this->_elemFact)) != nullptr)
+		if ((_Boss = reinterpret_cast<Boss *(*)(int, int, ElementFactory*)>((*_dicBoss)->at("new"))(640, (std::rand() % 400), &this->_elemFact)) != nullptr)
 		{
-			this->_Boss->setType(RType::MONSTER);
+			this->_Boss->setType(RType::BOSS);
 			this->_game->addElem(this->_Boss);
 			std::cout << "Boss spawned" << std::endl;
 		}
@@ -118,10 +139,13 @@ void GameController::handleMonsters()
   std::vector<RType::IElement*> tmp;
   while (it != ref.end())
   {
-    if ((*it)->getType() == RType::MONSTER)
+    if ((*it)->getType() >= RType::MONSTER)
     {
       if (((int16_t)(*it)->getX()) < 0)
-        it = ref.erase(it);
+	  {
+		  delete *it;
+		  it = ref.erase(it);
+	  }
       else
       {
         if (!((Monster*)(*it))->move())
@@ -204,4 +228,12 @@ void GameController::setDicMonster(Dictionary *dic)
 void GameController::setDicBildo(Dictionary *dic)
 {
 	this->_dicBildo = dic;
+}
+
+void 			GameController::setDicBoss(Dictionary *_dicBoss) {
+	GameController::_dicBoss = _dicBoss;
+}
+
+void 			GameController::setDicC3PO(Dictionary *_dicC3PO) {
+	GameController::_dicC3PO = _dicC3PO;
 }

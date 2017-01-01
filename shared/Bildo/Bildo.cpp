@@ -14,7 +14,7 @@ Bildo::Bildo(uint32_t idFrom, uint16_t type, uint16_t x, uint16_t y, uint16_t hp
 }
 
 Bildo::Bildo(uint16_t x, uint16_t y, ElementFactory *factory) :
-        GameElement::GameElement(-1, (factory != nullptr ? factory->newID() : 0), RType::BILDO, x, y, 3, 10, 10, 1, 0, 10)
+        GameElement::GameElement(-1, (factory != nullptr ? factory->newID() : 0), RType::BILDO, x, y, 3, 20, 20, 1, 0, 10)
 {
     _factory = factory;
     _direction = 1;
