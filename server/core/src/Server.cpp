@@ -23,7 +23,7 @@ Server::Server(unsigned short port)
   _dlManager.add(0, "monster", "");
   _dlManager.add(0, "bildo", "");
   _dlManager.add(0, "C3PO", "");
-  _dlManager.add(0, "Boss", "");
+  _dlManager.add(0, "boss", "");
 }
 
 Server::~Server()
@@ -100,7 +100,7 @@ bool Server::init()
 	  std::cout << "C3PO loaded" << std::endl;
   else
 	  return false;
-  if ((dic = _dlManager.handler.getDictionaryByName("Boss")) != NULL
+  if ((dic = _dlManager.handler.getDictionaryByName("boss")) != NULL
 	  && !(*_dic.insert(_dic.end(), dic))->empty())
 	  std::cout << "Boss loaded" << std::endl;
   else
