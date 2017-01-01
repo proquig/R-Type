@@ -64,19 +64,36 @@ void			GameController::handleCollisions()
         if (std::find(del.begin(), del.end(), element.second) == del.end())
             del.push_back(element.second);
         if (element.first->getType() == RType::MONSTER || element.second->getType() == RType::MONSTER)
-            this->_game->updateScore(10);
+            this->_game->updateScore(100);
 	}
     for (RType::IElement* elem : del)
 	{
 		if (elem->getType() != RType::PLAYER)
         {
-            this->_game->deleteElem(elem);
-            delete elem;
-        }
+			if (elem->getType() == RType::BOSS) {
+				std::cout << "boss dead" << std::endl;
+				((Boss *) elem)->setHp(((Boss *) elem)->getHp() - 10);
+				if (!((Boss*)elem)->getHp())
+				{
+					std::cout << "boss dead" << std::endl;
+					this->_game->deleteElem(elem);
+					delete elem;
+                    _boss = NS;
+				}
+			}
+			else {
+				this->_game->deleteElem(elem);
+				delete elem;
+			}
+		}
 		else if (((Player *)elem)->get_invincible() == 0)
         {
-            this->_game->deleteElem(elem);
-            ((Player *) elem)->kill();
+			((Player*)elem)->setHp(((Player*)elem)->getHp() - 10);
+			if (!((Player*)elem)->getHp())
+			{
+				this->_game->deleteElem(elem);
+				((Player *) elem)->kill();
+			}
         }
 	}
 }
@@ -105,7 +122,7 @@ void GameController::handleMonsters()
 			{
 				this->_bildo->setType(RType::BILDO);
 				this->_game->addElem(this->_bildo);
-				std::cout << "_bildo spawned" << std::endl;
+				std::cout << "_bildo spawned" << this->_bildo->getType() << std::endl;
 			}
 		}
 	}
@@ -114,7 +131,7 @@ void GameController::handleMonsters()
 		_boss = ALIVE;
 		if ((_Boss = reinterpret_cast<Boss *(*)(int, int, ElementFactory*)>((*_dicBoss)->at("new"))(750, (std::rand() % 400), &this->_elemFact)) != nullptr)
 		{
-			this->_Boss->setType(RType::MONSTER);
+			this->_Boss->setType(RType::BOSS);
 			this->_game->addElem(this->_Boss);
 			std::cout << "Boss spawned" << std::endl;
 		}
@@ -127,7 +144,10 @@ void GameController::handleMonsters()
     if ((*it)->getType() == RType::MONSTER)
     {
       if (((int16_t)(*it)->getX()) < 0)
-        it = ref.erase(it);
+	  {
+		  delete *it;
+		  it = ref.erase(it);
+	  }
       else
       {
         if (!((Monster*)(*it))->move())
