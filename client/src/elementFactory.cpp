@@ -1,7 +1,10 @@
 #include "element.hh"
 #include "player.hh"
 #include "monster.hh"
+#include "robot.hh"
+#include "boss.hh"
 #include "missile.hh"
+#include "ship.hh"
 #include "obstacle.hh"
 #include "set.hh"
 #include "Text.hh"
@@ -38,6 +41,10 @@ AElement *					ElementFactory::create(unsigned int _id, RType::eType type)
 	case RType::MONSTER:
 		element = new Monster();
 		break;
+	case RType::BOSS:
+		element = new Boss();
+	case RType::BILDO:
+		element = new Ship();
 	case RType::MISSILE:
 		element = new Missile(Missile::DEFAULT);
 		break;

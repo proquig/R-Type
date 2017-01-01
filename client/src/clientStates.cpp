@@ -308,15 +308,14 @@ bool		ClientStates::gameState(void)
 				sprite = this->_bullet[ptr->getAngle() != 90];
 			  else if (ptr->getType() == RType::MONSTER)
 				sprite = this->_monster;
-			  else if (ptr->getType() == 4096) {
+			  else if (ptr->getType() == RType::BILDO) {
 				  sprite = this->_bildo;
-				  std::cout << "Je passe ici value of sprite:" << sprite << std::endl;
-			   }
+			  }
 			  else if (ptr->getType() == RType::BOSS)
 				  sprite = this->_boss;
 			  objType = (RType::eType) ptr->getType();
 			  //if (objType == RType::PLAYER || objType == RType::BULLET || objType == RType::MONSTER)
-				std::cout << "Type:" << ptr->getType() << std::endl;
+				//std::cout << "Type:" << ptr->getType() << std::endl;
 			  this->controller->elementAction(ptr->getId(), objType, ptr->getX(), ptr->getY(), ptr->getAngle(),
 											  ptr->getSpeed(), sprite);
 			  delete ptr;
