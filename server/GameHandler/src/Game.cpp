@@ -11,6 +11,9 @@ Game::Game(int id, const Rectangle& bounds) : _cadre(bounds)
 
 Game::~Game()
 {
+  for (std::vector<RType::IElement*>::iterator it = this->_map.begin(); it != this->_map.end(); ++it)
+	if ((*it) && (*it)->getType() < RType::MONSTER)
+	  delete (*it);
 }
 
 bool			Game::launch()
