@@ -140,6 +140,8 @@ void Room::handle()
   this->_gameController->handleCollisions();
   for (RType::IElement* elem : this->_gameController->getGame()->getMap())
   {
+      if (elem->getType() == RType::PLAYER)
+          ((Player *)elem)->stop_invincible();
     if (elem->getType() == RType::BULLET)
       if (elem->getX() > 799 || ((int16_t) elem->getX()) < 0)
       {
