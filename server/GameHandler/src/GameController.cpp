@@ -59,12 +59,19 @@ void			GameController::handleCollisions()
 	aEntity = _collisionHandler.foundCollisions(_game->getMap(), &destructElementId);
 	for (std::pair<RType::IElement*, RType::IElement*> element : aEntity)
 	{
-        if (std::find(del.begin(), del.end(), element.first) == del.end())
+        /*if (std::find(del.begin(), del.end(), element.first) == del.end())
             del.push_back(element.first);
         if (std::find(del.begin(), del.end(), element.second) == del.end())
-            del.push_back(element.second);
-        if (element.first->getType() == RType::MONSTER || element.second->getType() == RType::MONSTER)
-            this->_game->updateScore(100);
+            del.push_back(element.second);*/
+        if ((element.first->getType() >= RType::MONSTER && element.second->getType() < RType::MONSTER)
+				|| (element.first->getType() >= RType::MONSTER && element.second->getType() < RType::MONSTER))
+		{
+		  if (std::find(del.begin(), del.end(), element.first) == del.end())
+			del.push_back(element.first);
+		  if (std::find(del.begin(), del.end(), element.second) == del.end())
+			del.push_back(element.second);
+		  this->_game->updateScore(10);
+		}
 	}
     for (RType::IElement* elem : del)
 	{
@@ -115,8 +122,8 @@ void GameController::handleMonsters()
 				std::cout << "_monster spawned" << std::endl;
 			}
 		}
-		else
-		{
+		/*else
+		//{
 			//if ((_monster = reinterpret_cast<Monster *(*)(int, int, ElementFactory*)>((*_dicMonster)->at("new"))(900, (std::rand() % 450), &this->_elemFact)) != nullptr)
 			if ((_bildo = reinterpret_cast<Bildo *(*)(int, int, ElementFactory*)>((*_dicBildo)->at("new"))(750, (std::rand() % 450), &this->_elemFact)) != nullptr)
 			{
@@ -124,7 +131,7 @@ void GameController::handleMonsters()
 				this->_game->addElem(this->_bildo);
 				std::cout << "_bildo spawned" << this->_bildo->getType() << std::endl;
 			}
-		}
+		//}*/
 	}
 	else if (_game->getScore() >= 300 && _boss == NS)
 	{

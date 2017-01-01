@@ -36,17 +36,7 @@ bool	Player::isAlive()
 
 std::vector<RType::IElement*>					Player::collideWith(RType::IElement* elem)
 {
-	if (elem->getType() == RType::PLAYER)
-	{
-		std::cout << "Collision between player " << _id << " and player " << elem->getId() << std::endl;
-		std::cout << "HP=" << _hp << std::endl;
-	}
-	if (elem->getType() == RType::DECOR)
-	{
-		std::cout << "Player " << _id << " died by collide with wall " << elem->getId() << std::endl;
-		_hp = 0;
-	}
-	return std::vector<RType::IElement*>();
+  return std::vector<RType::IElement*>();
 }
 
 struct sockaddr* Player::getAddr()
